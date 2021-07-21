@@ -92141,6 +92141,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.getTHREEbasics = getTHREEbasics;
 exports.setUpModel = setUpModel;
 exports.loadModel = loadModel;
+exports.setUpTHREEDCamera = setUpTHREEDCamera;
 
 var THREE = _interopRequireWildcard(require("three/build/three.module"));
 
@@ -92167,15 +92168,23 @@ function setUpModel(model) {
   box.getCenter(mesh.position);
   mesh.position.multiplyScalar(-1);
   const pivot = new THREE.Group();
+  pivot.add(mesh);
   return [mesh, pivot];
 }
 
 async function loadModel(modelName) {
-  const PATH = "../assets/models/";
+  const PATH = "./assets/models/";
   const gltfLoader = new _GLTFLoader.GLTFLoader();
   return await gltfLoader.loadAsync(PATH + modelName, function (xhr) {
-    console.log(xhr.loaded / xhr.total * 100 + "% loaded");
+    console.log(xhr.loaded / xhr.total * 100 + "% model loaded");
   });
+}
+
+function setUpTHREEDCamera(width, height) {
+  const camera = new THREE.OrthographicCamera(-width / 200, width / 200, height / 200, -height / 200, 0.1, 10);
+  camera.zoom = 0.2;
+  camera.position.set(0, 0, 5);
+  return camera;
 }
 },{"three/build/three.module":"node_modules/three/build/three.module.js","three/examples/jsm/loaders/GLTFLoader":"node_modules/three/examples/jsm/loaders/GLTFLoader.js"}],"src/utils/transform.js":[function(require,module,exports) {
 "use strict";
@@ -92340,6 +92349,7 @@ function getImports() {
     getTHREEbasics: _three2.getTHREEbasics,
     setUpModel: _three2.setUpModel,
     loadModel: _three2.loadModel,
+    setUpTHREEDCamera: _three2.setUpTHREEDCamera,
     Mask: _models.Mask,
     Glasses: _models.Glasses,
     FaceRotation: _models.FaceRotation,
@@ -92348,6 +92358,8 @@ function getImports() {
 }
 },{"three/build/three.module":"node_modules/three/build/three.module.js","stats.js/build/stats.min.js":"node_modules/stats.js/build/stats.min.js","./camera":"src/utils/camera.js","./params":"src/utils/params.js","./posenet":"src/utils/posenet.js","./three":"src/utils/three.js","./models":"src/utils/models.js"}],"src/index.js":[function(require,module,exports) {
 "use strict";
+
+var _three = require("three");
 
 var _imports = require("./utils/imports");
 
@@ -92362,6 +92374,7 @@ const {
   getTHREEbasics,
   setUpModel,
   loadModel,
+  setUpTHREEDCamera,
   Mask,
   Glasses,
   FaceRotation,
@@ -92383,6 +92396,7 @@ const renderer = new THREE.WebGLRenderer({
   // to allow screenshot
   alpha: true
 });
+webglContainer.appendChild(renderer.domElement);
 const scene = getTHREEbasics();
 let detector, camera;
 let mesh, pivot, threeDCam;
@@ -92397,6 +92411,7 @@ async function renderResult(poses) {
   }
 
   camera.drawCtx();
+  renderer.render(scene, threeDCam);
 
   if (poses.length > 0) {
     camera.drawResults(poses);
@@ -92409,6 +92424,7 @@ async function animate() {
     flipHorizontal: false
   });
   await renderResult(poses);
+  pivot.rotation.y += 0.01;
   stats.update();
   requestAnimationFrame(animate);
 }
@@ -92417,18 +92433,19 @@ async function animate() {
 
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
+  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
   detector = await createDetector();
   let model;
   [camera, detector, model] = await Promise.all([Camera.setupCamera(STATE.camera), createDetector(), loadModel(MODELS.MASK)]);
   [mesh, pivot] = setUpModel(model);
-  pivot.add(mesh);
+  pivot.position.set(0, 0, 0);
   scene.add(pivot);
-  camera = setUpCamera(VIDEO_WIDTH, VIDEO_HEIGHT);
-  scene.add(camera);
+  threeDCam = setUpTHREEDCamera(camera.video.videoWidth, camera.video.videoHeight);
+  scene.add(threeDCam);
   animate();
 }
 
 ;
 app();
-},{"./utils/imports":"src/utils/imports.js"}]},{},["src/index.js"], null)
+},{"three":"node_modules/three/build/three.module.js","./utils/imports":"src/utils/imports.js"}]},{},["src/index.js"], null)
 //# sourceMappingURL=/src.a2b27638.js.map

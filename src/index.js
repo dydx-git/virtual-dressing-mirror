@@ -1,3 +1,4 @@
+import { Vector3 } from "three";
 import {
   getImports
 } from "./utils/imports";
@@ -13,6 +14,7 @@ const {
   getTHREEbasics,
   setUpModel,
   loadModel,
+  setUpTHREEDCamera,
   Mask,
   Glasses,
   FaceRotation,
@@ -35,6 +37,7 @@ const renderer = new THREE.WebGLRenderer({
   preserveDrawingBuffer: true, // to allow screenshot
   alpha: true,
 });
+webglContainer.appendChild(renderer.domElement);
 
 const scene = getTHREEbasics();
 
@@ -52,6 +55,7 @@ async function renderResult(poses) {
 
   camera.drawCtx();
 
+  renderer.render(scene, threeDCam);
 
   if (poses.length > 0) {
       camera.drawResults(poses);
@@ -67,6 +71,8 @@ async function animate() {
 
   await renderResult(poses);
 
+  pivot.rotation.y += 0.01;
+  
   stats.update();
 
   requestAnimationFrame(animate);
@@ -74,6 +80,9 @@ async function animate() {
 
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
+  
+  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
+
   detector = await createDetector();
   let model;
   [camera, detector, model] = await Promise.all([
@@ -83,10 +92,12 @@ async function app() {
   ]);
 
   [mesh, pivot] = setUpModel(model);
-  pivot.add(mesh);
+  pivot.position.set(0,0,0);
   scene.add(pivot);
-  camera = setUpCamera(VIDEO_WIDTH, VIDEO_HEIGHT);
-  scene.add(camera);
+
+  threeDCam = setUpTHREEDCamera(camera.video.videoWidth, camera.video.videoHeight);
+  scene.add(threeDCam);
+
   animate();
 };
 

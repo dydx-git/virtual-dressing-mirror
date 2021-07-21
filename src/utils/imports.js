@@ -3,7 +3,7 @@ import Stats from "stats.js/build/stats.min.js";
 import { Camera } from './camera';
 import { STATE } from "./params";
 import { getPart, getFacePose, createDetector } from "./posenet";
-import { getTHREEbasics, setUpModel, loadModel } from "./three";
+import { getTHREEbasics, setUpModel, loadModel, setUpTHREEDCamera } from "./three";
 import {Mask, Glasses, FaceRotation} from "./models";
 import { TraverseBones} from "./models";
 
@@ -19,6 +19,7 @@ export function getImports() {
 		getTHREEbasics, 
 		setUpModel,
 		loadModel,
+		setUpTHREEDCamera,
 		Mask, 
 		Glasses,
 		FaceRotation,

@@ -22,13 +22,30 @@ export function setUpModel(model) {
   box.getCenter(mesh.position);
   mesh.position.multiplyScalar(-1);
   const pivot = new THREE.Group();
+  pivot.add(mesh);
+  
   return [mesh, pivot];
 }
 
 export async function loadModel(modelName) {
-  const PATH = "../assets/models/";
+  const PATH = "./assets/models/";
   const gltfLoader = new GLTFLoader();
+  
   return await gltfLoader.loadAsync(PATH + modelName, function (xhr) {
-    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    console.log((xhr.loaded / xhr.total) * 100 + "% model loaded");
   });
+}
+
+export function setUpTHREEDCamera(width, height) {
+  const camera = new THREE.OrthographicCamera(
+    -width / 200,
+    width / 200,
+    height / 200,
+    -height / 200,
+    0.1,
+    10
+  );
+  camera.zoom = 0.2;
+  camera.position.set(0, 0, 5);
+  return camera;
 }
