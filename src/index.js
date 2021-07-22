@@ -68,7 +68,7 @@ async function animate() {
   const poses = await detector.estimatePoses(
       camera.video, {
           maxPoses: STATE.modelConfig.maxPoses,
-          flipHorizontal: false
+          flipHorizontal: true
       });
 
   await renderResult(poses);
@@ -76,9 +76,9 @@ async function animate() {
   /* model manipulation region start */
   if (poses.length > 0) {
     // const nose = getPart("nose", poses[0])[0]; // at pos: 0
-    // const leftEye = getPart("left_eye", poses[0])[0]; // at pos: 1
-    // const rightEye = getPart("right_eye", poses[0])[0]; // at pos: 2
-    // const leftWrist = getPart("leftWrist", poses[0])[0]; // at pos: 9
+    const leftElbow = getPart("left_elbow", poses[0])[0]; // at pos: 1
+    const leftShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 2
+    const leftWrist = getPart("left_wrist", poses[0])[0]; // at pos: 9
     const rightWrist = getPart("right_wrist", poses[0])[0]; // at pos: 10
     const rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
     const rightElbow = getPart("right_elbow", poses[0])[0]; // at pos: 8
@@ -93,11 +93,17 @@ async function animate() {
     mesh.traverse(function (child) {
       if (child.isBone) {
         switch (child.name) {
-          case "mixamorigLeftShoulder":
+          case "mixamorigRightShoulder":
             child.rotation.y = getAngle(rightElbow, rightShoulder, 0, 0, -1);
             break;
-          case "mixamorigLeftForeArm":
+          case "mixamorigRightForeArm":
             child.rotation.x = getAngle(rightWrist, rightElbow, 0, 0, -1);
+            break;
+          case "mixamorigLeftShoulder":
+            child.rotation.y = getAngle(leftElbow, leftShoulder, 0, 0, -1);
+            break;
+          case "mixamorigLeftForeArm":
+            child.rotation.x = getAngle(leftWrist, leftElbow, 0, 0, -1);
             break;
           case "mixamorigHead":
             child.rotation.y = normalizedYaw; // Left Right
