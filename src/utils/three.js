@@ -5,15 +5,13 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 export function getTHREEbasics(){    
   const scene = new THREE.Scene();
 
-  const light = new THREE.PointLight(0xffffcc, 10, 200);
-  light.position.set(4, 30, -20);
+  const light = new THREE.PointLight(0xffffff, 0.5);
   scene.add(light);
 
-  const light2 = new THREE.AmbientLight(0x20202a, 20, 100);
-  light2.position.set(30, -10, 30);
+  const light2 = new THREE.AmbientLight(0xffffff, 0.5);
   scene.add(light2);
     
-    return scene;
+  return scene;
 }
 
 export function setUpModel(model) {
