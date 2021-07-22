@@ -8,7 +8,6 @@ const {
   Stats,
   Camera,
   STATE,
-  getFacePose,
   getPart,
   createDetector,
   getTHREEbasics,
@@ -18,6 +17,7 @@ const {
   Mask,
   Glasses,
   FaceRotation,
+  getFacePose,
   TraverseBones
 } = getImports();
 
@@ -71,7 +71,25 @@ async function animate() {
 
   await renderResult(poses);
 
-  pivot.rotation.y += 0.01;
+  /* model manipulation region start */
+  if (poses.length > 0) {
+    // const nose = getPart("nose", poses[0])[0]; // at pos: 0
+    // const leftEye = getPart("left_eye", poses[0])[0]; // at pos: 1
+    // const rightEye = getPart("right_eye", poses[0])[0]; // at pos: 2
+    // const leftWrist = getPart("leftWrist", poses[0])[0]; // at pos: 9
+    // const rightWrist = getPart("rightEye", poses[0])[0]; // at pos: 10
+    // const headRotation = Math.atan(
+    //   (rightEye.y - leftEye.y) / 
+    //   (rightEye.x - leftEye.x)
+    // );
+    const {yaw, pitch, roll} = getFacePose(poses[0])
+    let normalizedYaw = (yaw - 90) * (Math.PI / 180);
+    let normalizedPitch = (pitch - 75) * (Math.PI / 180);
+    pivot.rotation.y = normalizedYaw; // Left Right
+    pivot.rotation.x = -normalizedPitch; // Up down
+    pivot.rotation.z = roll;
+  }
+  /* model manipulation region end */
   
   stats.update();
 

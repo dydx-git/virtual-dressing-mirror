@@ -10,7 +10,7 @@ export function FaceRotation(pivot,poses){
     const { yaw, pitch } = getFacePose(poses[0]);
 
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
-    let normalizedPitch = (pitch - pitchFactor) * (Math.PI / 180);
+    let normalizedPitch = (pitch - 75) * (Math.PI / 180);
     if (normalizedYaw) {
         pivot.rotation.y = normalizedYaw; // Left Right
         pivot.rotation.x = -normalizedPitch; // Up down
