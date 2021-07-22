@@ -75,3 +75,11 @@ function getRoll(leftEye, rightEye) {
         (rightEye[0] - leftEye[0])
     );
 }
+
+export function getAngle(p1, p2, c1, c2, m) {
+    const CONFIDENCE = 0.5;
+    if(p1.score > CONFIDENCE && p2.score > CONFIDENCE){
+      return (Math.atan2(p2.y - p1.y, p2.x - p1.x) + c1) * m;
+    }
+    return c2 * m
+}  

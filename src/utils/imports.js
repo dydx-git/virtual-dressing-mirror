@@ -5,7 +5,7 @@ import { STATE } from "./params";
 import { getPart, createDetector } from "./posenet";
 import { getTHREEbasics, setUpModel, loadModel, setUpTHREEDCamera } from "./three";
 import {Mask, Glasses, FaceRotation} from "./models";
-import { getFacePose } from "./transform";
+import { getFacePose, getAngle } from "./transform";
 import { TraverseBones} from "./models";
 
 export function getImports() {
@@ -24,6 +24,7 @@ export function getImports() {
 		Glasses,
 		FaceRotation,
 		getFacePose,
+		getAngle,
 		TraverseBones
 	};
 }

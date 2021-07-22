@@ -18,6 +18,7 @@ const {
   Glasses,
   FaceRotation,
   getFacePose,
+  getAngle,
   TraverseBones
 } = getImports();
 
@@ -30,6 +31,7 @@ const MODELS = {
   MASK: "mask.gltf",
   SPECTACLES: "glasses/scene.gltf",
   COSTUME: "alien/alienSuit.gltf",
+  MICKEY: "mickey.fbx"
 };
 
 const renderer = new THREE.WebGLRenderer({
@@ -77,7 +79,9 @@ async function animate() {
     // const leftEye = getPart("left_eye", poses[0])[0]; // at pos: 1
     // const rightEye = getPart("right_eye", poses[0])[0]; // at pos: 2
     // const leftWrist = getPart("leftWrist", poses[0])[0]; // at pos: 9
-    // const rightWrist = getPart("rightEye", poses[0])[0]; // at pos: 10
+    const rightWrist = getPart("right_wrist", poses[0])[0]; // at pos: 10
+    const rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
+    const rightElbow = getPart("right_elbow", poses[0])[0]; // at pos: 8
     // const headRotation = Math.atan(
     //   (rightEye.y - leftEye.y) / 
     //   (rightEye.x - leftEye.x)
@@ -85,10 +89,29 @@ async function animate() {
     const {yaw, pitch, roll} = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
     let normalizedPitch = (pitch - 75) * (Math.PI / 180);
-    pivot.rotation.y = normalizedYaw; // Left Right
-    pivot.rotation.x = -normalizedPitch; // Up down
-    pivot.rotation.z = roll;
+    
+    mesh.traverse(function (child) {
+      if (child.isBone) {
+        switch (child.name) {
+          case "mixamorigLeftShoulder":
+            child.rotation.y = getAngle(rightElbow, rightShoulder, 0, 0, -1);
+            break;
+          case "mixamorigLeftForeArm":
+            child.rotation.x = getAngle(rightWrist, rightElbow, 0, 0, -1);
+            break;
+          case "mixamorigHead":
+            child.rotation.y = normalizedYaw; // Left Right
+            child.rotation.x = -normalizedPitch; // Up down
+            child.rotation.z = roll;
+            break;
+        
+          default:
+            break;
+        }
+      }
+    });
   }
+
   /* model manipulation region end */
   
   stats.update();
@@ -106,11 +129,13 @@ async function app() {
   [camera, detector, model] = await Promise.all([
       Camera.setupCamera(STATE.camera),
       createDetector(),
-      loadModel(MODELS.MASK)
+      loadModel(MODELS.MICKEY)
   ]);
-
+  
   [mesh, pivot] = setUpModel(model);
   pivot.position.set(0,0,0);
+  pivot.scale.set(0.05, 0.05, 0.05);
+
   scene.add(pivot);
 
   threeDCam = setUpTHREEDCamera(camera.video.videoWidth, camera.video.videoHeight);

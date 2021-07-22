@@ -1,11 +1,12 @@
 
 import * as THREE from "three/build/three.module";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 
 export function getTHREEbasics(){    
   const scene = new THREE.Scene();
 
-  const light = new THREE.PointLight(0xffffff, 0.5);
+  const light = new THREE.PointLight(0xffffff, 1);
   scene.add(light);
 
   const light2 = new THREE.AmbientLight(0xffffff, 0.5);
@@ -15,7 +16,13 @@ export function getTHREEbasics(){
 }
 
 export function setUpModel(model) {
-  const mesh = model.scene;
+  let mesh;
+
+  if (model.scene) {
+    mesh = model.scene;
+  } else {
+    mesh = model;
+  }
   const box = new THREE.Box3().setFromObject(mesh);
   box.getCenter(mesh.position);
   mesh.position.multiplyScalar(-1);
@@ -27,9 +34,14 @@ export function setUpModel(model) {
 
 export async function loadModel(modelName) {
   const PATH = "./assets/models/";
-  const gltfLoader = new GLTFLoader();
-  
-  return await gltfLoader.loadAsync(PATH + modelName, function (xhr) {
+  const ext = modelName.split('.')[1];
+  let loader;
+  if (ext == "gltf") {
+    loader = new GLTFLoader();
+  } else if (ext == "fbx") {
+    loader = new FBXLoader();
+  }
+  return await loader.loadAsync(PATH + modelName, function (xhr) {
     console.log((xhr.loaded / xhr.total) * 100 + "% model loaded");
   });
 }
