@@ -68,7 +68,7 @@ async function animate() {
   const poses = await detector.estimatePoses(
       camera.video, {
           maxPoses: STATE.modelConfig.maxPoses,
-          flipHorizontal: true
+          flipHorizontal: false
       });
 
   await renderResult(poses);
@@ -92,12 +92,17 @@ async function animate() {
     
     mesh.traverse(function (child) {
       if (child.isBone) {
+        let angle;
         switch (child.name) {
           case "mixamorigRightShoulder":
-            child.rotation.y = getAngle(rightElbow, rightShoulder, 0, 0, -1);
+            angle = getAngle(rightElbow, rightShoulder, 0, 0, -1);
+            if (angle >= -0.5 || angle <= 1.0) {
+              child.rotation.y = angle; // -0.5-1.0; direction and angle value inversely proportional
+            }
             break;
           case "mixamorigRightForeArm":
             child.rotation.x = getAngle(rightWrist, rightElbow, 0, 0, -1);
+            // console.log(`right forearm: ${getAngle(rightWrist, rightElbow, 0, 0, -1)}`);
             break;
           case "mixamorigLeftShoulder":
             child.rotation.y = getAngle(leftElbow, leftShoulder, 0, 0, -1);

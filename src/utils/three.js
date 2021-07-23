@@ -9,7 +9,7 @@ export function getTHREEbasics(){
   const light = new THREE.PointLight(0xffffff, 1);
   scene.add(light);
 
-  const light2 = new THREE.AmbientLight(0xffffff, 0.5);
+  const light2 = new THREE.AmbientLight(0xffffff, 1);
   scene.add(light2);
     
   return scene;
