@@ -82,6 +82,7 @@ async function animate() {
     const rightWrist = getPart("right_wrist", poses[0])[0]; // at pos: 10
     const rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
     const rightElbow = getPart("right_elbow", poses[0])[0]; // at pos: 8
+    console.log(poses[0])
     // const headRotation = Math.atan(
     //   (rightEye.y - leftEye.y) / 
     //   (rightEye.x - leftEye.x)
@@ -96,19 +97,38 @@ async function animate() {
         switch (child.name) {
           case "mixamorigRightShoulder":
             angle = getAngle(rightElbow, rightShoulder, 0, 0, -1);
-            if (angle >= -0.5 || angle <= 1.0) {
-              child.rotation.y = angle; // -0.5-1.0; direction and angle value inversely proportional
+            if (angle >= -0.5 && angle <= 1.0) {
+              // -0.5-1.0; direction and angle value inversely proportional
+              // child.rotation.y = angle;
+              child.rotation.y = angle;
             }
             break;
           case "mixamorigRightForeArm":
-            child.rotation.x = getAngle(rightWrist, rightElbow, 0, 0, -1);
-            // console.log(`right forearm: ${getAngle(rightWrist, rightElbow, 0, 0, -1)}`);
+            angle = getAngle(rightWrist, rightElbow, 0, 0, -1);
+            if (angle >= -2.1 && angle <= 2.0) {
+              child.rotation.x = angle;
+              console.log(angle);
+
+              // console.log(`right forearm: ${getAngle(rightWrist, rightElbow, 0, 0, -1)}`);
+            }
+            // child.rotation.x = getAngle(rightWrist, rightElbow, 0, 0, -1);
             break;
           case "mixamorigLeftShoulder":
-            child.rotation.y = getAngle(leftElbow, leftShoulder, 0, 0, -1);
+            angle = getAngle(leftShoulder, leftElbow, 0, 0, -1);
+            if (angle >= -0.5 && angle <= 1.0) {
+              // -0.5-1.0; direction and angle value inversely proportional
+              // child.rotation.y = angle;
+              child.rotation.y = angle;
+            }
+            // child.rotation.y = getAngle(leftElbow, leftShoulder, 0, 0, -1);
             break;
           case "mixamorigLeftForeArm":
-            child.rotation.x = getAngle(leftWrist, leftElbow, 0, 0, -1);
+            // child.rotation.x = getAngle(leftWrist, leftElbow, 0, 0, -1);
+            angle = getAngle(leftElbow,leftWrist, 0, 0, -1);
+            if (angle >= -2.1 && angle <= 2.0) {
+              child.rotation.x = -angle;
+              console.log(angle);
+            }
             break;
           case "mixamorigHead":
             child.rotation.y = normalizedYaw; // Left Right
