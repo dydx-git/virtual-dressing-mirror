@@ -91,20 +91,12 @@ async function animate() {
     leftEye = getPart("left_eye", poses[0])[0];
     rightEye = getPart("right_eye", poses[0])[0];
     nose =  getPart("nose", poses[0])[0];
-    //console.log(poses[0])
-    // const headRotation = Math.atan(
-    //   (rightEye.y - leftEye.y) / 
-    //   (rightEye.x - leftEye.x)
-    // );
 
     eyesPosition.x = (leftEye.x + rightEye.x) / 2;
     eyesPosition.y = ((leftEye.y + rightEye.y) / 2 ) + yOffset;
-    //console.log(eyesPosition.x);
+
     const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,camera.video.videoHeight,camera.video.videoWidth,threeDCam);
     pivot.position.set(cooridnates.x,cooridnates.y,1);
-    
-    //pivot.position.set(0,0,1);
-
 
     const {yaw, pitch, roll} = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
@@ -117,41 +109,25 @@ async function animate() {
         switch (child.name) {
           case "mixamorigRightShoulder":
             angle = getAngle(rightElbow, rightShoulder, 0, 0, -1);
-            if (angle >= -0.5 && angle <= 1.0) {
-              // -0.5-1.0; direction and angle value inversely proportional
-              // child.rotation.y = angle;
+            if (angle >= -0.5 && angle <= 1.0) // -0.5-1.0; direction and angle value inversely proportional
               child.rotation.y = angle;
-            }
             break;
           case "mixamorigRightForeArm":
             angle = getAngle(rightWrist, rightElbow, 0, 0, -1);
             if (angle >= -2.1 && angle <= 2.0) {
               child.rotation.x = angle;
-              //console.log(angle);
-
-              // console.log(`right forearm: ${getAngle(rightWrist, rightElbow, 0, 0, -1)}`);
             }
-            // child.rotation.x = getAngle(rightWrist, rightElbow, 0, 0, -1);
             break;
           case "mixamorigLeftShoulder":
-            angle = getAngle(leftShoulder, leftElbow, 0, 0, -1);
-            if (angle >= -0.5 && angle <= 1.0) {
-              // -0.5-1.0; direction and angle value inversely proportional
-              // child.rotation.y = angle;
+            angle = getAngle(leftShoulder, leftElbow, 0, 0, -1) - 0.5;
+            if (angle >= -1 && angle <= 0.5) // -1-0.5; direction and angle value inversely proportional
               child.rotation.y = angle;
-            }
-            // child.rotation.y = getAngle(leftElbow, leftShoulder, 0, 0, -1);
             break;
           case "mixamorigLeftForeArm":
-            // child.rotation.x = getAngle(leftWrist, leftElbow, 0, 0, -1);
             angle = getAngle(leftElbow,leftWrist, 0, 0, -1);
-            if (angle >= -2.1 && angle <= 2.0) {
-              child.rotation.x = -angle;
-              //console.log(angle);
-            }
+            if (angle >= -2.1 && angle <= 2.0) child.rotation.x = -angle;
             break;
           case "mixamorigHead":
-            child.position.x = 5;
             child.rotation.y = normalizedYaw; // Left Right
             child.rotation.x = -normalizedPitch; // Up down
             child.rotation.z = roll;
