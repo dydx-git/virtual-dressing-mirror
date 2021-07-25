@@ -116,10 +116,12 @@ async function animate() {
         console.log()
         switch (child.name) {
           case "mixamorigRightShoulder":
-            angle = getAngle(rightElbow, rightShoulder, 0, 0, -1);
-            if (angle >= -0.5 && angle <= 1.0) {
+            angle = getAngle(rightElbow, rightShoulder, 0, 0, -1) + 0.15;
+            if (angle >= 0 && angle <= 1.0) {
               // -0.5-1.0; direction and angle value inversely proportional
               // child.rotation.y = angle;
+              //console.log(angle);
+              //child.rotation.y = 0;
               child.rotation.y = angle;
             }
             break;
