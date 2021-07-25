@@ -47,6 +47,7 @@ const scene = getTHREEbasics();
 let detector, camera;
 let mesh, pivot, threeDCam;
 let leftEye, rightEye, nose;
+let yOffset = 120;
 
 let eyesPosition = new Vector3();
 
@@ -97,9 +98,9 @@ async function animate() {
     // );
 
     eyesPosition.x = (leftEye.x + rightEye.x) / 2;
-    eyesPosition.y = (leftEye.y + rightEye.y) / 2;
+    eyesPosition.y = ((leftEye.y + rightEye.y) / 2 ) + yOffset;
     //console.log(eyesPosition.x);
-    const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,window.innerHeight,window.innerWidth,camera);
+    const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,camera.video.videoHeight,camera.video.videoWidth,threeDCam);
     pivot.position.set(cooridnates.x,cooridnates.y,1);
     
     //pivot.position.set(0,0,1);
@@ -178,11 +179,11 @@ window.addEventListener('keydown',(e)=> {
   if(e.ctrlKey) {
     switch(e.key) {
       case "ArrowUp": {
-        pivot.position.y += 0.1;
+        yOffset +=10;
         break;
       }
       case "ArrowDown": {
-        pivot.position.y -= 0.1;
+        yOffset -=10;
         break;
       }
       case "ArrowRight": {
@@ -213,11 +214,7 @@ window.addEventListener('keydown',(e)=> {
   }
 
   else if (e.key == "c") {
-    console.log("Left eye: ",leftEye);
-    console.log("Right eye: ",rightEye);
-    //console.log("Scaling ",pivot.scale);
-    console.log("Position ",pivot.position);
-    console.log("Nose: ",nose);
+    console.log(yOffset);
 
   }
 });
