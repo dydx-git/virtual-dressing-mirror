@@ -101,16 +101,17 @@ async function animate() {
     const {yaw, pitch, roll} = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
     let normalizedPitch = (pitch - 75) * (Math.PI / 180);
+    let leftShoulderAngle;
     
     mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
-        console.log()
         switch (child.name) {
           case "mixamorigRightShoulder":
-            angle = getAngle(rightElbow, rightShoulder, 0, 0, -1);
-            if (angle >= -0.5 && angle <= 1.0) // -0.5-1.0; direction and angle value inversely proportional
+            angle = getAngle(rightElbow, rightShoulder, 0, 0, -1) + 0.15;
+            if (angle >= -0.5 && angle <= 1.0) {// -0.5-1.0; direction and angle value inversely proportional
               child.rotation.y = angle;
+            }
             break;
           case "mixamorigRightForeArm":
             angle = getAngle(rightWrist, rightElbow, 0, 0, -1);
@@ -120,11 +121,16 @@ async function animate() {
             break;
           case "mixamorigLeftShoulder":
             angle = getAngle(leftShoulder, leftElbow, 0, 0, -1) - 0.5;
-            if (angle >= -1 && angle <= 0.5) // -1-0.5; direction and angle value inversely proportional
+            leftShoulderAngle = angle;  
+            if (angle >= -1 && angle <= 0.5) {// -1-0.5; direction and angle value inversely proportional
               child.rotation.y = angle;
+            }
             break;
           case "mixamorigLeftForeArm":
             angle = getAngle(leftElbow,leftWrist, 0, 0, -1);
+            if (leftShoulderAngle >= -0.15) {
+              angle -= 0.5;
+            }
             if (angle >= -2.1 && angle <= 2.0) child.rotation.x = -angle;
             break;
           case "mixamorigHead":
