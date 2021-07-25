@@ -7,6 +7,7 @@ import { getTHREEbasics, setUpModel, loadModel, setUpTHREEDCamera } from "./thre
 import {Mask, Glasses, FaceRotation} from "./models";
 import { getFacePose, getAngle } from "./transform";
 import { TraverseBones} from "./models";
+import { getWorldCoords } from "./getWorldCoord";
 
 export function getImports() {
 	return {
@@ -25,6 +26,7 @@ export function getImports() {
 		FaceRotation,
 		getFacePose,
 		getAngle,
-		TraverseBones
+		TraverseBones,
+		getWorldCoords
 	};
 }

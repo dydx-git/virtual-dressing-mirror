@@ -19,7 +19,8 @@ const {
   FaceRotation,
   getFacePose,
   getAngle,
-  TraverseBones
+  TraverseBones,
+  getWorldCoords
 } = getImports();
 
 const stats = new Stats();
@@ -45,6 +46,9 @@ const scene = getTHREEbasics();
 
 let detector, camera;
 let mesh, pivot, threeDCam;
+let leftEye, rightEye, nose;
+
+let eyesPosition = new Vector3();
 
 async function renderResult(poses) {
   if (camera.video.readyState < 2) {
@@ -82,11 +86,25 @@ async function animate() {
     const rightWrist = getPart("right_wrist", poses[0])[0]; // at pos: 10
     const rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
     const rightElbow = getPart("right_elbow", poses[0])[0]; // at pos: 8
-    console.log(poses[0])
+
+    leftEye = getPart("left_eye", poses[0])[0];
+    rightEye = getPart("right_eye", poses[0])[0];
+    nose =  getPart("nose", poses[0])[0];
+    //console.log(poses[0])
     // const headRotation = Math.atan(
     //   (rightEye.y - leftEye.y) / 
     //   (rightEye.x - leftEye.x)
     // );
+
+    eyesPosition.x = (leftEye.x + rightEye.x) / 2;
+    eyesPosition.y = (leftEye.y + rightEye.y) / 2;
+    //console.log(eyesPosition.x);
+    const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,window.innerHeight,window.innerWidth,camera);
+    pivot.position.set(cooridnates.x,cooridnates.y,1);
+    
+    //pivot.position.set(0,0,1);
+
+
     const {yaw, pitch, roll} = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
     let normalizedPitch = (pitch - 75) * (Math.PI / 180);
@@ -94,6 +112,7 @@ async function animate() {
     mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
+        console.log()
         switch (child.name) {
           case "mixamorigRightShoulder":
             angle = getAngle(rightElbow, rightShoulder, 0, 0, -1);
@@ -107,7 +126,7 @@ async function animate() {
             angle = getAngle(rightWrist, rightElbow, 0, 0, -1);
             if (angle >= -2.1 && angle <= 2.0) {
               child.rotation.x = angle;
-              console.log(angle);
+              //console.log(angle);
 
               // console.log(`right forearm: ${getAngle(rightWrist, rightElbow, 0, 0, -1)}`);
             }
@@ -127,10 +146,11 @@ async function animate() {
             angle = getAngle(leftElbow,leftWrist, 0, 0, -1);
             if (angle >= -2.1 && angle <= 2.0) {
               child.rotation.x = -angle;
-              console.log(angle);
+              //console.log(angle);
             }
             break;
           case "mixamorigHead":
+            child.position.x = 5;
             child.rotation.y = normalizedYaw; // Left Right
             child.rotation.x = -normalizedPitch; // Up down
             child.rotation.z = roll;
@@ -148,7 +168,59 @@ async function animate() {
   stats.update();
 
   requestAnimationFrame(animate);
+
+
+
 };
+
+// Arrow key bindings with ctrl & alt to position and scale the model. 
+window.addEventListener('keydown',(e)=> {
+  if(e.ctrlKey) {
+    switch(e.key) {
+      case "ArrowUp": {
+        pivot.position.y += 0.1;
+        break;
+      }
+      case "ArrowDown": {
+        pivot.position.y -= 0.1;
+        break;
+      }
+      case "ArrowRight": {
+        pivot.position.x += 0.1;
+        break;
+      }
+      case "ArrowLeft": {
+        pivot.position.x -= 0.1;
+        break;
+      }
+    }
+  }
+
+  else if (e.shiftKey) {
+    switch(e.key) {
+      case "ArrowUp": {
+        pivot.scale.x += 0.01;
+        pivot.scale.y += 0.01;
+        break;
+      }
+      case "ArrowDown": {
+        pivot.scale.x -= 0.01;
+        pivot.scale.y -=0.01;
+        break;
+      }
+
+    }
+  }
+
+  else if (e.key == "c") {
+    console.log("Left eye: ",leftEye);
+    console.log("Right eye: ",rightEye);
+    //console.log("Scaling ",pivot.scale);
+    console.log("Position ",pivot.position);
+    console.log("Nose: ",nose);
+
+  }
+});
 
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
@@ -164,9 +236,9 @@ async function app() {
   ]);
   
   [mesh, pivot] = setUpModel(model);
-  pivot.position.set(0,0,0);
-  pivot.scale.set(0.05, 0.05, 0.05);
 
+  pivot.scale.set(0.05, 0.05, 0.05);
+  
   scene.add(pivot);
 
   threeDCam = setUpTHREEDCamera(camera.video.videoWidth, camera.video.videoHeight);
