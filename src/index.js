@@ -1,3 +1,4 @@
+import { math } from "@tensorflow/tfjs-core";
 import { Vector3 } from "three";
 import {
   getImports
@@ -109,23 +110,21 @@ async function animate() {
         switch (child.name) {
           case "mixamorigRightShoulder":
             angle = getAngle(rightElbow, rightShoulder, 0, 0, -1);
-            if (angle >= -0.5 && angle <= 1.0) // -0.5-1.0; direction and angle value inversely proportional
-              child.rotation.y = angle;
+            child.rotation.y = angle - Math.sin(angle/2);
+            console.log(angle);
             break;
           case "mixamorigRightForeArm":
             angle = getAngle(rightWrist, rightElbow, 0, 0, -1);
-            if (angle >= -2.1 && angle <= 2.0) {
-              child.rotation.x = angle;
-            }
+            child.rotation.x = angle;
+            
             break;
           case "mixamorigLeftShoulder":
-            angle = getAngle(leftShoulder, leftElbow, 0, 0, -1) - 0.5;
-            if (angle >= -1 && angle <= 0.5) // -1-0.5; direction and angle value inversely proportional
-              child.rotation.y = angle;
+            angle = getAngle(leftShoulder, leftElbow, 0, 0, -1);
+            child.rotation.y = angle;
             break;
           case "mixamorigLeftForeArm":
             angle = getAngle(leftElbow,leftWrist, 0, 0, -1);
-            if (angle >= -2.1 && angle <= 2.0) child.rotation.x = -angle;
+            child.rotation.x = -angle;  
             break;
           case "mixamorigHead":
             child.rotation.y = normalizedYaw; // Left Right
