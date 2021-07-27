@@ -102,41 +102,46 @@ async function animate() {
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
     let normalizedPitch = (pitch - 75) * (Math.PI / 180);
     let leftShoulderAngle;
+    let UIElement = document.getElementById("valueLogger");
+    UIElement.innerHTML = "";
     
     mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
         switch (child.name) {
           case "mixamorigRightShoulder":
-            angle = getAngle(rightElbow, rightShoulder, 0, 0, -1) + 0.15;
-            if (angle >= -0.5 && angle <= 1.0) {// -0.5-1.0; direction and angle value inversely proportional
-              child.rotation.y = angle;
-            }
+            angle = getAngle(rightElbow, rightShoulder, 0, 0, -1);
+            child.rotation.y = angle;
+            // UIElement.innerHTML += `<p>rightShoulder Angle: <b>${angle}</b> `;
+            // if (angle >= -0.5 && angle <= 1.0) {// -0.5-1.0; direction and angle value inversely proportional
+            // }
             break;
           case "mixamorigRightForeArm":
             angle = getAngle(rightWrist, rightElbow, 0, 0, -1);
-            if (angle >= -2.1 && angle <= 2.0) {
-              child.rotation.x = angle;
-            }
+            child.rotation.x = angle;
+            // UIElement.innerHTML += `<br>rightForeArm Angle: <b>${angle}</b></p>`;
+            // if (angle >= -2.1 && angle <= 2.0) {
+            // }
             break;
           case "mixamorigLeftShoulder":
-            angle = getAngle(leftShoulder, leftElbow, 0, 0, -1) - 0.5;
+            angle = getAngle(leftShoulder, leftElbow, 0, 0, -1);
             leftShoulderAngle = angle;  
-            if (angle >= -1 && angle <= 0.5) {// -1-0.5; direction and angle value inversely proportional
-              child.rotation.y = angle;
-            }
+            child.rotation.y = angle;
+            UIElement.innerHTML += `<p>leftShoulder Angle: <b>${angle}</b>`;
+            // if (angle >= -1 && angle <= 0.5) {// -1-0.5; direction and angle value inversely proportional
+            // }
             break;
           case "mixamorigLeftForeArm":
             angle = getAngle(leftElbow,leftWrist, 0, 0, -1);
-            if (leftShoulderAngle >= -0.15) {
-              angle -= 0.5;
-            }
-            if (angle >= -2.1 && angle <= 2.0) child.rotation.x = -angle;
+            UIElement.innerHTML += `leftForearm: <b>${-angle}</b></p>`;
+            child.rotation.x = -angle;
+            UIElement.innerHTML += `leftForearm (adj): <b>${child.rotation.x}</b></p>`;
             break;
           case "mixamorigHead":
-            child.rotation.y = normalizedYaw; // Left Right
-            child.rotation.x = -normalizedPitch; // Up down
-            child.rotation.z = roll;
+            // child.rotation.y = normalizedYaw; // Left Right
+            // child.rotation.x = -normalizedPitch; // Up down
+            // child.rotation.z = roll;
+            child.visible = false;
             break;
         
           default:
