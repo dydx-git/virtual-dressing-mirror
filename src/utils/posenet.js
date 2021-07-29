@@ -11,6 +11,6 @@ export async function createDetector() {
 	return posedetection.createDetector("BlazePose", {
 	  runtime: "mediapipe",
 	  modelType: "full",
-	  solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/pose'
+	  solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.3.1621277220'
 	});
   }
