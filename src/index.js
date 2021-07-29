@@ -52,6 +52,8 @@ let yOffset = 120;
 
 let shoulderAdjustment = 0;
 
+let lips;
+
 let eyesPosition = new Vector3();
 
 async function renderResult(poses) {
@@ -95,6 +97,8 @@ async function animate() {
     rightEye = getPart("right_eye", poses[0])[0];
     nose =  getPart("nose", poses[0])[0];
 
+    
+
     eyesPosition.x = (leftEye.x + rightEye.x) / 2;
     eyesPosition.y = ((leftEye.y + rightEye.y) / 2 ) + yOffset;
 
@@ -105,6 +109,7 @@ async function animate() {
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
     let normalizedPitch = (pitch - 75) * (Math.PI / 180);
     let leftShoulderAngle = 0;
+    let rightShoulderAngle = 0;
     let UIElement = document.getElementById("valueLogger");
     UIElement.innerHTML = "";
     
@@ -116,28 +121,32 @@ async function animate() {
           case "mixamorigLeftShoulder":
             angle = -getAngle(rightElbow, rightShoulder, 0, 0, -1);
             leftShoulderAngle = angle;
-            // angle = -(angle - Math.sin(angle/2));
             child.rotation.y = angle;
-            //child.rotation.y = shoulderAdjustment;
-            // UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
-            //UIElement.innerHTML += `left shoulder adjusment: ${shoulderAdjustment}`;
+            UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
+            // UIElement.innerHTML += `left shoulder adjusment: ${shoulderAdjustment}`;
             break;
           case "mixamorigLeftForeArm":
             angle = getAngle(rightElbow, rightWrist, 0, 0, -1);
             angle = angle - Math.PI;
             child.rotation.x = angle + leftShoulderAngle;
-            UIElement.innerHTML += `forearm angle: <b>${angle}</b><br>`;
-            UIElement.innerHTML += `forearm angle after adj: <b>${angle - leftShoulderAngle}</b>`;
+          //   // UIElement.innerHTML += `forearm angle: <b>${angle}</b><br>`;
+          //   // UIElement.innerHTML += `forearm angle after adj: <b>${angle - leftShoulderAngle}</b>`;
             
+          //   break;
+          case "mixamorigRightShoulder":
+            angle = -getAngle(leftShoulder, leftElbow, 0, 0, -1);
+            angle = angle + Math.sin(angle/2) + 0.2;
+            rightShoulderAngle = angle;
+            //UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
+            //UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
+            child.rotation.y = angle;
             break;
-          // case "mixamorigLeftShoulder":
-          //   angle = getAngle(leftShoulder, leftElbow, 0, 0, -1);
-          //   child.rotation.y = angle;
-          //   break;
-          // case "mixamorigLeftForeArm":
-          //   angle = getAngle(leftElbow,leftWrist, 0, 0, -1);
-          //   child.rotation.x = -angle;  
-          //   break;
+          case "mixamorigRightForeArm":
+            angle = -getAngle(leftWrist,leftElbow, 0, 0, -1);
+            angle = angle - rightShoulderAngle - Math.PI;
+            UIElement.innerHTML += `right forearm angle: ${angle}<br>`;
+            child.rotation.x = angle;  
+            break;
           case "mixamorigHead":
             child.rotation.y = normalizedYaw; // Left Right
             child.rotation.x = -normalizedPitch; // Up down
