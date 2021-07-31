@@ -30,10 +30,20 @@ stats.domElement.style.bottom = "0px";
 document.body.appendChild(stats.domElement);
 
 const MODELS = {
-  MASK: "mask.gltf",
+  MASK: "Mask/mask.gltf",
   SPECTACLES: "glasses/scene.gltf",
   COSTUME: "alien/alienSuit.gltf",
-  MICKEY: "mickey.fbx"
+  MICKEY: "mickey.fbx",
+  REMY: "Remy/Remy.gltf",
+  ROTH: "Roth/Roth.gltf",
+  ANDROM: "Androm/Androm.gltf",
+  DOUG: "Doug/Doug.gltf",
+  ELLY: "Elly/Elly.gltf",
+  JASPER: "Jasper/Jasper.gltf",
+  JODY: "Jody/Jody.gltf",
+  KATE: "Kate/Kate.gltf",
+  LOUISE: "Louise/Louise.gltf",
+  MEGAN: "Megan/Megan.gltf"
 };
 
 const renderer = new THREE.WebGLRenderer({
@@ -172,24 +182,28 @@ async function animate() {
 
 // Arrow key bindings with ctrl & alt to position and scale the model. 
 window.addEventListener('keydown',(e)=> {
-  if(e.ctrlKey) {
+  if(e.ctrlKey) {uyuyuy
     switch(e.key) {
       case "ArrowUp": {
         //yOffset +=10;
-        shoulderAdjustment +=0.1;
+        pivot.position.y +=0.1;
         break;
       }
       case "ArrowDown": {
         //yOffset -=10;
-        shoulderAdjustment -=0.1;
+        pivot.position.y -= 1;
         break;
       }
       case "ArrowRight": {
-        pivot.position.x += 0.1;
+        pivot.scale.x += 0.1;
+        pivot.scale.y += 0.1;
+        pivot.scale.z += 0.1;
         break;
       }
       case "ArrowLeft": {
-        pivot.position.x -= 0.1;
+        pivot.scale.x -= 0.1
+        pivot.scale.y -= 0.1;
+        pivot.scale.z -= 0.1;
         break;
       }
     }
@@ -227,12 +241,12 @@ async function app() {
   [camera, detector, model] = await Promise.all([
       Camera.setupCamera(STATE.camera),
       createDetector(),
-      loadModel(MODELS.MICKEY)
+      loadModel(MODELS.MEGAN)
   ]);
   
   [mesh, pivot] = setUpModel(model);
 
-  pivot.scale.set(0.05, 0.05, 0.05);
+  pivot.scale.set(1, 1, 1);
   
   scene.add(pivot);
 
