@@ -16,6 +16,7 @@ limitations under the License.
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0, user-scalable=no">
   <style>body {
       margin: 0;
+      background-color: black;
     }
     #stats {
       position: relative;
@@ -30,28 +31,42 @@ limitations under the License.
       position: absolute;
       top: 0;
       left: 0;
-    }</style>
+    }
+    .video-container {
+      display: none;
+    }
+    #output {
+      opacity: 0.1;
+    }
+    /* playsinline style="
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+            visibility: hidden;
+            opacity: 0.2;
+            width: auto;
+            height: auto;
+            " */
+    /* #video {
+      opacity: 0.5;
+    }
+    .video-container {
+      opacity: 0.2;
+    } */</style>
 </head>
 <body>
   <div id="stats"></div>
+  <div id="valueLogger">
+
+  </div>
   <div id="main">
     <div class="container">
       <div class="canvas-wrapper">
-        <canvas id="output"></canvas>
-        <video id="video" playsinline="" style="
-          -webkit-transform: scaleX(-1);
-          transform: scaleX(-1);
-          visibility: hidden;
-          width: auto;
-          height: auto;
-          ">
-        </video>
-        <div id="webglContainer">
-      </div>
+        <canvas id="output" width="1080" height="1920"></canvas>
+        <div class="video-container">
+          <video id="video"></video>
+        </div>
+        <div id="webglContainer"></div>
     </div>
-  </div>
-  <div id="valueLogger">
-
   </div>
 </div></body>
 <script src="/src.a2b27638.js"></script>

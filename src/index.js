@@ -33,7 +33,9 @@ const MODELS = {
   MASK: "mask.gltf",
   SPECTACLES: "glasses/scene.gltf",
   COSTUME: "alien/alienSuit.gltf",
-  MICKEY: "mickey.fbx"
+  MICKEY: "mickey.fbx",
+  REMY: "remy.fbx",
+  ARCHER: "erika_archer.fbx"
 };
 
 const renderer = new THREE.WebGLRenderer({
@@ -48,8 +50,9 @@ const scene = getTHREEbasics();
 let detector, camera;
 let mesh, pivot, threeDCam;
 let leftEye, rightEye, nose;
-let yOffset = 120;
-
+let yOffset = 0;
+let xOffset = 0;
+let multiplyingFactor = 1;
 let shoulderAdjustment = 0;
 
 let lips;
@@ -103,7 +106,7 @@ async function animate() {
     eyesPosition.y = ((leftEye.y + rightEye.y) / 2 ) + yOffset;
 
     const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,camera.video.videoHeight,camera.video.videoWidth,threeDCam);
-    pivot.position.set(cooridnates.x,cooridnates.y,1);
+    pivot.position.set((cooridnates.x+xOffset)*(multiplyingFactor),cooridnates.y+yOffset,1);
 
     const {yaw, pitch, roll} = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
@@ -112,11 +115,12 @@ async function animate() {
     let rightShoulderAngle = 0;
     let UIElement = document.getElementById("valueLogger");
     UIElement.innerHTML = "";
+
+    UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
     
     mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
-        console.log()
         switch (child.name) {
           case "mixamorigLeftShoulder":
             angle = -getAngle(rightElbow, rightShoulder, 0, 0, -1);
@@ -176,20 +180,22 @@ window.addEventListener('keydown',(e)=> {
     switch(e.key) {
       case "ArrowUp": {
         //yOffset +=10;
-        shoulderAdjustment +=0.1;
+        //shoulderAdjustment +=0.1;
+        yOffset += 0.1;
         break;
       }
       case "ArrowDown": {
+        yOffset -= 0.1;
         //yOffset -=10;
-        shoulderAdjustment -=0.1;
+        //shoulderAdjustment -=0.1;
         break;
       }
       case "ArrowRight": {
-        pivot.position.x += 0.1;
+        xOffset += 0.1;
         break;
       }
       case "ArrowLeft": {
-        pivot.position.x -= 0.1;
+        xOffset -= 0.1;
         break;
       }
     }
@@ -212,15 +218,20 @@ window.addEventListener('keydown',(e)=> {
   }
 
   else if (e.key == "c") {
-    console.log(yOffset);
-
+    console.log("Initial position: x:",pivot.position.x, "  y: ",pivot.position.y);
+    console.log("Final position: x:",pivot.position.x+xOffset, "  y: ",pivot.position.y+yOffset);
+    console.log("Factor added: x:",xOffset, "  y: ",yOffset);
+    console.log("multiplyingFactor:",multiplyingFactor);
+  }
+  else if (e.key == "z") {
+    multiplyingFactor += 0.5; 
   }
 });
 
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
   
-  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
   detector = await createDetector();
   let model;
@@ -232,7 +243,7 @@ async function app() {
   
   [mesh, pivot] = setUpModel(model);
 
-  pivot.scale.set(0.05, 0.05, 0.05);
+  pivot.scale.set(0.025, 0.025, 0.025);
   
   scene.add(pivot);
 

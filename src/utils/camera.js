@@ -43,8 +43,8 @@ export class Camera {
         facingMode: 'user',
         // Only setting the video to a specified size for large screen, on
         // mobile devices accept the default size.
-        width: $size.width,
-        height: $size.height,
+        width: 1080,
+        height: 1920,
         frameRate: {
           ideal: targetFPS,
         }
@@ -73,7 +73,7 @@ export class Camera {
     camera.canvas.width = videoWidth;
     camera.canvas.height = videoHeight;
     const canvasContainer = document.querySelector('.canvas-wrapper');
-    canvasContainer.style = `width: ${videoWidth}px; height: ${videoHeight}px`;
+    canvasContainer.style = `width: ${window.innerWidth}px; height: ${window.innerHeight}px`;
 
     // Because the image from camera is mirrored, need to flip horizontally.
     camera.ctx.translate(camera.video.videoWidth, 0);
