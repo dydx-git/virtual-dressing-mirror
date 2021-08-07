@@ -17,6 +17,7 @@ limitations under the License.
   <style>
     body {
       margin: 0;
+      background-color: black;
     }
     #stats {
       position: relative;
@@ -32,29 +33,30 @@ limitations under the License.
       top: 0;
       left: 0;
     }
+
+    .video-container {
+      display: none;
+    }
+    #output {
+      opacity: 1;
+    }
+
+
   </style>
 </head>
 <body>
   <div id="stats"></div>
+  <div id="valueLogger"></div>
   <div id="main">
     <div class="container">
       <div class="canvas-wrapper">
-        <canvas id="output"></canvas>
-        <video id="video" playsinline style="
-          -webkit-transform: scaleX(-1);
-          transform: scaleX(-1);
-          visibility: hidden;
-          width: auto;
-          height: auto;
-          ">
-        </video>
-        <div id="webglContainer" />
+        <canvas id="output" width="1080" height="1920"></canvas>
+        <div class="video-container">
+          <video id="video"></video>
+        </div>
+        <div id="webglContainer"></div>
       </div>
     </div>
-  </div>
-  <div id="valueLogger">
-
-  </div>
 </body>
 <script src="src/index.js"></script>
 

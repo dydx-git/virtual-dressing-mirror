@@ -29,9 +29,7 @@ stats.domElement.style.position = "absolute";
 stats.domElement.style.bottom = "0px";
 document.body.appendChild(stats.domElement);
 
-const MODELS = {
-  MASK: "Mask/mask.gltf",
-  SPECTACLES: "glasses/scene.gltf",
+const RIGGED_MODELS = {
   COSTUME: "alien/alienSuit.gltf",
   MICKEY: "mickey.fbx",
   REMY: "Remy/Remy.gltf",
@@ -46,6 +44,15 @@ const MODELS = {
   MEGAN: "Megan/Megan.gltf"
 };
 
+const MODELS = {
+  MASK: "Mask/mask.gltf",
+  SPECTACLES: "glasses/scene.gltf",
+};
+
+
+let loadingMODEL = MODELS.MASK;
+console.log(loadingMODEL);
+
 const renderer = new THREE.WebGLRenderer({
   antialias: true, // to get smoother output
   preserveDrawingBuffer: true, // to allow screenshot
@@ -58,8 +65,9 @@ const scene = getTHREEbasics();
 let detector, camera;
 let mesh, pivot, threeDCam;
 let leftEye, rightEye, nose;
-let yOffset = 120;
-
+let yOffset = 0;
+let xOffset = 0;
+let multiplyingFactor = 1;
 let shoulderAdjustment = 0;
 
 let lips;
@@ -106,15 +114,11 @@ async function animate() {
     leftEye = getPart("left_eye", poses[0])[0];
     rightEye = getPart("right_eye", poses[0])[0];
     nose =  getPart("nose", poses[0])[0];
-
-    
-
     eyesPosition.x = (leftEye.x + rightEye.x) / 2;
     eyesPosition.y = ((leftEye.y + rightEye.y) / 2 ) + yOffset;
 
     const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,camera.video.videoHeight,camera.video.videoWidth,threeDCam);
-    pivot.position.set(cooridnates.x,cooridnates.y,1);
-
+    pivot.position.set((cooridnates.x+xOffset)*(multiplyingFactor),cooridnates.y+yOffset,1);
     const {yaw, pitch, roll} = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
     let normalizedPitch = (pitch - 75) * (Math.PI / 180);
@@ -122,11 +126,14 @@ async function animate() {
     let rightShoulderAngle = 0;
     let UIElement = document.getElementById("valueLogger");
     UIElement.innerHTML = "";
-    
-    mesh.traverse(function (child) {
+    UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
+
+  
+    if(mesh in RIGGED_MODELS){
+      mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
-        console.log()
+
         switch (child.name) {
           case "mixamorigLeftShoulder":
             angle = -getAngle(rightElbow, rightShoulder, 0, 0, -1);
@@ -157,18 +164,34 @@ async function animate() {
             UIElement.innerHTML += `right forearm angle: ${angle}<br>`;
             child.rotation.x = angle;  
             break;
-          case "mixamorigHead":
-            child.rotation.y = normalizedYaw; // Left Right
-            child.rotation.x = -normalizedPitch; // Up down
-            child.rotation.z = roll;
-            break;
+
+            case "mixamorigHead":
+              child.rotation.y = normalizedYaw; // Left Right
+              child.rotation.x = -normalizedPitch; // Up down
+              child.rotation.z = roll;
+              break;
+          
         
           default:
+            if(child.isMesh){
+            pivot.rotation.y = normalizedYaw; // Left Right
+            pivot.rotation.x = -normalizedPitch; // Up down
+            pivot.rotation.z = roll;
+        }
             break;
         }
       }
+
     });
   }
+}
+ if (loadingMODEL in MODELS) {
+    console.log("hi");
+    pivot.rotation.y = normalizedYaw; // Left Right
+    pivot.rotation.x = -normalizedPitch; // Up down
+    pivot.rotation.z = roll;
+  }
+   
 
   /* model manipulation region end */
   
@@ -176,34 +199,28 @@ async function animate() {
 
   requestAnimationFrame(animate);
 
-
-
 };
 
 // Arrow key bindings with ctrl & alt to position and scale the model. 
 window.addEventListener('keydown',(e)=> {
-  if(e.ctrlKey) {uyuyuy
+  if(e.ctrlKey) {
     switch(e.key) {
       case "ArrowUp": {
         //yOffset +=10;
-        pivot.position.y +=0.1;
+        yOffset += 0.1;
         break;
       }
       case "ArrowDown": {
         //yOffset -=10;
-        pivot.position.y -= 1;
+        yOffset -= 0.1;
         break;
       }
       case "ArrowRight": {
-        pivot.scale.x += 0.1;
-        pivot.scale.y += 0.1;
-        pivot.scale.z += 0.1;
+        xOffset += 0.1;
         break;
       }
       case "ArrowLeft": {
-        pivot.scale.x -= 0.1
-        pivot.scale.y -= 0.1;
-        pivot.scale.z -= 0.1;
+        xOffset -= 0.1;
         break;
       }
     }
@@ -226,14 +243,19 @@ window.addEventListener('keydown',(e)=> {
   }
 
   else if (e.key == "c") {
-    console.log(yOffset);
-
+    console.log("Initial position: x:",pivot.position.x, "  y: ",pivot.position.y);
+    console.log("Final position: x:",pivot.position.x+xOffset, "  y: ",pivot.position.y+yOffset);
+    console.log("Factor added: x:",xOffset, "  y: ",yOffset);
+    console.log("multiplyingFactor:",multiplyingFactor);
+  }
+  else if (e.key == "z") {
+    multiplyingFactor += 0.5; 
   }
 });
 
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
-  
+ // renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
 
   detector = await createDetector();
@@ -241,7 +263,8 @@ async function app() {
   [camera, detector, model] = await Promise.all([
       Camera.setupCamera(STATE.camera),
       createDetector(),
-      loadModel(MODELS.MEGAN)
+      loadModel(loadingMODEL)
+      //loadModel(RIGGED_MODELS.MEGAN)
   ]);
   
   [mesh, pivot] = setUpModel(model);
