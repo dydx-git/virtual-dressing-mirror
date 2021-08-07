@@ -60,6 +60,9 @@ let mesh, pivot, threeDCam;
 let leftEye, rightEye, nose;
 let yOffset = 120;
 
+let startedTime = Date.now();
+let rightHandCoords = [];
+
 let shoulderAdjustment = 0;
 
 let lips;
@@ -68,11 +71,11 @@ let eyesPosition = new Vector3();
 
 async function renderResult(poses) {
   if (camera.video.readyState < 2) {
-      await new Promise((resolve) => {
-          camera.video.onloadeddata = () => {
-              resolve(video);
-          };
-      });
+    await new Promise((resolve) => {
+      camera.video.onloadeddata = () => {
+        resolve(video);
+      };
+    });
   }
 
   camera.drawCtx();
@@ -80,16 +83,16 @@ async function renderResult(poses) {
   renderer.render(scene, threeDCam);
 
   if (poses.length > 0) {
-      camera.drawResults(poses);
+    camera.drawResults(poses);
   }
 }
 
 async function animate() {
   const poses = await detector.estimatePoses(
-      camera.video, {
-          maxPoses: STATE.modelConfig.maxPoses,
-          flipHorizontal: false
-      });
+    camera.video, {
+    maxPoses: STATE.modelConfig.maxPoses,
+    flipHorizontal: false
+  });
 
   await renderResult(poses);
 
@@ -105,24 +108,34 @@ async function animate() {
 
     leftEye = getPart("left_eye", poses[0])[0];
     rightEye = getPart("right_eye", poses[0])[0];
-    nose =  getPart("nose", poses[0])[0];
+    nose = getPart("nose", poses[0])[0];
 
-    
+    if (rightWrist.score > 0.8) {
+      rightHandCoords.push(rightWrist.x);
+    }
+    if (Date.now() - startedTime > 1000) {
+      if (rightHandCoords.length > 10) {
+        console.log(getDirection(rightHandCoords));
+      }
+      rightHandCoords = [];
+      startedTime = Date.now();
+    }
 
     eyesPosition.x = (leftEye.x + rightEye.x) / 2;
-    eyesPosition.y = ((leftEye.y + rightEye.y) / 2 ) + yOffset;
+    eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
 
-    const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,camera.video.videoHeight,camera.video.videoWidth,threeDCam);
-    pivot.position.set(cooridnates.x,cooridnates.y,1);
+    const cooridnates = getWorldCoords(eyesPosition.x, eyesPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
+    pivot.position.set(cooridnates.x, cooridnates.y, 1);
 
-    const {yaw, pitch, roll} = getFacePose(poses[0])
+    const { yaw, pitch, roll } = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
     let normalizedPitch = (pitch - 75) * (Math.PI / 180);
     let leftShoulderAngle = 0;
     let rightShoulderAngle = 0;
     let UIElement = document.getElementById("valueLogger");
     UIElement.innerHTML = "";
-    
+
+    UIElement.innerHTML += `rightWristScore: ${rightWrist.score}`;
     mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
@@ -132,7 +145,6 @@ async function animate() {
             angle = -getAngle(rightElbow, rightShoulder, 0, 0, -1);
             leftShoulderAngle = angle;
             child.rotation.y = angle;
-            UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
             // UIElement.innerHTML += `left shoulder adjusment: ${shoulderAdjustment}`;
             break;
           case "mixamorigLeftForeArm":
@@ -141,28 +153,28 @@ async function animate() {
             child.rotation.x = angle + leftShoulderAngle;
           //   // UIElement.innerHTML += `forearm angle: <b>${angle}</b><br>`;
           //   // UIElement.innerHTML += `forearm angle after adj: <b>${angle - leftShoulderAngle}</b>`;
-            
+
           //   break;
           case "mixamorigRightShoulder":
             angle = -getAngle(leftShoulder, leftElbow, 0, 0, -1);
-            angle = angle + Math.sin(angle/2) + 0.2;
+            angle = angle + Math.sin(angle / 2) + 0.2;
             rightShoulderAngle = angle;
             //UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
             //UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
             child.rotation.y = angle;
             break;
           case "mixamorigRightForeArm":
-            angle = -getAngle(leftWrist,leftElbow, 0, 0, -1);
+            angle = -getAngle(leftWrist, leftElbow, 0, 0, -1);
             angle = angle - rightShoulderAngle - Math.PI;
             UIElement.innerHTML += `right forearm angle: ${angle}<br>`;
-            child.rotation.x = angle;  
+            child.rotation.x = angle;
             break;
           case "mixamorigHead":
             child.rotation.y = normalizedYaw; // Left Right
             child.rotation.x = -normalizedPitch; // Up down
             child.rotation.z = roll;
             break;
-        
+
           default:
             break;
         }
@@ -171,7 +183,7 @@ async function animate() {
   }
 
   /* model manipulation region end */
-  
+
   stats.update();
 
   requestAnimationFrame(animate);
@@ -180,13 +192,37 @@ async function animate() {
 
 };
 
+function getDirection(coords) {
+  const summed_nums = coords.reduce(function (a, b) { return a + b; }, 0);
+  let multiplied_data = 0;
+  let summed_index = 0;
+  let squared_index = 0;
+
+  coords.forEach((num, index) => {
+    index += 1;
+    multiplied_data += index * num;
+    summed_index += index;
+    squared_index += index ** 2;
+  });
+  const numerator = (coords.length * multiplied_data) - (summed_nums * summed_index)
+  const denominator = (coords.length * squared_index) - summed_index ** 2;
+  if (denominator == 0) return 0;
+  const direction = numerator / denominator;
+  if (direction > 5) {
+    return "left";
+  } else if (direction < -5) {
+    return "right";
+  }
+  return direction;
+}
+
 // Arrow key bindings with ctrl & alt to position and scale the model. 
-window.addEventListener('keydown',(e)=> {
-  if(e.ctrlKey) {uyuyuy
-    switch(e.key) {
+window.addEventListener('keydown', (e) => {
+  if (e.ctrlKey) {
+    switch (e.key) {
       case "ArrowUp": {
         //yOffset +=10;
-        pivot.position.y +=0.1;
+        pivot.position.y += 0.1;
         break;
       }
       case "ArrowDown": {
@@ -210,7 +246,7 @@ window.addEventListener('keydown',(e)=> {
   }
 
   else if (e.shiftKey) {
-    switch(e.key) {
+    switch (e.key) {
       case "ArrowUp": {
         pivot.scale.x += 0.01;
         pivot.scale.y += 0.01;
@@ -218,7 +254,7 @@ window.addEventListener('keydown',(e)=> {
       }
       case "ArrowDown": {
         pivot.scale.x -= 0.01;
-        pivot.scale.y -=0.01;
+        pivot.scale.y -= 0.01;
         break;
       }
 
@@ -233,21 +269,21 @@ window.addEventListener('keydown',(e)=> {
 
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
-  
+
   renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
 
   detector = await createDetector();
   let model;
   [camera, detector, model] = await Promise.all([
-      Camera.setupCamera(STATE.camera),
-      createDetector(),
-      loadModel(MODELS.MEGAN)
+    Camera.setupCamera(STATE.camera),
+    createDetector(),
+    loadModel(MODELS.MEGAN)
   ]);
-  
+
   [mesh, pivot] = setUpModel(model);
 
   pivot.scale.set(1, 1, 1);
-  
+
   scene.add(pivot);
 
   threeDCam = setUpTHREEDCamera(camera.video.videoWidth, camera.video.videoHeight);
