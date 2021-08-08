@@ -1,0 +1,11 @@
+Model Information:
+* title:	kismet glasses
+* source:	https://sketchfab.com/3d-models/kismet-glasses-550db344f7674d81be9d49e550f668ba
+* author:	nichos321 (https://sketchfab.com/nichos321)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "kismet glasses" (https://sketchfab.com/3d-models/kismet-glasses-550db344f7674d81be9d49e550f668ba) by nichos321 (https://sketchfab.com/nichos321) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

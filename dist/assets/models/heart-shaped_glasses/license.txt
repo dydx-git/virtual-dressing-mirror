@@ -1,0 +1,11 @@
+Model Information:
+* title:	Heart-shaped glasses
+* source:	https://sketchfab.com/3d-models/heart-shaped-glasses-97cbff16eec648fdb211ea58159bd9ba
+* author:	Felix Yadomi (https://sketchfab.com/felixyadomi)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Heart-shaped glasses" (https://sketchfab.com/3d-models/heart-shaped-glasses-97cbff16eec648fdb211ea58159bd9ba) by Felix Yadomi (https://sketchfab.com/felixyadomi) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

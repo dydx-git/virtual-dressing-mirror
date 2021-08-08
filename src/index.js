@@ -47,10 +47,14 @@ const RIGGED_MODELS = {
 const MODELS = {
   MASK: "Mask/mask.gltf",
   SPECTACLES: "glasses/scene.gltf",
+  HEART_GLASSES: "heart-shaped_glasses/scene.gltf",
+  BLACK_GLASSES: "kismet_glasses/scene.gltf",
+  FUNK_GLASSES: "funk_glasses/scene.gltf",
+  QUARTZ: "Quartz_glasses/scene.gltf",
 };
 
 
-let loadingMODEL = MODELS.MASK;
+let loadingMODEL = MODELS.QUARTZ;
 console.log(loadingMODEL);
 
 const renderer = new THREE.WebGLRenderer({
@@ -129,7 +133,7 @@ async function animate() {
     UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
 
     if (Object.values(MODELS).includes(loadingMODEL)) {
-      console.log("hi");
+      //console.log("hi");
       pivot.rotation.y = normalizedYaw; // Left Right
       pivot.rotation.x = -normalizedPitch; // Up down
       pivot.rotation.z = roll;
