@@ -44,18 +44,26 @@ const RIGGED_MODELS = {
   MEGAN: "Megan/Megan.gltf"
 };
 
-const MODELS = {
-  MASK: "Mask/mask.gltf",
-  SPECTACLES: "glasses/scene.gltf",
-  HEART_GLASSES: "heart-shaped_glasses/scene.gltf",
-  BLACK_GLASSES: "kismet_glasses/scene.gltf",
-  FUNK_GLASSES: "funk_glasses/scene.gltf",
-  QUARTZ: "Quartz_glasses/scene.gltf",
+const UNRIGGED_MODELS = {
+  MASK: { Path: "Mask/mask.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }},
+  SPECTACLES: { Path: "glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }},
+  HEART_GLASSES: { Path: "heart-shaped_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }},
+  BLACK_GLASSES: { Path: "kismet_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 } },
+  FUNK_GLASSES: { Path: "funk_glasses/scene.gltf",  concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 } },
+  QUARTZ: { Path: "Quartz_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 } },
+  FMOUSE: { Path:"fluffy_mustach/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0 } },
+  KMOUSE:  { Path: "kaiser_mustache/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0 } },
 };
 
-
-let loadingMODEL = MODELS.QUARTZ;
+let selectedModel = "HEART_GLASSES";
+let loadingMODEL = UNRIGGED_MODELS[selectedModel].Path;
 console.log(loadingMODEL);
+
+let concernedKeyPoint = UNRIGGED_MODELS[selectedModel].concernedKeyPoint;
+let xOffset = UNRIGGED_MODELS[selectedModel].offsets.x;
+let yOffset = UNRIGGED_MODELS[selectedModel].offsets.y;
+
+let KeyPointPosition = new Vector3();
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true, // to get smoother output
@@ -67,16 +75,13 @@ webglContainer.appendChild(renderer.domElement);
 const scene = getTHREEbasics();
 
 let detector, camera;
-let mesh, pivot, threeDCam;
-let leftEye, rightEye, nose;
-let yOffset = 0;
-let xOffset = 0;
+let mesh, pivot, threeDCam
 let multiplyingFactor = 1;
 let shoulderAdjustment = 0;
 
 let lips;
 
-let eyesPosition = new Vector3();
+
 
 async function renderResult(poses) {
   if (camera.video.readyState < 2) {
@@ -107,6 +112,18 @@ async function animate() {
 
   /* model manipulation region start */
   if (poses.length > 0) {
+      console.log(concernedKeyPoint.length);
+     
+      if(concernedKeyPoint.length  == 2){
+        const leftKeyPoint = getPart(concernedKeyPoint[0], poses[0])[0];
+        const rightKeyPoint = getPart(concernedKeyPoint[1], poses[0])[0];
+        KeyPointPosition.x = ((leftKeyPoint.x + rightKeyPoint.x) / 2);
+        KeyPointPosition.y = ((leftKeyPoint.y + rightKeyPoint.y) / 2);
+        // console.log(rightKeyPoint);
+      }
+      else{
+        KeyPointPosition = getPart(concernedKeyPoint[0], poses[0])[0];
+      }
     // const nose = getPart("nose", poses[0])[0]; // at pos: 0
     const leftElbow = getPart("left_elbow", poses[0])[0]; // at pos: 1
     const leftShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 2
@@ -115,13 +132,10 @@ async function animate() {
     const rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
     const rightElbow = getPart("right_elbow", poses[0])[0]; // at pos: 8
 
-    leftEye = getPart("left_eye", poses[0])[0];
-    rightEye = getPart("right_eye", poses[0])[0];
-    nose = getPart("nose", poses[0])[0];
-    eyesPosition.x = (leftEye.x + rightEye.x) / 2;
-    eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
+    const cooridnates = getWorldCoords(KeyPointPosition.x, KeyPointPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
 
-    const cooridnates = getWorldCoords(eyesPosition.x, eyesPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
+
+
     pivot.position.set((cooridnates.x + xOffset) * (multiplyingFactor), cooridnates.y + yOffset, 1);
     const { yaw, pitch, roll } = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
@@ -132,8 +146,8 @@ async function animate() {
     UIElement.innerHTML = "";
     UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
 
-    if (Object.values(MODELS).includes(loadingMODEL)) {
-      //console.log("hi");
+    if (UNRIGGED_MODELS[selectedModel] !== undefined) {
+      console.log("an unrigged model was loaded");
       pivot.rotation.y = normalizedYaw; // Left Right
       pivot.rotation.x = -normalizedPitch; // Up down
       pivot.rotation.z = roll;
