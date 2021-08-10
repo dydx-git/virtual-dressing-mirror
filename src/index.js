@@ -45,23 +45,28 @@ const RIGGED_MODELS = {
 };
 
 const UNRIGGED_MODELS = {
-  MASK: { Path: "Mask/mask.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }},
-  SPECTACLES: { Path: "glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }},
-  HEART_GLASSES: { Path: "heart-shaped_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }},
-  BLACK_GLASSES: { Path: "kismet_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 } },
-  FUNK_GLASSES: { Path: "funk_glasses/scene.gltf",  concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 } },
-  QUARTZ: { Path: "Quartz_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 } },
-  FMOUSE: { Path:"fluffy_mustach/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0 } },
-  KMOUSE:  { Path: "kaiser_mustache/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0 } },
+  MASK: { Path: "Mask/mask.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  SPECTACLES: { Path: "glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  HEART_GLASSES: { Path: "heart-shaped_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  BLACK_GLASSES: { Path: "kismet_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  FUNK_GLASSES: { Path: "funk_glasses/scene.gltf",  concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  QUARTZ: { Path: "Quartz_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  FMOUSE: { Path:"fluffy_mustach/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  KMOUSE:  { Path: "kaiser_mustache/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  EYES:  { Path: "eyes/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
 };
 
-let selectedModel = "HEART_GLASSES";
-let loadingMODEL = UNRIGGED_MODELS[selectedModel].Path;
+let selectedArray = UNRIGGED_MODELS;
+let selectedModel = "KMOUSE";
+let loadingMODEL = selectedArray[selectedModel].Path;
 console.log(loadingMODEL);
 
-let concernedKeyPoint = UNRIGGED_MODELS[selectedModel].concernedKeyPoint;
-let xOffset = UNRIGGED_MODELS[selectedModel].offsets.x;
-let yOffset = UNRIGGED_MODELS[selectedModel].offsets.y;
+let concernedKeyPoint = selectedArray[selectedModel].concernedKeyPoint;
+let xOffset = selectedArray[selectedModel].offsets.x;
+let yOffset = selectedArray[selectedModel].offsets.y;
+let ScaleX = selectedArray[selectedModel].scale.x;
+let ScaleY = selectedArray[selectedModel].scale.y;
+let ScaleZ = selectedArray[selectedModel].scale.z;
 
 let KeyPointPosition = new Vector3();
 
@@ -134,8 +139,6 @@ async function animate() {
 
     const cooridnates = getWorldCoords(KeyPointPosition.x, KeyPointPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
 
-
-
     pivot.position.set((cooridnates.x + xOffset) * (multiplyingFactor), cooridnates.y + yOffset, 1);
     const { yaw, pitch, roll } = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
@@ -146,7 +149,7 @@ async function animate() {
     UIElement.innerHTML = "";
     UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
 
-    if (UNRIGGED_MODELS[selectedModel] !== undefined) {
+    if (selectedArray[selectedModel] !== undefined) {
       console.log("an unrigged model was loaded");
       pivot.rotation.y = normalizedYaw; // Left Right
       pivot.rotation.x = -normalizedPitch; // Up down
@@ -286,7 +289,7 @@ async function app() {
 
   [mesh, pivot] = setUpModel(model);
 
-  pivot.scale.set(1, 1, 1);
+  pivot.scale.set( ScaleX, ScaleY, ScaleZ);
 
   scene.add(pivot);
 
