@@ -100,7 +100,7 @@ async function animate() {
   if (poses.length > 0) {
     // const nose = getPart("nose", poses[0])[0]; // at pos: 0
     const leftElbow = getPart("left_elbow", poses[0])[0]; // at pos: 1
-    const leftShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 2
+    const leftShoulder = getPart("left_shoulder", poses[0])[0]; // at pos: 2
     const leftWrist = getPart("left_wrist", poses[0])[0]; // at pos: 9
     const rightWrist = getPart("right_wrist", poses[0])[0]; // at pos: 10
     const rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
@@ -157,7 +157,7 @@ async function animate() {
           //   break;
           case "mixamorigRightShoulder":
             angle = -getAngle(leftShoulder, leftElbow, 0, 0, -1);
-            angle = angle + Math.sin(angle / 2) + 0.2;
+            // angle = angle + 0.2;
             rightShoulderAngle = angle;
             //UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
             //UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
