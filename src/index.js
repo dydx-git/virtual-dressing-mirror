@@ -30,18 +30,18 @@ stats.domElement.style.bottom = "0px";
 document.body.appendChild(stats.domElement);
 
 const RIGGED_MODELS = {
-  COSTUME: "alien/alienSuit.gltf",
-  MICKEY: "mickey.fbx",
-  REMY: "Remy/Remy.gltf",
-  ROTH: "Roth/Roth.gltf",
-  ANDROM: "Androm/Androm.gltf",
-  DOUG: "Doug/Doug.gltf",
-  ELLY: "Elly/Elly.gltf",
-  JASPER: "Jasper/Jasper.gltf",
-  JODY: "Jody/Jody.gltf",
-  KATE: "Kate/Kate.gltf",
-  LOUISE: "Louise/Louise.gltf",
-  MEGAN: "Megan/Megan.gltf"
+  COSTUME: { Path: "alien/alienSuit.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  MICKEY: { Path: "mickey.fbx", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  REMY: { Path: "Remy/Remy.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  ROTH: { Path: "Roth/Roth.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  ANDROM: { Path: "Androm/Androm.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  DOUG: { Path: "Doug/Doug.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  ELLY: { Path: "Elly/Elly.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  JASPER: { Path: "Jasper/Jasper.gltf", concernedKeyPoint: ["right_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: -0.9999999999999999 , y: -8.899999999999977 }, scale: { x: 7.239999999999995, y: 7.239999999999995, z: 7} },
+  JODY: { Path: "Jody/Jody.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  KATE: { Path: "Kate/Kate.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  LOUISE: { Path: "Louise/Louise.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  MEGAN: { Path: "Megan/Megan.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
 };
 
 const UNRIGGED_MODELS = {
@@ -52,12 +52,12 @@ const UNRIGGED_MODELS = {
   FUNK_GLASSES: { Path: "funk_glasses/scene.gltf",  concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
   QUARTZ: { Path: "Quartz_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
   FMOUSE: { Path:"fluffy_mustach/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  KMOUSE:  { Path: "kaiser_mustache/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  KMOUSE:  { Path: "kaiser_mustache/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0.12 }, scale: { x: 15, y: 15, z: 15} },
   EYES:  { Path: "eyes/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
 };
 
-let selectedArray = UNRIGGED_MODELS;
-let selectedModel = "KMOUSE";
+let selectedArray = RIGGED_MODELS;
+let selectedModel = "ELLY";
 let loadingMODEL = selectedArray[selectedModel].Path;
 console.log(loadingMODEL);
 
@@ -129,13 +129,14 @@ async function animate() {
       else{
         KeyPointPosition = getPart(concernedKeyPoint[0], poses[0])[0];
       }
-    // const nose = getPart("nose", poses[0])[0]; // at pos: 0
-    const leftElbow = getPart("left_elbow", poses[0])[0]; // at pos: 1
-    const leftShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 2
-    const leftWrist = getPart("left_wrist", poses[0])[0]; // at pos: 9
-    const rightWrist = getPart("right_wrist", poses[0])[0]; // at pos: 10
-    const rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
-    const rightElbow = getPart("right_elbow", poses[0])[0]; // at pos: 8
+
+    const leftShoulder = getPart(concernedKeyPoint[0], poses[0])[0]; // at pos: 2
+    //console.log(leftShoulder);
+    const leftElbow = getPart(concernedKeyPoint[1], poses[0])[0]; // at pos: 1
+    const leftWrist = getPart(concernedKeyPoint[2], poses[0])[0]; // at pos: 9
+    const rightShoulder = getPart(concernedKeyPoint[3], poses[0])[0]; // at pos: 6
+    const rightElbow = getPart(concernedKeyPoint[4], poses[0])[0]; // at pos: 8
+    const rightWrist = getPart(concernedKeyPoint[5], poses[0])[0]; // at pos: 10
 
     const cooridnates = getWorldCoords(KeyPointPosition.x, KeyPointPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
 
@@ -149,7 +150,7 @@ async function animate() {
     UIElement.innerHTML = "";
     UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
 
-    if (selectedArray[selectedModel] !== undefined) {
+    if (UNRIGGED_MODELS[selectedModel] !== undefined) {
       console.log("an unrigged model was loaded");
       pivot.rotation.y = normalizedYaw; // Left Right
       pivot.rotation.x = -normalizedPitch; // Up down
@@ -165,6 +166,7 @@ async function animate() {
               leftShoulderAngle = angle;
               child.rotation.y = angle;
               UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
+              console.log("hi");
               // UIElement.innerHTML += `left shoulder adjusment: ${shoulderAdjustment}`;
               break;
             case "mixamorigLeftForeArm":
@@ -267,6 +269,7 @@ window.addEventListener('keydown', (e) => {
     console.log("Final position: x:", pivot.position.x + xOffset, "  y: ", pivot.position.y + yOffset);
     console.log("Factor added: x:", xOffset, "  y: ", yOffset);
     console.log("multiplyingFactor:", multiplyingFactor);
+    console.log("pivot.scale: ", pivot.scale )
   }
   else if (e.key == "z") {
     multiplyingFactor += 0.5;
