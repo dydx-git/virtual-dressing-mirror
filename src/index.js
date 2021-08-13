@@ -30,18 +30,18 @@ stats.domElement.style.bottom = "0px";
 document.body.appendChild(stats.domElement);
 
 const RIGGED_MODELS = {
-  COSTUME: { Path: "alien/alienSuit.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  MICKEY: { Path: "mickey.fbx", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  REMY: { Path: "Remy/Remy.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  ROTH: { Path: "Roth/Roth.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  ANDROM: { Path: "Androm/Androm.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  DOUG: { Path: "Doug/Doug.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  ELLY: { Path: "Elly/Elly.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  JASPER: { Path: "Jasper/Jasper.gltf", concernedKeyPoint: ["right_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: -0.9999999999999999 , y: -8.899999999999977 }, scale: { x: 7.239999999999995, y: 7.239999999999995, z: 7} },
-  JODY: { Path: "Jody/Jody.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  KATE: { Path: "Kate/Kate.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  LOUISE: { Path: "Louise/Louise.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  MEGAN: { Path: "Megan/Megan.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  COSTUME: { Path: "alien/alienSuit.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
+  MICKEY: { Path: "mickey.fbx", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 3.5 , y: 0 }, scale: { x: 0.1, y: 0.1, z: 0.1} },
+  REMY: { Path: "Remy/Remy.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -6.099999999999994 }, scale: { x: 2.0699999999999994, y: 2.0699999999999994, z: 1} },
+  ROTH: { Path: "Roth/Roth.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
+  ANDROM: { Path: "Androm/Androm.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
+  DOUG: { Path: "Doug/Doug.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
+  ELLY: { Path: "Elly/Elly.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
+  JASPER: { Path: "Jasper/Jasper.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
+  JODY: { Path: "Jody/Jody.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
+  KATE: { Path: "Kate/Kate.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
+  LOUISE: { Path: "Louise/Louise.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
+  MEGAN: { Path: "Megan/Megan.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
 };
 
 const UNRIGGED_MODELS = {
@@ -57,7 +57,7 @@ const UNRIGGED_MODELS = {
 };
 
 let selectedArray = RIGGED_MODELS;
-let selectedModel = "ELLY";
+let selectedModel = "MICKEY";
 let loadingMODEL = selectedArray[selectedModel].Path;
 console.log(loadingMODEL);
 
@@ -86,7 +86,8 @@ let shoulderAdjustment = 0;
 
 let lips;
 
-
+let startedTime = Date.now();
+let rightHandCoords = [];
 
 async function renderResult(poses) {
   if (camera.video.readyState < 2) {
@@ -138,6 +139,18 @@ async function animate() {
     const rightElbow = getPart(concernedKeyPoint[4], poses[0])[0]; // at pos: 8
     const rightWrist = getPart(concernedKeyPoint[5], poses[0])[0]; // at pos: 10
 
+
+    if (rightWrist.score > 0.8) {
+      rightHandCoords.push(rightWrist.x);
+    }
+    if (Date.now() - startedTime > 1000) {
+      if (rightHandCoords.length > 10) {
+        console.log(getDirection(rightHandCoords));
+      }
+      rightHandCoords = [];
+      startedTime = Date.now();
+    }
+
     const cooridnates = getWorldCoords(KeyPointPosition.x, KeyPointPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
 
     pivot.position.set((cooridnates.x + xOffset) * (multiplyingFactor), cooridnates.y + yOffset, 1);
@@ -165,8 +178,8 @@ async function animate() {
               angle = -getAngle(rightElbow, rightShoulder, 0, 0, -1);
               leftShoulderAngle = angle;
               child.rotation.y = angle;
-              UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
-              console.log("hi");
+             // UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
+              //console.log("hi");
               // UIElement.innerHTML += `left shoulder adjusment: ${shoulderAdjustment}`;
               break;
             case "mixamorigLeftForeArm":
@@ -179,7 +192,7 @@ async function animate() {
             //   break;
             case "mixamorigRightShoulder":
               angle = -getAngle(leftShoulder, leftElbow, 0, 0, -1);
-              angle = angle + Math.sin(angle / 2) + 0.2;
+              //angle = angle + Math.sin(angle / 2) + 0.2;
               rightShoulderAngle = angle;
               //UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
               //UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
@@ -222,6 +235,32 @@ async function animate() {
   requestAnimationFrame(animate);
 
 };
+
+
+function getDirection(coords) {
+  const summed_nums = coords.reduce(function (a, b) { return a + b; }, 0);
+  let multiplied_data = 0;
+  let summed_index = 0;
+  let squared_index = 0;
+
+  coords.forEach((num, index) => {
+    index += 1;
+    multiplied_data += index * num;
+    summed_index += index;
+    squared_index += index ** 2;
+  });
+
+  const numerator = (coords.length * multiplied_data) - (summed_nums * summed_index)
+  const denominator = (coords.length * squared_index) - summed_index ** 2;
+  if (denominator == 0) return 0;
+  const direction = numerator / denominator;
+  if (direction > 5) {
+    return "left";
+  } else if (direction < -5) {
+    return "right";
+  }
+  return direction;
+}
 
 // Arrow key bindings with ctrl & alt to position and scale the model. 
 window.addEventListener('keydown', (e) => {
