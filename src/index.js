@@ -54,7 +54,7 @@ const UNRIGGED_MODELS = {
 };
 
 let selectedArray = RIGGED_MODELS;
-let selectedModel = "ROTH";
+let selectedModel = "MEGAN";
 let loadingMODEL = selectedArray[selectedModel].Path;
 console.log(loadingMODEL);
 
