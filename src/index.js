@@ -45,19 +45,19 @@ const RIGGED_MODELS = {
 };
 
 const UNRIGGED_MODELS = {
-  MASK: { Path: "Mask/mask.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  SPECTACLES: { Path: "glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  HEART_GLASSES: { Path: "heart-shaped_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  BLACK_GLASSES: { Path: "kismet_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  FUNK_GLASSES: { Path: "funk_glasses/scene.gltf",  concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  QUARTZ: { Path: "Quartz_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
-  FMOUSE: { Path:"fluffy_mustach/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  MASK: { Path: "Mask/mask.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 2.459999999999991, y: 2.459999999999991, z: 1} },
+  SPECTACLES: { Path: "glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0.1 , y: -0.5 }, scale: { x: 2.549999999999989, y: 2.549999999999989, z: 1 } },
+  HEART_GLASSES: { Path: "heart-shaped_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: -0.5 }, scale: { x: 1.1, y: 1.1, z: 1} },
+  BLACK_GLASSES: { Path: "kismet_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0.1 ,  y:  -0.2 }, scale: { x: 11.219999999999805, y: 11.219999999999805, z: 1} },
+  FUNK_TIARA: { Path: "funk_glasses/scene.gltf",  concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: -0.20000000000000004 ,  y:  3.0000000000000013 }, scale: { x: 0.7799999999999998, y: 0.7799999999999998, z: 1} },
+  QUARTZ: { Path: "Quartz_glasses/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: -0.2 }, scale: { x: 4.799999999999941, y: 4.799999999999941, z: 1} },
+  FMOUSE: { Path:"fluffy_mustach/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0.1 }, scale: { x: 21.23000000000052, y: 21.23000000000052, z: 1} },
   KMOUSE:  { Path: "kaiser_mustache/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0.12 }, scale: { x: 15, y: 15, z: 15} },
   EYES:  { Path: "eyes/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
 };
 
-let selectedArray = RIGGED_MODELS;
-let selectedModel = "COSTUME";
+let selectedArray = UNRIGGED_MODELS;
+let selectedModel = "KMOUSE";
 let loadingMODEL = selectedArray[selectedModel].Path;
 console.log(loadingMODEL);
 
@@ -118,7 +118,7 @@ async function animate() {
 
   /* model manipulation region start */
   if (poses.length > 0) {
-      console.log(concernedKeyPoint.length);
+      //console.log(concernedKeyPoint.length);
      
       if(concernedKeyPoint.length  == 2){
         const leftKeyPoint = getPart(concernedKeyPoint[0], poses[0])[0];
@@ -137,8 +137,8 @@ async function animate() {
     const leftWrist = getPart(concernedKeyPoint[2], poses[0])[0]; // at pos: 9
     const rightShoulder = getPart(concernedKeyPoint[3], poses[0])[0]; // at pos: 6
     const rightElbow = getPart(concernedKeyPoint[4], poses[0])[0]; // at pos: 8
-    const rightWrist = getPart(concernedKeyPoint[5], poses[0])[0]; // at pos: 10
-
+    const rightWrist = getPart("right_wrist", poses[0])[0]; // at pos: 10
+    
 
     if (rightWrist.score > 0.8) {
       rightHandCoords.push(rightWrist.x);
@@ -164,7 +164,7 @@ async function animate() {
     UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
 
     if (UNRIGGED_MODELS[selectedModel] !== undefined) {
-      console.log("an unrigged model was loaded");
+      
       pivot.rotation.y = normalizedYaw; // Left Right
       pivot.rotation.x = -normalizedPitch; // Up down
       pivot.rotation.z = roll;
