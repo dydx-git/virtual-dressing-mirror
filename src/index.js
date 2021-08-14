@@ -53,8 +53,8 @@ const UNRIGGED_MODELS = {
   LENS: { Path: "Lens.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: -0.19999999999999982 }, scale: { x: 0.2099999999999993, y: 0.2099999999999993, z: 1} },
 };
 
-let selectedArray = RIGGED_MODELS;
-let selectedModel = "MEGAN";
+let selectedArray = UNRIGGED_MODELS;
+let selectedModel = "MASK";
 let loadingMODEL = selectedArray[selectedModel].Path;
 console.log(loadingMODEL);
 
