@@ -36,7 +36,8 @@ const MODELS = {
   MICKEY: "mickey.fbx",
   REMY: "remy.fbx",
   ARCHER: "erika_archer.fbx",
-  MEGAN: "Megan/Megan.gltf"
+  MEGAN: "Megan/Megan.gltf",
+  KATE: "Kate/Kate.gltf"
 };
 
 const renderer = new THREE.WebGLRenderer({
@@ -106,8 +107,9 @@ async function animate() {
     eyesPosition.x = (leftEye.x + rightEye.x) / 2;
     eyesPosition.y = ((leftEye.y + rightEye.y) / 2 ) + yOffset;
 
-    const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,window.innerHeight,window.innerWidth,threeDCam);
-    pivot.position.set((cooridnates.x+xOffset)*(multiplyingFactor),cooridnates.y+yOffset,1);
+     const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,window.innerHeight,window.innerWidth,threeDCam);
+     pivot.position.set((cooridnates.x+xOffset)*(multiplyingFactor),cooridnates.y+yOffset,1);
+    //pivot.position.set(2+xOffset,2+yOffset,1);
 
     const {yaw, pitch, roll} = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
@@ -121,6 +123,7 @@ async function animate() {
     
     mesh.traverse(function (child) {
       if (child.isBone) {
+        child.frustumCulled = false;
         let angle;
         switch (child.name) {
           case "mixamorigLeftShoulder":
@@ -192,7 +195,7 @@ window.addEventListener('keydown',(e)=> {
         break;
       }
       case "ArrowRight": {
-        xOffset += 0.1;
+        xOffset += 0.1;ss
         break;
       }
       case "ArrowLeft": {
@@ -207,11 +210,13 @@ window.addEventListener('keydown',(e)=> {
       case "ArrowUp": {
         pivot.scale.x += 0.1;
         pivot.scale.y += 0.1;
+        pivot.scale.z += 0.1;
         break;
       }
       case "ArrowDown": {
         pivot.scale.x -= 0.1;
         pivot.scale.y -=0.1;
+        pivot.scale.z += 0.1;
         break;
       }
 
@@ -233,19 +238,19 @@ window.addEventListener('keydown',(e)=> {
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
   
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(window.innerWidth+2000, window.innerHeight+2000);
 
   detector = await createDetector();
   let model;
   [camera, detector, model] = await Promise.all([
       Camera.setupCamera(STATE.camera),
       createDetector(),
-      loadModel(MODELS.ARCHER)
+      loadModel(MODELS.MEGAN)
   ]);
   
   [mesh, pivot] = setUpModel(model);
 
-  pivot.scale.set( 0.025,  0.025, 0.025);
+  pivot.scale.set( 1,1,1);
   
   scene.add(pivot);
 
