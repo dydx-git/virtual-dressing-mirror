@@ -35,7 +35,8 @@ const MODELS = {
   COSTUME: "alien/alienSuit.gltf",
   MICKEY: "mickey.fbx",
   REMY: "remy.fbx",
-  ARCHER: "erika_archer.fbx"
+  ARCHER: "erika_archer.fbx",
+  MEGAN: "Megan/Megan.gltf"
 };
 
 const renderer = new THREE.WebGLRenderer({
@@ -105,7 +106,7 @@ async function animate() {
     eyesPosition.x = (leftEye.x + rightEye.x) / 2;
     eyesPosition.y = ((leftEye.y + rightEye.y) / 2 ) + yOffset;
 
-    const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,camera.video.videoHeight,camera.video.videoWidth,threeDCam);
+    const cooridnates = getWorldCoords(eyesPosition.x,eyesPosition.y,window.innerHeight,window.innerWidth,threeDCam);
     pivot.position.set((cooridnates.x+xOffset)*(multiplyingFactor),cooridnates.y+yOffset,1);
 
     const {yaw, pitch, roll} = getFacePose(poses[0])
@@ -204,13 +205,13 @@ window.addEventListener('keydown',(e)=> {
   else if (e.shiftKey) {
     switch(e.key) {
       case "ArrowUp": {
-        pivot.scale.x += 0.01;
-        pivot.scale.y += 0.01;
+        pivot.scale.x += 0.1;
+        pivot.scale.y += 0.1;
         break;
       }
       case "ArrowDown": {
-        pivot.scale.x -= 0.01;
-        pivot.scale.y -=0.01;
+        pivot.scale.x -= 0.1;
+        pivot.scale.y -=0.1;
         break;
       }
 
@@ -222,6 +223,7 @@ window.addEventListener('keydown',(e)=> {
     console.log("Final position: x:",pivot.position.x+xOffset, "  y: ",pivot.position.y+yOffset);
     console.log("Factor added: x:",xOffset, "  y: ",yOffset);
     console.log("multiplyingFactor:",multiplyingFactor);
+    console.log("Scaling:",pivot.scale);
   }
   else if (e.key == "z") {
     multiplyingFactor += 0.5; 
@@ -238,12 +240,12 @@ async function app() {
   [camera, detector, model] = await Promise.all([
       Camera.setupCamera(STATE.camera),
       createDetector(),
-      loadModel(MODELS.MICKEY)
+      loadModel(MODELS.ARCHER)
   ]);
   
   [mesh, pivot] = setUpModel(model);
 
-  pivot.scale.set(0.025, 0.025, 0.025);
+  pivot.scale.set( 0.025,  0.025, 0.025);
   
   scene.add(pivot);
 
