@@ -15,12 +15,8 @@ const {
   setUpModel,
   loadModel,
   setUpTHREEDCamera,
-  Mask,
-  Glasses,
-  FaceRotation,
   getFacePose,
   getAngle,
-  TraverseBones,
   getWorldCoords
 } = getImports();
 
@@ -54,10 +50,11 @@ const UNRIGGED_MODELS = {
   FMOUSE: { Path:"fluffy_mustach/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0.1 }, scale: { x: 21.23000000000052, y: 21.23000000000052, z: 1} },
   KMOUSE:  { Path: "kaiser_mustache/scene.gltf", concernedKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0 , y: 0.12 }, scale: { x: 15, y: 15, z: 15} },
   EYES:  { Path: "eyes/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
+  LENS: { Path: "Lens.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: -0.19999999999999982 }, scale: { x: 0.2099999999999993, y: 0.2099999999999993, z: 1} },
 };
 
-let selectedArray = UNRIGGED_MODELS;
-let selectedModel = "KMOUSE";
+let selectedArray = RIGGED_MODELS;
+let selectedModel = "ROTH";
 let loadingMODEL = selectedArray[selectedModel].Path;
 console.log(loadingMODEL);
 
