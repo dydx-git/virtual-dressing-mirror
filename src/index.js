@@ -58,8 +58,8 @@ const scene = getTHREEbasics();
 let detector, camera;
 let mesh, pivot, threeDCam;
 let leftEye, rightEye, nose;
-let yOffset = 120;
-
+let yOffset = 0;
+let xOffset = 0
 let startedTime = Date.now();
 let rightHandCoords = [];
 
@@ -115,7 +115,7 @@ async function animate() {
     }
     if (Date.now() - startedTime > 1000) {
       if (rightHandCoords.length > 10) {
-        console.log(getDirection(rightHandCoords));
+        //console.log(getDirection(rightHandCoords));
       }
       rightHandCoords = [];
       startedTime = Date.now();
@@ -125,7 +125,7 @@ async function animate() {
     eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
 
     const cooridnates = getWorldCoords(eyesPosition.x, eyesPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
-    pivot.position.set(cooridnates.x, cooridnates.y, 1);
+    pivot.position.set(cooridnates.x+xOffset, cooridnates.y+yOffset, 1);
 
     const { yaw, pitch, roll } = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
@@ -139,7 +139,7 @@ async function animate() {
     mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
-        console.log()
+        //console.log()
         switch (child.name) {
           case "mixamorigLeftShoulder":
             angle = -getAngle(rightElbow, rightShoulder, 0, 0, -1);
@@ -221,13 +221,13 @@ window.addEventListener('keydown', (e) => {
   if (e.ctrlKey) {
     switch (e.key) {
       case "ArrowUp": {
-        //yOffset +=10;
-        pivot.position.y += 0.1;
+        yOffset +=0.1;
+        //pivot.position.y += 0.1;
         break;
       }
       case "ArrowDown": {
-        //yOffset -=10;
-        pivot.position.y -= 1;
+        yOffset -=0.1;
+        //pivot.position.y -= 1;
         break;
       }
       case "ArrowRight": {
@@ -277,7 +277,7 @@ async function app() {
   [camera, detector, model] = await Promise.all([
     Camera.setupCamera(STATE.camera),
     createDetector(),
-    loadModel(MODELS.MEGAN)
+    loadModel(MODELS.KATE)
   ]);
 
   [mesh, pivot] = setUpModel(model);
