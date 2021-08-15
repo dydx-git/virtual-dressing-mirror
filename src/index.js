@@ -62,7 +62,7 @@ let yOffset = 0;
 let xOffset = 0
 let startedTime = Date.now();
 let rightHandCoords = [];
-
+let rightShoulder, leftShoulder, rightHip, leftHip;
 let shoulderAdjustment = 0;
 
 let lips;
@@ -100,15 +100,19 @@ async function animate() {
   if (poses.length > 0) {
     // const nose = getPart("nose", poses[0])[0]; // at pos: 0
     const leftElbow = getPart("left_elbow", poses[0])[0]; // at pos: 1
-    const leftShoulder = getPart("left_shoulder", poses[0])[0]; // at pos: 2
     const leftWrist = getPart("left_wrist", poses[0])[0]; // at pos: 9
     const rightWrist = getPart("right_wrist", poses[0])[0]; // at pos: 10
-    const rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
     const rightElbow = getPart("right_elbow", poses[0])[0]; // at pos: 8
 
     leftEye = getPart("left_eye", poses[0])[0];
     rightEye = getPart("right_eye", poses[0])[0];
     nose = getPart("nose", poses[0])[0];
+
+    leftShoulder = getPart("left_shoulder", poses[0])[0]; // at pos: 2
+    rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
+
+    leftHip = getPart("left_hip", poses[0])[0];
+    rightHip = getPart("right_hip", poses[0])[0];
 
     if (rightWrist.score > 0.8) {
       rightHandCoords.push(rightWrist.x);
@@ -121,10 +125,19 @@ async function animate() {
       startedTime = Date.now();
     }
 
-    eyesPosition.x = (leftEye.x + rightEye.x) / 2;
-    eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
+    const MeanPosition = new Vector3();
+    const hipMeanPosition = new Vector3();
 
-    const cooridnates = getWorldCoords(eyesPosition.x, eyesPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
+    MeanPosition.x = (((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2;
+    MeanPosition.y = (((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2;
+
+    // eyesPosition.x = (leftEye.x + rightEye.x) / 2;
+    // eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
+
+    hipMeanPosition.x = (leftHip.x + rightHip.x)/2;
+    hipMeanPosition.y = (leftHip.y + rightHip.y)/2;
+
+    const cooridnates = getWorldCoords(hipMeanPosition.x, hipMeanPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
     pivot.position.set(cooridnates.x+xOffset, cooridnates.y+yOffset, 1);
 
     const { yaw, pitch, roll } = getFacePose(poses[0])
@@ -262,8 +275,11 @@ window.addEventListener('keydown', (e) => {
   }
 
   else if (e.key == "c") {
-    console.log(yOffset);
-
+    //console.log(yOffset);
+    console.log("Left shoulder: ",leftShoulder);
+    console.log("Right shoulder: ",rightShoulder);
+    console.log("Left hip: ",leftHip);
+    console.log("Right hip: ",rightHip);
   }
 });
 
@@ -282,7 +298,7 @@ async function app() {
 
   [mesh, pivot] = setUpModel(model);
 
-  pivot.scale.set(1, 1, 1);
+  pivot.scale.set(3,3,3);
 
   scene.add(pivot);
 
