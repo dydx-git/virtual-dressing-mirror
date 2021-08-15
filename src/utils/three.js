@@ -26,6 +26,12 @@ export function setUpModel(model) {
   const box = new THREE.Box3().setFromObject(mesh);
   box.getCenter(mesh.position);
   mesh.position.multiplyScalar(-1);
+  mesh.traverse(child => {
+    if (child.type == 'SkinnedMesh') {
+      child.frustumCulled = false;
+      console.log(`${child.name} should not be culled anymore`);
+    }
+  })
   const pivot = new THREE.Group();
   pivot.add(mesh);
   
