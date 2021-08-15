@@ -53,8 +53,8 @@ const UNRIGGED_MODELS = {
   LENS: { Path: "Lens.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: -0.19999999999999982 }, scale: { x: 0.2099999999999993, y: 0.2099999999999993, z: 1} },
 };
 
-let selectedArray = UNRIGGED_MODELS;
-let selectedModel = "MASK";
+let selectedArray = RIGGED_MODELS;
+let selectedModel = "JASPER";
 let loadingMODEL = selectedArray[selectedModel].Path;
 console.log(loadingMODEL);
 
@@ -166,8 +166,11 @@ async function animate() {
       pivot.rotation.x = -normalizedPitch; // Up down
       pivot.rotation.z = roll;
     } else {
+     // mesh.frustumCulled = false;
       mesh.traverse(function (child) {
+      
         if (child.isBone) {
+         // child.frustumCulled = false;
           let angle;
   
           switch (child.name) {
@@ -288,7 +291,7 @@ window.addEventListener('keydown', (e) => {
     switch (e.key) {
       case "ArrowUp": {
         pivot.scale.x += 0.01;
-        pivot.scale.y += 0.01;
+       // pivot.scale.y += 0.01;
         break;
       }
       case "ArrowDown": {
@@ -315,7 +318,7 @@ window.addEventListener('keydown', (e) => {
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
   // renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
+  renderer.setSize(camera.video.videoWidth + 1000, camera.video.videoHeight + 1000);
 
   detector = await createDetector();
   let model;
