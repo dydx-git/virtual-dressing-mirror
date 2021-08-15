@@ -340,7 +340,7 @@ window.addEventListener('keydown', (e) => {
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
   // renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight + 1000);
+  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
 
   detector = await createDetector();
   let model;
