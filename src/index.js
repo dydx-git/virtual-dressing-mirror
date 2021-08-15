@@ -58,15 +58,20 @@ const scene = getTHREEbasics();
 let detector, camera;
 let mesh, pivot, threeDCam;
 let leftEye, rightEye, nose;
-let yOffset = 0;
-let xOffset = 0
+let yOffsetPosition = 420; // Knee = 240, Hips = 420
+let xOffsetPosition = 0
 let startedTime = Date.now();
 let rightHandCoords = [];
 let rightShoulder, leftShoulder, rightHip, leftHip;
 let shoulderAdjustment = 0;
 
 let lips;
+// Testing variables 
+let rightAnkle, leftAnkle; // Position: 28, 27
+let rightKnee, leftKnee; // Position: 26, 25
+let rightFootIndex, leftFootIndex; // Position: 32,31
 
+//
 let eyesPosition = new Vector3();
 
 async function renderResult(poses) {
@@ -114,6 +119,15 @@ async function animate() {
     leftHip = getPart("left_hip", poses[0])[0];
     rightHip = getPart("right_hip", poses[0])[0];
 
+    leftFootIndex = getPart("left_foot_index", poses[0])[0];
+    rightFootIndex = getPart("right_foot_index", poses[0])[0];
+
+    leftKnee = getPart("left_knee", poses[0])[0];
+    rightKnee = getPart("right_knee", poses[0])[0];
+
+    leftAnkle = getPart("left_ankle", poses[0])[0];
+    rightAnkle = getPart("right_ankle", poses[0])[0];
+
     if (rightWrist.score > 0.8) {
       rightHandCoords.push(rightWrist.x);
     }
@@ -127,18 +141,27 @@ async function animate() {
 
     const MeanPosition = new Vector3();
     const hipMeanPosition = new Vector3();
+    const kneeMeanPosition = new Vector3();
 
     MeanPosition.x = (((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2;
     MeanPosition.y = (((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2;
 
     // eyesPosition.x = (leftEye.x + rightEye.x) / 2;
     // eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
+              /*ACTUAL POSITION COMMIT */
+    hipMeanPosition.x = ((leftHip.x + rightHip.x)/2) + xOffsetPosition;
+    //hipMeanPosition.y = ((leftHip.y + rightHip.y)/2) + yOffsetPosition + (leftAnkle.y + rightAnkle.y)/2 ; //HACK: Model ankle score low so behaving finicky
+    hipMeanPosition.y = ((leftHip.y + rightHip.y)/2) + yOffsetPosition ; //STATIC VALUE: 420 HACK: Model ankle score low so behaving finicky.
+              /* END COMMIT */
+    
+    // hipMeanPosition.x = (leftAnkle.x + rightAnkle.x)/2;
+    // hipMeanPosition.y = (leftAnkle.y + rightAnkle.y)/2;
 
-    hipMeanPosition.x = (leftHip.x + rightHip.x)/2;
-    hipMeanPosition.y = (leftHip.y + rightHip.y)/2;
+    // kneeMeanPosition.x = (leftKnee.x + rightKnee.x)/2;
+    // kneeMeanPosition.y = (leftKnee.y + rightKnee.y)/2 + yOffsetPosition; // STATIC VALUE: 240
 
     const cooridnates = getWorldCoords(hipMeanPosition.x, hipMeanPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
-    pivot.position.set(cooridnates.x+xOffset, cooridnates.y+yOffset, 1);
+    pivot.position.set(cooridnates.x, cooridnates.y, 1);
 
     const { yaw, pitch, roll } = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
@@ -201,8 +224,6 @@ async function animate() {
 
   requestAnimationFrame(animate);
 
-
-
 };
 
 function getDirection(coords) {
@@ -234,12 +255,12 @@ window.addEventListener('keydown', (e) => {
   if (e.ctrlKey) {
     switch (e.key) {
       case "ArrowUp": {
-        yOffset +=0.1;
+        yOffsetPosition +=10;
         //pivot.position.y += 0.1;
         break;
       }
       case "ArrowDown": {
-        yOffset -=0.1;
+        yOffsetPosition -=10;
         //pivot.position.y -= 1;
         break;
       }
@@ -276,10 +297,16 @@ window.addEventListener('keydown', (e) => {
 
   else if (e.key == "c") {
     //console.log(yOffset);
-    console.log("Left shoulder: ",leftShoulder);
-    console.log("Right shoulder: ",rightShoulder);
+    // console.log("Left shoulder: ",leftShoulder);
+    // console.log("Right shoulder: ",rightShoulder);
     console.log("Left hip: ",leftHip);
     console.log("Right hip: ",rightHip);
+    // console.log("Right foot index: ",rightFootIndex);
+    // console.log("Left foot index: ",leftFootIndex);
+    console.log("Left ankle: ",leftAnkle);
+    console.log("Right ankle: ",rightAnkle);
+    console.log("XOffset: ",xOffset);
+    console.log("YOffset: ",yOffset);
   }
 });
 
@@ -298,7 +325,7 @@ async function app() {
 
   [mesh, pivot] = setUpModel(model);
 
-  pivot.scale.set(3,3,3);
+  pivot.scale.set(4,4,4);
 
   scene.add(pivot);
 
