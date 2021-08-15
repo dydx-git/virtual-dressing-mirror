@@ -26,18 +26,18 @@ stats.domElement.style.bottom = "0px";
 document.body.appendChild(stats.domElement);
 
 const RIGGED_MODELS = {
-  COSTUME: { Path: "alien/alienSuit.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
-  MICKEY: { Path: "mickey.fbx", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 3.5 , y: 0 }, scale: { x: 0.1, y: 0.1, z: 0.1} },
-  REMY: { Path: "Remy/Remy.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -6.099999999999994 }, scale: { x: 2.0699999999999994, y: 2.0699999999999994, z: 1} },
-  ROTH: { Path: "Roth/Roth.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
-  ANDROM: { Path: "Androm/Androm.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
-  DOUG: { Path: "Doug/Doug.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
-  ELLY: { Path: "Elly/Elly.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
-  JASPER: { Path: "Jasper/Jasper.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
-  JODY: { Path: "Jody/Jody.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
-  KATE: { Path: "Kate/Kate.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
-  LOUISE: { Path: "Louise/Louise.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
-  MEGAN: { Path: "Megan/Megan.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" ], offsets: { x: 0.7999999999999999 , y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1} },
+  COSTUME: { Path: "alien/alienSuit.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 8.099999999999872 , y: 4.299999999999952 , z: 1} },
+  MICKEY: { Path: "mickey.fbx", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: 3.5 , y: 0 }, scale: { x: 0.1 , y: 0.1 , z: 0.1 } },
+  REMY: { Path: "Remy/Remy.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 2.0699999999999994 , y: 2.0699999999999994 , z: 1 } },
+  ROTH: { Path: "Roth/Roth.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 8.099999999999872 , y: 4.299999999999952 , z: 1 } },
+  ANDROM: { Path: "Androm/Androm.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 8.099999999999872 , y: 4.299999999999952 , z: 1 } },
+  DOUG: { Path: "Doug/Doug.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 8.099999999999872 , y: 4.299999999999952 , z: 1 } },
+  ELLY: { Path: "Elly/Elly.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 8.099999999999872 , y: 4.299999999999952 , z: 1 } },
+  JASPER: { Path: "Jasper/Jasper.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 8.099999999999872 , y: 4.249999999999953 ,  z: 1 } },
+  JODY: { Path: "Jody/Jody.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 8.099999999999872 , y: 4.299999999999952 , z: 1} },
+  KATE: { Path: "Kate/Kate.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 8.099999999999872 , y: 4.299999999999952 , z: 1} },
+  LOUISE: { Path: "Louise/Louise.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 8.099999999999872 , y: 4.299999999999952 , z: 1 } },
+  MEGAN: { Path: "Megan/Megan.gltf", concernedKeyPoint: ["left_shoulder", "left_elbow", "left_wrist", "right_shoulder", "right_elbow", "right_wrist" , "left_hip" , "right_hip" , "left_knee" , "right_knee" , "left_ankle" , "right_ankle" , "left_foot_index" , "right_foot_index" ], offsets: { x: -0.19999999999999998 , y:  -0.8999999999999994 }, scale: { x: 8.099999999999872 , y: 4.299999999999952 , z: 1 } },
 };
 
 const UNRIGGED_MODELS = {
@@ -81,8 +81,6 @@ let mesh, pivot, threeDCam
 let multiplyingFactor = 1;
 let shoulderAdjustment = 0;
 
-let lips;
-
 let startedTime = Date.now();
 let rightHandCoords = [];
 
@@ -111,31 +109,60 @@ async function animate() {
     flipHorizontal: false
   });
 
+  let leftShoulder , rightShoulder , leftElbow , rightElbow , leftWrist ;
+  let leftHip , rightHip , leftKnee , rightKnee , leftAnkle , rightAnkle , leftFootIndex , rightFootIndex;
+  const modelAdjustment = new Vector3();
+
   await renderResult(poses);
 
   /* model manipulation region start */
   if (poses.length > 0) {
-      //console.log(concernedKeyPoint.length);
      
       if(concernedKeyPoint.length  == 2){
         const leftKeyPoint = getPart(concernedKeyPoint[0], poses[0])[0];
         const rightKeyPoint = getPart(concernedKeyPoint[1], poses[0])[0];
         KeyPointPosition.x = ((leftKeyPoint.x + rightKeyPoint.x) / 2);
         KeyPointPosition.y = ((leftKeyPoint.y + rightKeyPoint.y) / 2);
-        // console.log(rightKeyPoint);
+        modelAdjustment.x = 0;
+        modelAdjustment.y = 0;
+
       }
-      else{
+      else if (concernedKeyPoint.length  == 1){
         KeyPointPosition = getPart(concernedKeyPoint[0], poses[0])[0];
+        modelAdjustment.x = 0;
+        modelAdjustment.y = 0;
       }
 
-    const leftShoulder = getPart(concernedKeyPoint[0], poses[0])[0]; // at pos: 2
-    //console.log(leftShoulder);
-    const leftElbow = getPart(concernedKeyPoint[1], poses[0])[0]; // at pos: 1
-    const leftWrist = getPart(concernedKeyPoint[2], poses[0])[0]; // at pos: 9
-    const rightShoulder = getPart(concernedKeyPoint[3], poses[0])[0]; // at pos: 6
-    const rightElbow = getPart(concernedKeyPoint[4], poses[0])[0]; // at pos: 8
-    const rightWrist = getPart("right_wrist", poses[0])[0]; // at pos: 10
+      else {
+        leftShoulder = getPart(concernedKeyPoint[0], poses[0])[0]; // at pos: 2
+        leftElbow = getPart(concernedKeyPoint[1], poses[0])[0]; // at pos: 1
+        leftWrist = getPart(concernedKeyPoint[2], poses[0])[0]; // at pos: 9
+        rightShoulder = getPart(concernedKeyPoint[3], poses[0])[0]; // at pos: 6
+        rightElbow = getPart(concernedKeyPoint[4], poses[0])[0]; // at pos: 8
+        leftHip = getPart(concernedKeyPoint[6], poses[0])[0];
+        rightHip = getPart(concernedKeyPoint[7], poses[0])[0];
+        leftKnee = getPart(concernedKeyPoint[8], poses[0])[0];
+        rightKnee = getPart(concernedKeyPoint[9], poses[0])[0];
+        leftAnkle = getPart(concernedKeyPoint[10], poses[0])[0];
+        rightAnkle = getPart(concernedKeyPoint[11], poses[0])[0];
+        leftFootIndex = getPart(concernedKeyPoint[12], poses[0])[0];
+        rightFootIndex = getPart(concernedKeyPoint[13], poses[0])[0];
+
+        const MeanPosition = new Vector3();
+
+        KeyPointPosition.x = (((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2;
+        KeyPointPosition.y = (((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2;
+
+        //KeyPointPosition.x = ((leftHip.x + rightHip.x)/2);
+        //KeyPointPosition.y = ((leftHip.y + rightHip.y)/2); //STATIC VALUE: 420 HACK: Model ankle score low so behaving finicky.
+
+        modelAdjustment.x = 0;
+        modelAdjustment.y = 420;
+
+      }
     
+    const rightWrist = getPart("right_wrist", poses[0])[0]; // at pos: 10
+  
 
     if (rightWrist.score > 0.8) {
       rightHandCoords.push(rightWrist.x);
@@ -149,8 +176,8 @@ async function animate() {
     }
 
     const cooridnates = getWorldCoords(KeyPointPosition.x, KeyPointPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
-
     pivot.position.set((cooridnates.x + xOffset) * (multiplyingFactor), cooridnates.y + yOffset, 1);
+
     const { yaw, pitch, roll } = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
     let normalizedPitch = (pitch - 75) * (Math.PI / 180);
@@ -165,12 +192,11 @@ async function animate() {
       pivot.rotation.y = normalizedYaw; // Left Right
       pivot.rotation.x = -normalizedPitch; // Up down
       pivot.rotation.z = roll;
+
     } else {
-     // mesh.frustumCulled = false;
       mesh.traverse(function (child) {
       
         if (child.isBone) {
-         // child.frustumCulled = false;
           let angle;
   
           switch (child.name) {
@@ -179,7 +205,6 @@ async function animate() {
               leftShoulderAngle = angle;
               child.rotation.y = angle;
              // UIElement.innerHTML += `left shoulder angle: ${angle}<br>`;
-              //console.log("hi");
               // UIElement.innerHTML += `left shoulder adjusment: ${shoulderAdjustment}`;
               break;
             case "mixamorigLeftForeArm":
@@ -225,9 +250,6 @@ async function animate() {
       });
     }
   }
-
-
-
   /* model manipulation region end */
 
   stats.update();
@@ -318,7 +340,7 @@ window.addEventListener('keydown', (e) => {
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
   // renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setSize(camera.video.videoWidth + 1000, camera.video.videoHeight + 1000);
+  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight + 1000);
 
   detector = await createDetector();
   let model;

@@ -6,12 +6,15 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 export function getTHREEbasics(){    
   const scene = new THREE.Scene();
 
-  const light = new THREE.PointLight(0xffffff, 1);
-  scene.add(light);
+  const hemiLight = new THREE.HemisphereLight(0xffeeb1, 0x080820, 4);
+  scene.add(hemiLight);
 
-  const light2 = new THREE.AmbientLight(0xffffff, 1);
-  scene.add(light2);
-    
+  const light = new THREE.SpotLight(0xffa95c,4);
+
+  light.position.set(-50,50,50);
+  light.castShadow = true;
+  scene.add( light );
+
   return scene;
 }
 
