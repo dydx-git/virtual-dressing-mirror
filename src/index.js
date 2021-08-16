@@ -143,8 +143,8 @@ async function animate() {
     const hipMeanPosition = new Vector3();
     const kneeMeanPosition = new Vector3();
 
-    MeanPosition.x = (((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2;
-    MeanPosition.y = (((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2;
+    // MeanPosition.x = (((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2;
+    // MeanPosition.y = (((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2;
 
     // eyesPosition.x = (leftEye.x + rightEye.x) / 2;
     // eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
@@ -153,6 +153,8 @@ async function animate() {
     //hipMeanPosition.y = ((leftHip.y + rightHip.y)/2) + yOffsetPosition + (leftAnkle.y + rightAnkle.y)/2 ; //HACK: Model ankle score low so behaving finicky
     hipMeanPosition.y = ((leftHip.y + rightHip.y)/2) + yOffsetPosition ; //STATIC VALUE: 420 HACK: Model ankle score low so behaving finicky.
               /* END COMMIT */
+    /* HACK: The model was behaving abnormal cause it can't get good score for ankles. What I did was take distance from hip 
+    to ankle and that comes around in the range of 390-440, so I took 420 as the median value. */
     
     // hipMeanPosition.x = (leftAnkle.x + rightAnkle.x)/2;
     // hipMeanPosition.y = (leftAnkle.y + rightAnkle.y)/2;
