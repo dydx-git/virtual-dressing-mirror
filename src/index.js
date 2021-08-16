@@ -64,7 +64,7 @@ let startedTime = Date.now();
 let rightHandCoords = [];
 let rightShoulder, leftShoulder, rightHip, leftHip;
 let shoulderAdjustment = 0;
-
+let multiplyingFactor = 5.5; // HACK: At distance of 83 inches
 let lips;
 // Testing variables 
 let rightAnkle, leftAnkle; // Position: 28, 27
@@ -149,7 +149,7 @@ async function animate() {
     // eyesPosition.x = (leftEye.x + rightEye.x) / 2;
     // eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
               /*ACTUAL POSITION COMMIT */
-    hipMeanPosition.x = ((leftHip.x + rightHip.x)/2) + xOffsetPosition;
+    hipMeanPosition.x = ((leftHip.x + rightHip.x)/2) + xOffsetPosition; 
     //hipMeanPosition.y = ((leftHip.y + rightHip.y)/2) + yOffsetPosition + (leftAnkle.y + rightAnkle.y)/2 ; //HACK: Model ankle score low so behaving finicky
     hipMeanPosition.y = ((leftHip.y + rightHip.y)/2) + yOffsetPosition ; //STATIC VALUE: 420 HACK: Model ankle score low so behaving finicky.
               /* END COMMIT */
@@ -161,7 +161,7 @@ async function animate() {
     // kneeMeanPosition.y = (leftKnee.y + rightKnee.y)/2 + yOffsetPosition; // STATIC VALUE: 240
 
     const cooridnates = getWorldCoords(hipMeanPosition.x, hipMeanPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
-    pivot.position.set(cooridnates.x, cooridnates.y, 1);
+    pivot.position.set(cooridnates.x *(multiplyingFactor), cooridnates.y, 1);
 
     const { yaw, pitch, roll } = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
@@ -170,8 +170,8 @@ async function animate() {
     let rightShoulderAngle = 0;
     let UIElement = document.getElementById("valueLogger");
     UIElement.innerHTML = "";
-
-    UIElement.innerHTML += `rightWristScore: ${rightWrist.score}`;
+    UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
+    //UIElement.innerHTML += `rightWristScore: ${rightWrist.score}`;
     mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
@@ -291,6 +291,14 @@ window.addEventListener('keydown', (e) => {
         pivot.scale.y -= 0.01;
         break;
       }
+      case "ArrowRight": {
+        pivot.scale.x += 0.1;
+        break;
+      }
+      case "ArrowLeft": {
+        pivot.scale.x -= 0.1
+        break;
+      }
 
     }
   }
@@ -299,33 +307,39 @@ window.addEventListener('keydown', (e) => {
     //console.log(yOffset);
     // console.log("Left shoulder: ",leftShoulder);
     // console.log("Right shoulder: ",rightShoulder);
-    console.log("Left hip: ",leftHip);
-    console.log("Right hip: ",rightHip);
+    // console.log("Left hip: ",leftHip);
+    // console.log("Right hip: ",rightHip);
     // console.log("Right foot index: ",rightFootIndex);
     // console.log("Left foot index: ",leftFootIndex);
-    console.log("Left ankle: ",leftAnkle);
-    console.log("Right ankle: ",rightAnkle);
-    console.log("XOffset: ",xOffset);
-    console.log("YOffset: ",yOffset);
+    // console.log("Left ankle: ",leftAnkle);
+    // console.log("Right ankle: ",rightAnkle);
+    console.log("XOffset: ",xOffsetPosition);
+    console.log("YOffset: ",yOffsetPosition);
+    console.log("Scale: ",pivot.scale);
+
+  }
+  else if (e.key == "z") {
+    multiplyingFactor += 0.5; 
   }
 });
 
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
 
-  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
+  renderer.setSize(window.innerWidth,window.innerHeight);
 
   detector = await createDetector();
   let model;
   [camera, detector, model] = await Promise.all([
     Camera.setupCamera(STATE.camera),
     createDetector(),
-    loadModel(MODELS.KATE)
+    loadModel(MODELS.JODY)
   ]);
 
   [mesh, pivot] = setUpModel(model);
 
-  pivot.scale.set(4,4,4);
+  //pivot.scale.set(4,4,4);
+  pivot.scale.set(18,4,4); // FOR MIRROR SCALING
 
   scene.add(pivot);
 
