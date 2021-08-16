@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "@mediapipe/pose": "~0.3.0",
-    "@tensorflow-models/pose-detection": "^0.0.3",
-    "@tensorflow/tfjs-backend-wasm": "^3.6.0",
-    "@tensorflow/tfjs-backend-webgl": "^3.6.0",
-    "@tensorflow/tfjs-converter": "^3.6.0",
-    "@tensorflow/tfjs-core": "^3.6.0",
+    "@tensorflow-models/pose-detection": "0.0.3",
+    "@tensorflow/tfjs-backend-wasm": "3.6.0",
+    "@tensorflow/tfjs-backend-webgl": "3.6.0",
+    "@tensorflow/tfjs-converter": "3.6.0",
+    "@tensorflow/tfjs-core": "3.6.0",
     "stats.js": "^0.17.0",
     "three": "^0.126.1"
   },

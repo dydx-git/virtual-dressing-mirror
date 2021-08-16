@@ -56,7 +56,7 @@ let yOffset = 0;
 let xOffset = 0;
 let multiplyingFactor = 1;
 let shoulderAdjustment = 0;
-
+let posesForConfidence;
 let lips;
 
 let eyesPosition = new Vector3();
@@ -102,8 +102,8 @@ async function animate() {
     rightEye = getPart("right_eye", poses[0])[0];
     nose =  getPart("nose", poses[0])[0];
 
+    //lips = getPart("mouth_right", poses[0])[0];
     
-
     eyesPosition.x = (leftEye.x + rightEye.x) / 2;
     eyesPosition.y = ((leftEye.y + rightEye.y) / 2 ) + yOffset;
 
@@ -224,6 +224,7 @@ window.addEventListener('keydown',(e)=> {
   }
 
   else if (e.key == "c") {
+<<<<<<< Updated upstream
     console.log("Initial position: x:",pivot.position.x, "  y: ",pivot.position.y);
     console.log("Final position: x:",pivot.position.x+xOffset, "  y: ",pivot.position.y+yOffset);
     console.log("Factor added: x:",xOffset, "  y: ",yOffset);
@@ -232,6 +233,9 @@ window.addEventListener('keydown',(e)=> {
   }
   else if (e.key == "z") {
     multiplyingFactor += 0.5; 
+=======
+    console.log(posesForConfidence[0].keypoints);
+>>>>>>> Stashed changes
   }
 });
 
@@ -247,7 +251,7 @@ async function app() {
       createDetector(),
       loadModel(MODELS.MEGAN)
   ]);
-  
+  posesForConfidence = detector.estimatePoses(camera);
   [mesh, pivot] = setUpModel(model);
 
   pivot.scale.set( 1,1,1);
