@@ -1,24 +1,5 @@
 import {getPart} from "./posenet";
-
-export function  rotateJoint(jointA,jointB,jointC,poses) {
-    let jA = getPart(jointA, poses)[0];
-    let jB = getPart(jointB, poses)[0];
-    let jC = getPart(jointC, poses)[0];
-
-   // console.log(jA);
-    //console.log(jB);
-    //console.log(jC);
-    
-    let angle = (p1,p2,p3) => {
-        const p13 = Math.sqrt(Math.pow((p1.x - p3.x), 2) + Math.pow((p1.y - p3.y), 2));
-        const p12 = Math.sqrt(Math.pow((p1.x - p2.x), 2) + Math.pow((p1.y - p2.y), 2));
-        const p23 = Math.sqrt(Math.pow((p2.x - p3.x), 2) + Math.pow((p2.y - p3.y), 2));
-        const resultRadian = Math.acos(((Math.pow(p12, 2)) + (Math.pow(p13, 2)) - (Math.pow(p23, 2))) / (2 * p12 * p13));
-        return resultRadian;
-    }
-    let Angle = angle(jA,jB,jC)
-    return {Angle};
-}
+import { Vector3 } from "three";
 
 export function getFacePose(keypoints) {
 	const nose = getPart("nose", keypoints)[0];
@@ -82,4 +63,62 @@ export function getAngle(p1, p2, c1, c2, m) {
       return (Math.atan2(p2.y - p1.y, p2.x - p1.x) + c1) * m;
     }
     return c2 * m
-}  
+}
+
+export function getWorldCoords(x, y, height, width, camera) {
+    const normalizedPointOnScreen = new Vector3();
+    normalizedPointOnScreen.x = -((x / width) * 2 - 1);
+    normalizedPointOnScreen.y = -(y / height) * 2 + 1;
+    normalizedPointOnScreen.z = 0.0; // set to z position of mesh objects
+    normalizedPointOnScreen.unproject(camera);
+    normalizedPointOnScreen.sub(camera.position).normalize();
+    const distance = -camera.position.z / normalizedPointOnScreen.z,
+        scaled = normalizedPointOnScreen.multiplyScalar(distance),
+        coords = camera.position.clone().add(scaled);
+    return new Vector3(coords.x, coords.y, coords.z);
+}
+
+export function getDirection(coords) {
+    const summed_nums = coords.reduce(function (a, b) { return a + b; }, 0);
+    let multiplied_data = 0;
+    let summed_index = 0;
+    let squared_index = 0;
+
+    coords.forEach((num, index) => {
+        index += 1;
+        multiplied_data += index * num;
+        summed_index += index;
+        squared_index += index ** 2;
+    });
+
+    const numerator = (coords.length * multiplied_data) - (summed_nums * summed_index)
+    const denominator = (coords.length * squared_index) - summed_index ** 2;
+    if (denominator == 0) return 0;
+    const direction = numerator / denominator;
+    if (direction > 5) {
+        return "left";
+    } else if (direction < -5) {
+        return "right";
+    }
+    return direction;
+}
+
+export function rotateJoint(firstPoint, secondPoint, joint) {
+
+}
+
+function getLeftShoulderRotation(params) {
+    
+}
+
+function getRightShoulderRotation(params) {
+    
+}
+
+function getRightForearmRotation(params) {
+    
+}
+
+function getLeftForearmRotation(params) {
+    
+}

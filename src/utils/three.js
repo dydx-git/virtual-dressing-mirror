@@ -34,6 +34,9 @@ export function setUpModel(model) {
       child.frustumCulled = false;
       console.log(`${child.name} should not be culled anymore`);
     }
+    if (child.type == 'Bone') {
+      console.log(child?.name);
+    }
   })
   const pivot = new THREE.Group();
   pivot.add(mesh);

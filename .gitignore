@@ -3,3 +3,5 @@ node_modules
 dist/*.js
 dist/*.map
 commit_history.txt
+dist/assets
+.vscode

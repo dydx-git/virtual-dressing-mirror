@@ -1,93 +1,27 @@
-import {getPart, getFacePose} from "./posenet";
-import * as THREE from "three/build/three.module";
-import {rotateJoint} from "./transform";
+export const RIGGED_MODELS = {
+  ANDROM: { path: "Androm/Androm.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1 } },
+  COSTUME: { path: "alien/alienSuit.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1 } },
+  DOUG: { path: "Doug/Doug.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1 } },
+  ELLY: { path: "Elly/Elly.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1 } },
+  JASPER: { path: "Jasper/Jasper.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1 } },
+  JODY: { path: "Jody/Jody.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1 } },
+  KATE: { path: "Kate/Kate.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1 } },
+  LOUISE: { path: "Louise/Louise.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1 } },
+  MICKEY: { path: "mickey.fbx", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 3.5, y: 0 }, scale: { x: 0.1, y: 0.1, z: 0.1 } },
+  MEGAN: { path: "Megan/Megan.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1 } },
+  REMY: { path: "Remy/Remy.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -6.099999999999994 }, scale: { x: 2.0699999999999994, y: 2.0699999999999994, z: 1 } },
+  ROTH: { path: "Roth/Roth.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0.7999999999999999, y: -5.899999999999995 }, scale: { x: 4.299999999999952, y: 4.299999999999952, z: 1 } },
+};
 
-let pitchFactor = 75;
-const raycaster = new THREE.Raycaster();
-const meshPosition = new THREE.Vector2();
-
-export function FaceRotation(pivot,poses){
-    const { yaw, pitch } = getFacePose(poses[0]);
-
-    let normalizedYaw = (yaw - 90) * (Math.PI / 180);
-    let normalizedPitch = (pitch - 75) * (Math.PI / 180);
-    if (normalizedYaw) {
-        pivot.rotation.y = normalizedYaw; // Left Right
-        pivot.rotation.x = -normalizedPitch; // Up down
-       }
-    return pivot;
-}
-
-export function Mask(poses, xOffset, yOffset){
-    
-    const nose = getPart("nose", poses[0])[0];
-    meshPosition.x = nose.x + xOffset;
-    meshPosition.y = nose.y + yOffset;
-  
-    return meshPosition;
-    
-}
-
-export function Glasses(poses, xOffset, yOffset){
-    const leftEye = getPart("left_eye", poses[0])[0];
-    const rightEye = getPart("right_eye", poses[0])[0];
-    const eyesPosition = new THREE.Vector2();
-    eyesPosition.x = ((leftEye.x + rightEye.x) / 2) + xOffset;
-    eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
-
-    return eyesPosition;
-}
-
-export function TraverseBones( mesh,poses, xOffset, yOffset){
-    //pivot.position.set(0, -1, 1);
-
-    const leftArmPoints = rotateJoint('right_shoulder', 'left_shoulder','left_elbow',poses[0]);
-    const leftForeArmPoints = rotateJoint('left_shoulder', 'left_elbow','left_wrist',poses[0]);
-    const rightArmPoints = rotateJoint('left_shoulder', 'right_shoulder','right_elbow',poses[0]);
-    const rightForeArmPoints = rotateJoint('right_shoulder','right_elbow','right_wrist',poses[0]);
-
-    mesh.traverse(function (child) {
-        if (child.isBone) {
-            if (
-              [
-                "mixamorigLeftForeArm",
-                "mixamorigLeftShoulder",
-                "mixamorigLeftArm",
-                "mixamorigLeftHand",
-              ].includes(child.name)
-            ) 
-
-
-            if(child.isBone && child.name === 'mixamorigRightForeArm'){
-                child.rotation.x = (rightForeArmPoints.Angle) * 1.8;
-                // controls.attach(child);
-              }
-  
-              if(child.isBone && child.name === 'mixamorigRightArm'){
-                child.rotation.x = (rightArmPoints.Angle) * 1.8;
-                // controls.attach(child);
-              }
-              if(child.isBone && child.name === 'mixamorigLeftForeArm'){
-                child.rotation.x = (leftForeArmPoints.Angle) * 2;
-                // controls.attach(child);
-              }
-              if(child.isBone && child.name === 'mixamorigLeftArm'){
-                child.rotation.x = (leftArmPoints.Angle) * 2;
-                // controls.attach(child);
-              }
-            }
-          });
-
-            const meshPosition = new THREE.Vector2();
-            let rightShoulder = getPart("right_shoulder", poses[0])[0];
-            let leftShoulder = getPart("left_shoulder", poses[0])[0];
-           // raycaster.setFromCamera(meshPosition, camera);
-           // const dist = pivot.position.clone().sub(camera.position).length();
-            //raycaster.ray.at(dist, pivot.position);
-            meshPosition.x = ((leftShoulder.x + rightShoulder.x) / 2) + xOffset;
-            meshPosition.y = ((leftShoulder.y + rightShoulder.y) / 2) + yOffset;
-        
-            
-            return meshPosition;
-}
-
+export const UNRIGGED_MODELS = {
+  BLACK_GLASSES: { path: "kismet_glasses/scene.gltf", positionKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0.1, y: -0.2 }, scale: { x: 11.219999999999805, y: 11.219999999999805, z: 1 } },
+  EYES: { path: "eyes/scene.gltf", positionKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0, y: 0 }, scale: { x: 1, y: 1, z: 1 } },
+  FUNK_TIARA: { path: "funk_glasses/scene.gltf", positionKeyPoint: ["left_eye", "right_eye"], offsets: { x: -0.20000000000000004, y: 3.0000000000000013 }, scale: { x: 0.7799999999999998, y: 0.7799999999999998, z: 1 } },
+  FMOUSE: { path: "fluffy_mustach/scene.gltf", positionKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0, y: 0.1 }, scale: { x: 21.23000000000052, y: 21.23000000000052, z: 1 } },
+  HEART_GLASSES: { path: "heart-shaped_glasses/scene.gltf", positionKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0, y: -0.5 }, scale: { x: 1.1, y: 1.1, z: 1 } },
+  KMOUSE: { path: "kaiser_mustache/scene.gltf", positionKeyPoint: ["mouth_left", "mouth_right"], offsets: { x: 0, y: 0.12 }, scale: { x: 15, y: 15, z: 15 } },
+  LENS: { path: "Lens.gltf", positionKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0, y: -0.19999999999999982 }, scale: { x: 0.2099999999999993, y: 0.2099999999999993, z: 1 } },
+  MASK: { path: "Mask/mask.gltf", positionKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0, y: 0 }, scale: { x: 2.459999999999991, y: 2.459999999999991, z: 1 } },
+  QUARTZ: { path: "Quartz_glasses/scene.gltf", positionKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0, y: -0.2 }, scale: { x: 4.799999999999941, y: 4.799999999999941, z: 1 } },
+  SPECTACLES: { path: "glasses/scene.gltf", positionKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0.1, y: -0.5 }, scale: { x: 2.549999999999989, y: 2.549999999999989, z: 1 } },
+};

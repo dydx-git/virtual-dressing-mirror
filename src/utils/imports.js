@@ -2,12 +2,11 @@ import * as THREE from "three/build/three.module";
 import Stats from "stats.js/build/stats.min.js";
 import { Camera } from './camera';
 import { STATE } from "./params";
+import { RIGGED_MODELS, UNRIGGED_MODELS } from "./models";
 import { getPart, createDetector } from "./posenet";
 import { getTHREEbasics, setUpModel, loadModel, setUpTHREEDCamera } from "./three";
-import {Mask, Glasses, FaceRotation} from "./models";
-import { getFacePose, getAngle } from "./transform";
-import { TraverseBones} from "./models";
-import { getWorldCoords } from "./getWorldCoord";
+import { getFacePose, getAngle, getWorldCoords, getDirection } from "./transform";
+import { addKeybinding } from "./keyboard";
 
 export function getImports() {
 	return {
@@ -15,18 +14,18 @@ export function getImports() {
 		Stats, 
 		Camera,
 		STATE,
+		RIGGED_MODELS,
+		UNRIGGED_MODELS,
 		getPart,
 		createDetector,
 		getTHREEbasics, 
 		setUpModel,
 		loadModel,
 		setUpTHREEDCamera,
-		Mask, 
-		Glasses,
-		FaceRotation,
 		getFacePose,
 		getAngle,
-		TraverseBones,
-		getWorldCoords
+		getWorldCoords,
+		getDirection,
+		addKeybinding
 	};
 }
