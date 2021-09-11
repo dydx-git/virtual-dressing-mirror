@@ -47,6 +47,7 @@ let rightHandCoords = [];
 let startedTime = Date.now();
 let multiplyingFactor = 1;
 let offsetX, offsetY, scaleX, scaleY, scaleZ;
+// #endregion
 
 async function renderResult(poses) {
   if (camera.video.readyState < 2) {
@@ -79,19 +80,29 @@ async function animate() {
     // #region Model Position
     const concernedKeypoints = modelType[selectedModel].positionKeyPoint;
     const keyPointPosition = new Vector3();
+    let confidenceScoreOfKeyPoints = 0;
     if (concernedKeypoints.length === 2) {
       const leftKeyPoint = getPart(concernedKeypoints[0], poses[0])[0];
       const rightKeyPoint = getPart(concernedKeypoints[1], poses[0])[0];
       keyPointPosition.x = ((leftKeyPoint.x + rightKeyPoint.x) / 2);
       keyPointPosition.y = ((leftKeyPoint.y + rightKeyPoint.y) / 2);
+
+      confidenceScoreOfKeyPoints = ((leftKeyPoint.score + rightKeyPoint.score) / 2);
+
     } else if (concernedKeypoints.length === 1) {
       const keyPoint = getPart(concernedKeypoints[0], poses[0])[0];
       keyPointPosition.x = keyPoint.x;
       keyPointPosition.y = keyPoint.y;
+
+      confidenceScoreOfKeyPoints = keyPoint.score;
     }
 
     const threeDPosition = getWorldCoords(keyPointPosition.x, keyPointPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
-    pivot.position.set(threeDPosition.x, threeDPosition.y, 1);
+    if (confidenceScoreOfKeyPoints > 0.5) {
+      pivot.position.set(threeDPosition.x, threeDPosition.y, 1);
+    } else {
+      pivot.position.set(1, 1, -6);
+    }
     // #endregion
 
     // #region Model Rotation

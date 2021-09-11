@@ -51,7 +51,7 @@ const UNRIGGED_MODELS = {
   EYES:  { Path: "eyes/scene.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: 0 }, scale: { x: 1, y: 1, z: 1} },
   LENS: { Path: "Lens.gltf", concernedKeyPoint: ["left_eye", "right_eye"], offsets: { x: 0 , y: -0.19999999999999982 }, scale: { x: 0.2099999999999993, y: 0.2099999999999993, z: 1} },
 };
-
+selectedArray[selectedModel].concernedKeyPoint
 let selectedArray = RIGGED_MODELS;
 let selectedModel = "ROTH";
 let loadingMODEL = selectedArray[selectedModel].Path;
@@ -259,57 +259,57 @@ function getDirection(coords) {
 }
 
 // Arrow key bindings with ctrl & alt to position and scale the model. 
-window.addEventListener('keydown', (e) => {
-  if (e.ctrlKey) {
-    switch (e.key) {
-      case "ArrowUp": {
-        //yOffset +=10;
-        yOffset += 0.1;
-        break;
-      }
-      case "ArrowDown": {
-        //yOffset -=10;
-        yOffset -= 0.1;
-        break;
-      }
-      case "ArrowRight": {
-        xOffset += 0.1;
-        break;
-      }
-      case "ArrowLeft": {
-        xOffset -= 0.1;
-        break;
-      }
-    }
-  }
+// window.addEventListener('keydown', (e) => {
+//   if (e.ctrlKey) {
+//     switch (e.key) {
+//       case "ArrowUp": {
+//         //yOffset +=10;
+//         yOffset += 0.1;
+//         break;
+//       }
+//       case "ArrowDown": {
+//         //yOffset -=10;
+//         yOffset -= 0.1;
+//         break;
+//       }
+//       case "ArrowRight": {
+//         xOffset += 0.1;
+//         break;
+//       }
+//       case "ArrowLeft": {
+//         xOffset -= 0.1;
+//         break;
+//       }
+//     }
+//   }
 
-  else if (e.shiftKey) {
-    switch (e.key) {
-      case "ArrowUp": {
-        pivot.scale.x += 0.01;
-        pivot.scale.y += 0.01;
-        break;
-      }
-      case "ArrowDown": {
-        pivot.scale.x -= 0.01;
-        pivot.scale.y -= 0.01;
-        break;
-      }
+//   else if (e.shiftKey) {
+//     switch (e.key) {
+//       case "ArrowUp": {
+//         pivot.scale.x += 0.01;
+//         pivot.scale.y += 0.01;
+//         break;
+//       }
+//       case "ArrowDown": {
+//         pivot.scale.x -= 0.01;
+//         pivot.scale.y -= 0.01;
+//         break;
+//       }
 
-    }
-  }
+//     }
+//   }
 
-  else if (e.key == "c") {
-    console.log("Initial position: x:", pivot.position.x, "  y: ", pivot.position.y);
-    console.log("Final position: x:", pivot.position.x + xOffset, "  y: ", pivot.position.y + yOffset);
-    console.log("Factor added: x:", xOffset, "  y: ", yOffset);
-    console.log("multiplyingFactor:", multiplyingFactor);
-    console.log("pivot.scale: ", pivot.scale )
-  }
-  else if (e.key == "z") {
-    multiplyingFactor += 0.5;
-  }
-});
+//   else if (e.key == "c") {
+//     console.log("Initial position: x:", pivot.position.x, "  y: ", pivot.position.y);
+//     console.log("Final position: x:", pivot.position.x + xOffset, "  y: ", pivot.position.y + yOffset);
+//     console.log("Factor added: x:", xOffset, "  y: ", yOffset);
+//     console.log("multiplyingFactor:", multiplyingFactor);
+//     console.log("pivot.scale: ", pivot.scale )
+//   }
+//   else if (e.key == "z") {
+//     multiplyingFactor += 0.5;
+//   }
+// });
 
 async function app() {
   camera = await Camera.setupCamera(STATE.camera);
