@@ -48,7 +48,6 @@ let startedTime = Date.now();
 let multiplyingFactor = 1;
 let offsetX, offsetY, scaleX, scaleY, scaleZ;
 
-let testScore;
 let leftKeyPoint, rightKeyPoint;
 
 async function renderResult(poses) {
@@ -87,7 +86,7 @@ async function animate() {
       rightKeyPoint = getPart(concernedKeypoints[1], poses[0])[0];
       keyPointPosition.x = ((leftKeyPoint.x + rightKeyPoint.x) / 2);
       keyPointPosition.y = ((leftKeyPoint.y + rightKeyPoint.y) / 2);
-      testScore =  getPart(concernedKeypoints[0], poses[0]);
+
     } else if (concernedKeypoints.length === 1) {
       const keyPoint = getPart(concernedKeypoints[0], poses[0])[0];
       keyPointPosition.x = keyPoint.x;
@@ -98,7 +97,7 @@ async function animate() {
     if ((leftKeyPoint.score > 0.5) || (rightKeyPoint.score > 0.5)) {
       pivot.position.set(threeDPosition.x, threeDPosition.y, 1);
     } else {
-      pivot.position.set(1, -1, 1);
+      pivot.position.set(1, 1, 1);
     }
     // #endregion
 
