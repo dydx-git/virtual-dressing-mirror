@@ -206,6 +206,22 @@ async function app(modelConfig) {
   animate();
 };
 
+let listOfModels = document.getElementById('model-select');
+for (const model in RIGGED_MODELS) {
+  let optionTag = document.createElement('OPTION');
+  optionTag.setAttribute('value',`${model}`)
+  optionTag.innerHTML = `${RIGGED_MODELS[model].desp}`;
+  listOfModels.appendChild(optionTag)
+
+}
+for (const model in UNRIGGED_MODELS) {
+  let optionTag = document.createElement('OPTION');
+  optionTag.setAttribute('value',`${model}`)
+  optionTag.innerHTML = `${UNRIGGED_MODELS[model].desp}`;
+  listOfModels.appendChild(optionTag)
+
+}
+
 document.getElementById('model-select').addEventListener('change', function () {
   if (UNRIGGED_MODELS[this.value] != undefined) {
     modelType = UNRIGGED_MODELS;
