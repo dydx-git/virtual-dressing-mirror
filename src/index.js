@@ -48,6 +48,9 @@ let startedTime = Date.now();
 let multiplyingFactor = 1;
 let offsetX, offsetY, scaleX, scaleY, scaleZ;
 
+let testScore;
+let leftKeyPoint, rightKeyPoint;
+
 async function renderResult(poses) {
   if (camera.video.readyState < 2) {
     await new Promise((resolve) => {
@@ -80,10 +83,11 @@ async function animate() {
     const concernedKeypoints = modelType[selectedModel].positionKeyPoint;
     const keyPointPosition = new Vector3();
     if (concernedKeypoints.length === 2) {
-      const leftKeyPoint = getPart(concernedKeypoints[0], poses[0])[0];
-      const rightKeyPoint = getPart(concernedKeypoints[1], poses[0])[0];
+      leftKeyPoint = getPart(concernedKeypoints[0], poses[0])[0];
+      rightKeyPoint = getPart(concernedKeypoints[1], poses[0])[0];
       keyPointPosition.x = ((leftKeyPoint.x + rightKeyPoint.x) / 2);
       keyPointPosition.y = ((leftKeyPoint.y + rightKeyPoint.y) / 2);
+      testScore =  getPart(concernedKeypoints[0], poses[0]);
     } else if (concernedKeypoints.length === 1) {
       const keyPoint = getPart(concernedKeypoints[0], poses[0])[0];
       keyPointPosition.x = keyPoint.x;
@@ -91,7 +95,11 @@ async function animate() {
     }
 
     const threeDPosition = getWorldCoords(keyPointPosition.x, keyPointPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
-    pivot.position.set(threeDPosition.x, threeDPosition.y, 1);
+    if ((leftKeyPoint.score > 0.5) || (rightKeyPoint.score > 0.5)) {
+      pivot.position.set(threeDPosition.x, threeDPosition.y, 1);
+    } else {
+      pivot.position.set(1, -1, 1);
+    }
     // #endregion
 
     // #region Model Rotation
@@ -215,3 +223,22 @@ document.getElementById('model-select').addEventListener('change', function () {
   selectedModel = this.value;
   app(modelType[selectedModel]);
 });
+
+// #region Console test data 
+
+window.addEventListener('keydown', (e) => {
+  if (e.key == "c") {
+    // console.log("Initial position: x:", pivot.position.x, "  y: ", pivot.position.y);
+    // console.log("Final position: x:", pivot.position.x + xOffset, "  y: ", pivot.position.y + yOffset);
+    // console.log("Factor added: x:", xOffset, "  y: ", yOffset);
+    // console.log("multiplyingFactor:", multiplyingFactor);
+    // console.log("pivot.scale: ", pivot.scale )
+
+    console.log(testScore);
+  }
+  else if (e.key == "z") {
+    multiplyingFactor += 0.5;
+  }
+});
+
+//#endregion
