@@ -47,9 +47,7 @@ let rightHandCoords = [];
 let startedTime = Date.now();
 let multiplyingFactor = 1;
 let offsetX, offsetY, scaleX, scaleY, scaleZ;
-
-let leftKeyPoint, rightKeyPoint;
-let confidenceScoreOfKeyPoints;
+// #endregion
 
 async function renderResult(poses) {
   if (camera.video.readyState < 2) {
@@ -82,13 +80,14 @@ async function animate() {
     // #region Model Position
     const concernedKeypoints = modelType[selectedModel].positionKeyPoint;
     const keyPointPosition = new Vector3();
+    let confidenceScoreOfKeyPoints = 0;
     if (concernedKeypoints.length === 2) {
-      leftKeyPoint = getPart(concernedKeypoints[0], poses[0])[0];
-      rightKeyPoint = getPart(concernedKeypoints[1], poses[0])[0];
+      const leftKeyPoint = getPart(concernedKeypoints[0], poses[0])[0];
+      const rightKeyPoint = getPart(concernedKeypoints[1], poses[0])[0];
       keyPointPosition.x = ((leftKeyPoint.x + rightKeyPoint.x) / 2);
       keyPointPosition.y = ((leftKeyPoint.y + rightKeyPoint.y) / 2);
 
-      confidenceScoreOfKeyPoints = ((leftKeyPoint.score + rightKeyPoint.score)/2);
+      confidenceScoreOfKeyPoints = ((leftKeyPoint.score + rightKeyPoint.score) / 2);
 
     } else if (concernedKeypoints.length === 1) {
       const keyPoint = getPart(concernedKeypoints[0], poses[0])[0];
