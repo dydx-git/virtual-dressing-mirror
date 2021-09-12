@@ -1,5 +1,6 @@
 import { math } from "@tensorflow/tfjs-core";
 import { Vector3 } from "three";
+import { Vector2 } from "three/build/three.module";
 import {
   getImports
 } from "./utils/imports";
@@ -58,19 +59,22 @@ const scene = getTHREEbasics();
 let detector, camera;
 let mesh, pivot, threeDCam;
 let leftEye, rightEye, nose;
-let yOffsetPosition = 420; // Knee = 240, Hips = 420
-let xOffsetPosition = 0
+let yOffsetPosition = 540; // Knee = 240, Hips = 420
+let xOffsetPosition = -60;
 let startedTime = Date.now();
 let rightHandCoords = [];
 let rightShoulder, leftShoulder, rightHip, leftHip;
 let shoulderAdjustment = 0;
 let multiplyingFactor = 5.5; // HACK: At distance of 83 inches
+let multiplyingFactorY = 1;
+let multiplyingFactorTemporary = 0.1;
 let lips;
 // Testing variables 
 let rightAnkle, leftAnkle; // Position: 28, 27
 let rightKnee, leftKnee; // Position: 26, 25
 let rightFootIndex, leftFootIndex; // Position: 32,31
-
+let MeanPosition;
+//let referencedBodyPartsVector;
 //
 let eyesPosition = new Vector3();
 
@@ -91,6 +95,21 @@ async function renderResult(poses) {
     camera.drawResults(poses);
   }
 }
+
+// const referencedBodyParts = () => {
+//   leftShoulder = getPart("left_shoulder", poses[0])[0]; // at pos: 2
+//   rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
+
+//   leftHip = getPart("left_hip", poses[0])[0];
+//   rightHip = getPart("right_hip", poses[0])[0];
+
+//   const MeanPositionVector = new Vector3();
+
+//   MeanPositionVector.x = ((((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2) + xOffsetPosition;
+//   MeanPositionVector.y = ((((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2) + yOffsetPosition;
+
+//   return MeanPositionVector;
+// }
 
 async function animate() {
   const poses = await detector.estimatePoses(
@@ -139,13 +158,14 @@ async function animate() {
       startedTime = Date.now();
     }
 
-    const MeanPosition = new Vector3();
+    MeanPosition = new Vector3();
     const hipMeanPosition = new Vector3();
     const kneeMeanPosition = new Vector3();
 
-    MeanPosition.x = (((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2;
-    MeanPosition.y = (((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2;
+    MeanPosition.x = ((((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2) + xOffsetPosition;
+    MeanPosition.y = ((((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2) + yOffsetPosition;
 
+    //MeanPosition.y = (referencedBodyPartsVector.y/MeanPosition.y)*MeanPosition.y;
     // eyesPosition.x = (leftEye.x + rightEye.x) / 2;
     // eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
               /*ACTUAL POSITION COMMIT */
@@ -159,10 +179,12 @@ async function animate() {
 
     // kneeMeanPosition.x = (leftKnee.x + rightKnee.x)/2;
     // kneeMeanPosition.y = (leftKnee.y + rightKnee.y)/2 + yOffsetPosition; // STATIC VALUE: 240
-
-    const cooridnates = getWorldCoords(hipMeanPosition.x, hipMeanPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
-    pivot.position.set(cooridnates.x *(multiplyingFactor), cooridnates.y, 1);
-
+    const cooridnates = getWorldCoords(MeanPosition.x, MeanPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
+    multiplyingFactorY = (cooridnates.y + 6) * multiplyingFactorTemporary;
+    const temp = multiplyingFactorY * cooridnates.y; 
+    pivot.position.set(cooridnates.x *(multiplyingFactor), cooridnates.y - temp, 1);
+  
+    
     const { yaw, pitch, roll } = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
     let normalizedPitch = (pitch - 75) * (Math.PI / 180);
@@ -172,6 +194,8 @@ async function animate() {
     UIElement.innerHTML = "";
     UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
     //UIElement.innerHTML += `rightWristScore: ${rightWrist.score}`;
+    UIElement.innerHTML += `<h1 style="color:white">multiplier Y: ${multiplyingFactorY}</h1>`;
+    UIElement.innerHTML += `<h1 style="color:white">multiplier Temporary Y: ${multiplyingFactorTemporary }</h1>`;
     mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
@@ -265,15 +289,11 @@ window.addEventListener('keydown', (e) => {
         break;
       }
       case "ArrowRight": {
-        pivot.scale.x += 0.1;
-        pivot.scale.y += 0.1;
-        pivot.scale.z += 0.1;
+        xOffsetPosition += 10;
         break;
       }
       case "ArrowLeft": {
-        pivot.scale.x -= 0.1
-        pivot.scale.y -= 0.1;
-        pivot.scale.z -= 0.1;
+        xOffsetPosition -=10;
         break;
       }
     }
@@ -304,22 +324,23 @@ window.addEventListener('keydown', (e) => {
   }
 
   else if (e.key == "c") {
-    //console.log(yOffset);
-    // console.log("Left shoulder: ",leftShoulder);
-    // console.log("Right shoulder: ",rightShoulder);
-    // console.log("Left hip: ",leftHip);
-    // console.log("Right hip: ",rightHip);
-    // console.log("Right foot index: ",rightFootIndex);
-    // console.log("Left foot index: ",leftFootIndex);
-    // console.log("Left ankle: ",leftAnkle);
-    // console.log("Right ankle: ",rightAnkle);
     console.log("XOffset: ",xOffsetPosition);
     console.log("YOffset: ",yOffsetPosition);
     console.log("Scale: ",pivot.scale);
+    console.log("Mean Position", MeanPosition);
+    console.log(pivot.position);
+    console.log(multiplyingFactorY);
 
   }
   else if (e.key == "z") {
     multiplyingFactor += 0.5; 
+  } else if (e.key == "y") {
+    //multiplyingFactorY +=0.1;
+    multiplyingFactorTemporary +=0.01;
+  } 
+  else if (e.key == "t") {
+    //multiplyingFactorY -=0.1;
+    multiplyingFactorTemporary -=0.01;
   }
 });
 
@@ -340,7 +361,6 @@ async function app() {
 
   //pivot.scale.set(4,4,4);
   pivot.scale.set(18,4,4); // FOR MIRROR SCALING
-
   scene.add(pivot);
 
   threeDCam = setUpTHREEDCamera(camera.video.videoWidth, camera.video.videoHeight);
