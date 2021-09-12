@@ -1,110 +1,34 @@
-<!-- Copyright 2021 Google LLC. All Rights Reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-==============================================================================-->
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0, user-scalable=no">
-  <style>
-    body {
-      margin: 0;
-      background-color: black;
-    }
-
-    #stats {
-      position: relative;
-      width: 100%;
-      height: 80px;
-    }
-
-    #main {
-      position: relative;
-      margin: 0;
-    }
-
-    select {
-      /* Reset */
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      border: 0;
-      outline: 0;
-      font: inherit;
-      /* Personalize */
-      width: 20em;
-      height: 3em;
-      padding: 0 4em 0 1em;
-      background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center/1.4em, linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
-      color: white;
-      border-radius: 0.25em;
-      box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      position: fixed;
-      top: 0px;
-      right: 0px;
-      /* <option> colors */
-      /* Remove focus outline */
-      /* Remove IE arrow */
-    }
-
-    select option {
-      color: inherit;
-      background-color: #320a28;
-    }
-
-    select:focus {
-      outline: none;
-    }
-
-    select::-ms-expand {
-      display: none;
-    }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    .video-container {
-      display: none;
-    }
-
-    #output {
-      opacity: 1;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <title>Pandem</title>
 </head>
-
 <body>
-  <div id="stats"></div>
-  <div id="valueLogger"></div>
-  <div id="main">
     <div class="container">
-      <div class="canvas-wrapper">
-        <canvas id="output" width="1080" height="1920"></canvas>
-        <div class="video-container">
-          <video id="video"></video>
+        <div class="svg-logo">
+            <svg width="305" height="59" viewBox="0 0 305 59" fill="none" xmlns="http://www.w3.org/2000/svg" id="usmani">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M33.5473 26.4877L33.5452 26.4942C32.8794 28.5942 31.8043 30.511 30.3293 32.2403C28.8757 33.953 26.9739 35.3312 24.6553 36.3897L24.647 36.3934L24.6387 36.3971C22.2719 37.4261 19.4399 37.92 16.176 37.92H9.47198V57H0.487976V2.94399H15.456C21.2382 2.94399 25.9157 4.40417 29.3649 7.4415C32.8371 10.4991 34.528 14.7557 34.528 20.072C34.528 22.2385 34.2002 24.3781 33.5473 26.4877ZM8.47198 36.92H16.176C19.344 36.92 22.032 36.44 24.24 35.48C26.448 34.472 28.224 33.176 29.568 31.592C30.96 29.96 31.968 28.16 32.592 26.192C33.216 24.176 33.528 22.136 33.528 20.072C33.528 14.984 31.92 11.024 28.704 8.19199C25.488 5.35999 21.072 3.94399 15.456 3.94399H1.48798V56H8.47198V36.92ZM23.5838 25.9521L23.5927 25.9405C24.3446 24.9675 24.8577 23.996 25.1536 23.0263C25.4698 21.9408 25.616 21.0074 25.616 20.216C25.616 18.9884 25.3202 17.6884 24.6966 16.3076L24.691 16.2952L24.6858 16.2827C24.1452 14.9937 23.2254 13.8919 21.8791 12.9799L21.8728 12.9756L21.8665 12.9712C20.6517 12.1209 18.9098 11.64 16.536 11.64H9.47198V29.08H16.176C18.089 29.08 19.6101 28.784 20.7818 28.243C21.9978 27.6329 22.9171 26.8687 23.5752 25.9638L23.5838 25.9521ZM21.216 29.144C19.872 29.768 18.192 30.08 16.176 30.08H8.47198V10.64H16.536C19.032 10.64 21 11.144 22.44 12.152C23.928 13.16 24.984 14.408 25.608 15.896C26.28 17.384 26.616 18.824 26.616 20.216C26.616 21.128 26.448 22.16 26.112 23.312C25.776 24.416 25.2 25.496 24.384 26.552C23.616 27.608 22.56 28.472 21.216 29.144Z" stroke="white"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M30.7998 57L54.3911 0.783997H56.1528L79.7441 57H69.4956L64.0956 43.32H45.4337L39.8897 57H30.7998ZM44.76 42.32H64.776L70.176 56H78.24L55.488 1.784H55.056L32.304 56H39.216L44.76 42.32ZM62.4 36.272L54.984 17.336L47.208 36.272H62.4ZM48.6997 35.272H60.9344L54.962 20.0221L48.6997 35.272Z" stroke="white"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M132.214 58.656L95.4095 21.3664L95.5479 57H86.488V1.35999H88.2709L124.999 39.1963L124.86 2.94399H133.848V58.656H132.214ZM126.008 41.672L87.848 2.35999H87.488V56H94.544L94.4 18.92L132.632 57.656H132.848V3.94399H125.864L126.008 41.672Z" stroke="white"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M147.488 57V2.94399H162.744C167.976 2.94399 172.487 3.74981 176.246 5.40241C179.962 6.98898 182.997 9.13636 185.318 11.8593C187.656 14.5474 189.356 17.5426 190.406 20.8401C191.494 24.0564 192.04 27.3056 192.04 30.584C192.04 34.5934 191.322 38.2607 189.867 41.5703L189.865 41.5754C188.42 44.8138 186.446 47.5913 183.941 49.8959C181.446 52.1913 178.577 53.9613 175.343 55.2053L175.335 55.2084C172.147 56.4041 168.787 57 165.264 57H147.488ZM189.456 21.152C188.448 17.984 186.816 15.104 184.56 12.512C182.352 9.91999 179.448 7.85599 175.848 6.31999C172.248 4.73599 167.88 3.94399 162.744 3.94399H148.488V56H165.264C168.672 56 171.912 55.424 174.984 54.272C178.104 53.072 180.864 51.368 183.264 49.16C185.664 46.952 187.56 44.288 188.952 41.168C190.344 38 191.04 34.472 191.04 30.584C191.04 27.416 190.512 24.272 189.456 21.152ZM173.601 46.1056L173.606 46.1027C176.462 44.6977 178.693 42.6679 180.32 40.0021C181.936 37.3085 182.768 34.0161 182.768 30.08C182.768 26.0002 181.888 22.6446 180.187 19.959L180.181 19.9489C178.501 17.2245 176.263 15.1697 173.457 13.7664L173.451 13.7635C170.665 12.3474 167.7 11.64 164.544 11.64H156.472V48.232H163.896C167.555 48.232 170.782 47.515 173.601 46.1056ZM155.472 49.232V10.64H164.544C167.856 10.64 170.976 11.384 173.904 12.872C176.88 14.36 179.256 16.544 181.032 19.424C182.856 22.304 183.768 25.856 183.768 30.08C183.768 34.16 182.904 37.64 181.176 40.52C179.448 43.352 177.072 45.512 174.048 47C171.072 48.488 167.688 49.232 163.896 49.232H155.472Z" stroke="white"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M202.488 2.94399H238.328V11.64H211.472V25.48H235.448V34.176H211.472V48.232H239.336V57H202.488V2.94399ZM210.472 49.232V33.176H234.448V26.48H210.472V10.64H237.328V3.94399H203.488V56H238.336V49.232H210.472Z" stroke="white"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M250.488 57V1.28799H252.079L277.198 36.9205L302.67 1.28799H304.256V57H295.344V25.521L277.709 50.448H276.535L259.256 26.4158V57H250.488ZM258.256 23.312L277.048 49.448H277.192L296.344 22.376V56H303.256V2.28799H303.184L277.192 38.648L251.56 2.28799H251.488V56H258.256V23.312Z" stroke="white"/>
+            </svg> 
         </div>
-        <div id="webglContainer"></div>
-      </div>
     </div>
-    <select id="model-select">
-      <option value="nothing">Please select one</option>
-    </select>
-
-  </div>
+        
+    <div class="container2">
+        <h1 data-searching-tag class="searching-tag"></h1>
+        <div class="lottie-svg"></div>
+        <video id="videoInput" width="640" height="480" muted autoplay></video>
+        <a id="goingLeft" href="/dashboard.html"><span></span></a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.8/lottie.min.js" integrity="sha512-w58XJ/0dVbEfZVJoJyBUOTMGBWmIW4jEYJSA0898d2L0Ghpum0FvwK7qTuHhkTctApzrchv3Neli+28ajI4+fg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./src/index.js"></script>
 </body>
-<script src="src/index.js"></script>
-
 </html>

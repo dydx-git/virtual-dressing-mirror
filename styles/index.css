@@ -1,0 +1,129 @@
+body {
+    margin: 0;
+    background-color: #000000;
+    height: 100vh;
+    color: #e4e4e4;
+    font-family: "Bahnschrift", Times, serif;
+}
+
+.container{
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.container .svg-logo {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+#usmani {
+    height: 100vh;
+    width: 90%;
+    /* background-color: red; */
+}
+
+
+.container2 {
+    color: #e4e4e4;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.container2 h1 {
+    font-size: 5rem;
+    margin-bottom: 4rem;
+    align-self: center;
+    text-align: center;
+    animation: strobe 2s linear 0s infinite alternate ;
+}
+
+
+@keyframes strobe {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+@keyframes anti-strobe {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+
+.lottie-svg {
+    pointer-events: none;
+    width: 80%;
+}
+
+
+.button-demo a {
+    position: absolute;
+    bottom: 20px;
+    z-index: 2;
+    display: inline-block;
+    transform: translate(0, -50%);
+    color: #fff;
+    letter-spacing: .1em;
+    text-decoration: none;
+    transition: opacity .3s;
+}
+
+.button-demo a:hover {
+opacity: .5;
+}
+
+#goingLeft a {
+    padding-top: 50px;
+}
+#goingLeft a span {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 35px;
+    height: 35px;
+    margin-left: -12px;
+    border-right: 3px solid #ededed;
+    border-bottom: 3px solid #ededed;
+    transform: rotate(-45deg);
+    animation: buttonAnimation 2s infinite;
+    box-sizing: border-box;
+}
+
+/* @keyframes buttonAnimation {
+    0% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      transform: rotate(-45deg) translate(10px, 10px);
+    }
+    40% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+} */
+
+.hide {
+    animation: anti-strobe 2s linear 0s;
+}
+
+video {
+    z-index: -10;
+    position: absolute;
+    left: -50px;
+    opacity: 0;
+}
+
+.fade {
+    transition: all 0.4s ease-out;
+    opacity: 0;
+}
+

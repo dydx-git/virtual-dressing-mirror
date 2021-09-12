@@ -1,0 +1,166 @@
+/* ---------------------HTML TAGS----------------------- */
+* {
+    background-color: #000000;
+    /* font-family: 'SegoeUI', sans-serif; */
+    /* font-family: 'Kanit', sans-serif; */
+    /* font-family: 'Yanone Kaffeesatz', sans-serif; */
+    /* font-family: 'Open Sans Condensed', sans-serif; */
+    font-family: 'Raleway', sans-serif;
+    font-weight: 200;
+    color: #eeeeee;
+}
+
+html {
+    background-color: #000000;
+}
+
+h1,h2,h3 {
+    margin: 0;
+    padding: 5px;
+}
+
+ul {
+    margin: 0;
+    list-style: none;
+    font-size: 3rem;
+    padding-inline-start: 0;
+}
+
+li {
+    width: 600px;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+li.show {
+    height: 2em;
+    margin: 0;
+}
+
+/* --------------------CONTAINERS------------------------ */
+
+.main-container,.notification-container, .button-container{
+    display: flex;
+    padding: 20px;
+}
+
+/* -------------------DATE/TIME & WEATHER----------------------- */
+
+.main-container {
+    text-shadow:0px 0px 20px #cdcdcd, 
+                0px 0px 30px #eeeeee,
+                0px 0px 40px #eeeeee;
+    font-size: 3.5rem;
+    background-color: #000000;
+    align-items: baseline;
+    justify-content: space-between;
+    animation: fadeIn 0.5s;
+}
+
+.left-container {
+    text-align: start;
+}
+
+.weather-image {
+    padding-left: 8px;
+    width: 125px;
+}
+
+.right-container {
+    text-align: end;
+}
+
+.top-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ---------------------SWITCHING BUTTON--------------------- */
+
+.button-container {
+    position: absolute;
+    bottom: 50%;
+    right: 50px;
+}
+
+.button-demo a {
+    position: absolute;
+    bottom: 20px;
+    z-index: 2;
+    display: inline-block;
+    transform: translate(0, -50%);
+    color: #fff;
+    letter-spacing: .1em;
+    text-decoration: none;
+    transition: opacity .3s;
+}
+
+.button-demo a:hover {
+opacity: .5;
+}
+
+#goingLeft a {
+    padding-top: 50px;
+}
+#goingLeft a span {
+    position: absolute;
+    top: 100px;
+    width: 35px;
+    height: 35px;
+    margin-left: -12px;
+    border-right: 3px solid #ededed;
+    border-bottom: 3px solid #ededed;
+    transform: rotate(-45deg);
+    animation: buttonAnimation 2s infinite;
+    box-sizing: border-box;
+}
+
+/* ------------------NOTIFICATION CONTAINER---------------- */
+
+.notification-container {
+    position: absolute;
+    bottom: 0px;
+}
+
+.fade li {
+    transition: all 0.4s ease-out;
+    opacity: 0;
+    height: 2em;
+}
+
+.fade li.show {
+    opacity: 1;
+}
+
+.fa-whatsapp{
+    color: #25D366;
+}
+
+
+
+/*--------------------- ANIMATIONS-------------------- */
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes buttonAnimation {
+    0% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      transform: rotate(-45deg) translate(10px, 10px);
+    }
+    40% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+  }
+
+/*# sourceMappingURL=/dasboard.dc7889f7.css.map */

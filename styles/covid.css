@@ -1,0 +1,178 @@
+/* ---------------------HTML TAGS----------------------- */
+
+* {
+    background-color: #000000;
+    /* font-family: 'SegoeUI', sans-serif; */
+    font-family: 'Raleway', sans-serif;
+    font-weight: 200;
+    color: #eeeeee;
+}
+
+html {
+    background-color: #000000;
+}
+
+
+
+h1 {
+    font-size: 5rem;
+}
+
+h2 {
+    font-size: 3.5rem;
+}
+
+h3 {
+    font-size: 3rem;
+}
+
+/* -------------------- CONTAINERS ------------------------ */
+
+.main-container, .top-container {
+    display: flex;
+    padding: 20px;
+}
+
+/*--------------------- PAGE HEADING -------------------- */
+
+.top-container{
+    text-shadow:0px 0px 20px #cdcdcd, 
+                0px 0px 30px #eeeeee,
+                0px 0px 40px #eeeeee;
+    justify-content: center;
+    padding: 50px 0 100px 0;
+    animation: fadeIn 0.5s;
+}
+
+/*--------------------- COVID STATS -------------------- */
+
+.main-container {
+    justify-content:space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+    animation: fadeIn 0.5s;
+}
+
+
+.stats-container{
+    padding: 20px;
+    border-radius: 30px;
+    width: 380px;
+    text-shadow:0px 0px 20px #cdcdcd, 
+                0px 0px 30px #eeeeee,
+                0px 0px 35px #eeeeee;
+
+}
+.stats-container.confirm{
+    /* margin-left: 10px; */
+    border: 6px rgb(153, 102, 255) solid;
+}
+.stats-container.recover{
+    /* margin-left: 20px; */
+    border: 6px rgb(75, 192, 192) solid;
+}
+.stats-container.death{
+    border: 6px rgb(255, 99, 132) solid;
+    margin-top: 70px;
+}
+
+/*--------------------- COVID GRAPH -------------------- */
+
+.canvas-container canvas {
+    position: absolute;
+    bottom: 10%;
+}
+
+/* ---------------------SWITCHING BUTTON--------------------- */
+
+.button-container {
+    position: absolute;
+    bottom: 50%;
+    left: 50px;
+}
+.button-container-right {
+    position: absolute;
+    bottom: 50%;
+    right: 50px;
+}
+
+
+.demo a {
+    position: absolute;
+    bottom: 20px;
+    z-index: 2;
+    display: inline-block;
+    transform: translate(0, -50%);
+    color: #fff;
+    letter-spacing: .1em;
+    text-decoration: none;
+    transition: opacity .3s;
+}
+
+.demo a:hover {
+opacity: .5;
+}
+
+#goingLeft, #goingRight a {
+    padding-top: 50px;
+}
+
+#goingLeft a span {
+    position: absolute;
+    /* top: 0; */
+    width: 35px;
+    height: 35px;
+    margin-left: -12px;
+    border-left: 3px solid #ededed;
+    border-top: 3px solid #ededed;
+    transform: rotate(-45deg);
+    animation: buttonAnimation 2s infinite;
+    box-sizing: border-box;
+}
+#goingRight a span {
+    position: absolute;
+    /* top: 0; */
+    width: 35px;
+    height: 35px;
+    margin-left: -12px;
+    border-right: 3px solid #ededed;
+    border-bottom: 3px solid #ededed;
+    transform: rotate(-45deg);
+    animation: buttonAnimationRight 2s infinite;
+    box-sizing: border-box;
+}
+
+/*--------------------- ANIMATIONS-------------------- */
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes buttonAnimation {
+    0% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      transform: rotate(-45deg) translate(-10px, -10px);
+    }
+    40% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+}
+@keyframes buttonAnimationRight {
+    0% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      transform: rotate(-45deg) translate(10px, 10px);
+    }
+    40% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+}

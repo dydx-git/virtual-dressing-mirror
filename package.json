@@ -16,7 +16,10 @@
     "@tensorflow/tfjs-converter": "^3.6.0",
     "@tensorflow/tfjs-core": "^3.6.0",
     "stats.js": "^0.17.0",
-    "three": "^0.126.1"
+    "three": "^0.126.1",
+    "face-api.js": "^0.22.2",
+    "gsap": "^3.7.1",
+    "lottie-web": "^5.7.13"
   },
   "scripts": {
     "watch": "cross-env NODE_ENV=development parcel index.html --open",

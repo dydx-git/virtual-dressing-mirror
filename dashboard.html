@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="./styles/fonts.css">
+    <link rel="stylesheet" href="/styles/dasboard.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="main-container">
+        <div class="left-container">
+            <div class="top-container">
+                <h1 class="weather-temperature"></h1><img class="weather-image" src="" alt="weather-icon">
+            </div>
+            <div class="bottom-container">
+                <h3 class="weather-condition"></h3>
+            </div>
+        </div>
+        <div class="right-container">
+            <div class="top-container">
+                <h1 class="current-time"></h1>
+            </div>
+            <div class="bottom-container">
+                <h3 class="current-date"></h3>
+            </div>
+        </div>
+    </div>
+    <div id="goingLeft" class="button-container button-demo">
+        <a href="/covid.html"><span></span></a>
+    </div>
+    
+    <div class="notification-container fade">
+        <ul class="notification-list "></ul>
+    </div>
+    <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script> 
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+    <script src="/src/dashboard.js"></script>
+</body>
+</html>
