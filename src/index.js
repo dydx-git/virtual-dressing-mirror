@@ -64,6 +64,7 @@ let xOffsetPosition = -60;
 let startedTime = Date.now();
 let rightHandCoords = [];
 let rightShoulder, leftShoulder, rightHip, leftHip;
+let differenceHipsPosition = new Vector3();
 let shoulderAdjustment = 0;
 let multiplyingFactor = 5.5; // HACK: At distance of 83 inches
 let multiplyingFactorY = 1;
@@ -157,6 +158,10 @@ async function animate() {
       rightHandCoords = [];
       startedTime = Date.now();
     }
+    /* FOR FIXED LOCATION OF PERSON */
+    // The smaller the distance, the farthest the person is.
+    differenceHipsPosition.x = (leftHip.x - rightHip.x);
+    differenceHipsPosition.y = (leftHip.y - rightHip.y);
 
     MeanPosition = new Vector3();
     const hipMeanPosition = new Vector3();
@@ -183,7 +188,7 @@ async function animate() {
     multiplyingFactorY = (cooridnates.y + 6) * multiplyingFactorTemporary;
     const temp = multiplyingFactorY * cooridnates.y; 
     pivot.position.set(cooridnates.x *(multiplyingFactor), cooridnates.y - temp, 1);
-  
+    pivot.position.set(-1,-1,-6);
     
     const { yaw, pitch, roll } = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
@@ -192,11 +197,19 @@ async function animate() {
     let rightShoulderAngle = 0;
     let UIElement = document.getElementById("valueLogger");
     UIElement.innerHTML = "";
-    UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
-    //UIElement.innerHTML += `rightWristScore: ${rightWrist.score}`;
-    UIElement.innerHTML += `<h1 style="color:white">multiplier Y: ${multiplyingFactorY}</h1>`;
-    UIElement.innerHTML += `<h1 style="color:white">multiplier Temporary Y: ${multiplyingFactorTemporary }</h1>`;
-    mesh.traverse(function (child) {
+    if ((differenceHipsPosition.x > 60 && differenceHipsPosition.x < 75)) {
+      // These values are obtained using trial and error. Approx on distance of 9ft, the difference of hips would be in the range 60-70 x-axis, 1-10 y-axis
+      UIElement.innerHTML += `<h1 style="color:white"> You're good to go</h1>`;
+    } else {
+      UIElement.innerHTML += "";
+    }
+    // UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
+    // //UIElement.innerHTML += `rightWristScore: ${rightWrist.score}`;
+    // UIElement.innerHTML += `<h1 style="color:white">multiplier Y: ${multiplyingFactorY}</h1>`;
+    // UIElement.innerHTML += `<h1 style="color:white">multiplier Temporary Y: ${multiplyingFactorTemporary }</h1>`;
+      UIElement.innerHTML += `<h1 style="color:white">Hips Mean Position X: ${differenceHipsPosition.x }</h1>`;
+      UIElement.innerHTML += `<h1 style="color:white">Hips Mean Position Y: ${differenceHipsPosition.y }</h1>`;
+     mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
         //console.log()
@@ -324,12 +337,12 @@ window.addEventListener('keydown', (e) => {
   }
 
   else if (e.key == "c") {
-    console.log("XOffset: ",xOffsetPosition);
-    console.log("YOffset: ",yOffsetPosition);
-    console.log("Scale: ",pivot.scale);
-    console.log("Mean Position", MeanPosition);
-    console.log(pivot.position);
-    console.log(multiplyingFactorY);
+    // console.log("XOffset: ",xOffsetPosition);
+    // console.log("YOffset: ",yOffsetPosition);
+    // console.log("Scale: ",pivot.scale);
+    // console.log("Mean Position", MeanPosition);
+    // console.log(pivot.position);
+    // console.log(multiplyingFactorY);
 
   }
   else if (e.key == "z") {
