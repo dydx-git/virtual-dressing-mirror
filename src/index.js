@@ -59,8 +59,8 @@ const scene = getTHREEbasics();
 let detector, camera;
 let mesh, pivot, threeDCam;
 let leftEye, rightEye, nose;
-let yOffsetPosition = 540; // Knee = 240, Hips = 420
-let xOffsetPosition = -60;
+let yOffsetPosition = 330; // Knee = 240, Hips = 420
+let xOffsetPosition = 20;
 let startedTime = Date.now();
 let rightHandCoords = [];
 let rightShoulder, leftShoulder, rightHip, leftHip;
@@ -75,10 +75,12 @@ let rightAnkle, leftAnkle; // Position: 28, 27
 let rightKnee, leftKnee; // Position: 26, 25
 let rightFootIndex, leftFootIndex; // Position: 32,31
 let MeanPosition;
+let xOffsetPositionMask = 30; // At 9ft
+let yOffsetPositionMask = -190; //At 9ft
 //let referencedBodyPartsVector;
 //
 let eyesPosition = new Vector3();
-
+let selectedModel = MODELS.MASK;
 async function renderResult(poses) {
   if (camera.video.readyState < 2) {
     await new Promise((resolve) => {
@@ -167,28 +169,38 @@ async function animate() {
     const hipMeanPosition = new Vector3();
     const kneeMeanPosition = new Vector3();
 
-    MeanPosition.x = ((((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2) + xOffsetPosition;
-    MeanPosition.y = ((((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2) + yOffsetPosition;
+    if(selectedModel != MODELS.MASK){
+      MeanPosition.x = ((((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2) + xOffsetPosition;
+      MeanPosition.y = ((((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2) + yOffsetPosition;
+  
+      //MeanPosition.y = (referencedBodyPartsVector.y/MeanPosition.y)*MeanPosition.y;
+      // eyesPosition.x = (leftEye.x + rightEye.x) / 2;
+      // eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
+                /*ACTUAL POSITION COMMIT */
+      hipMeanPosition.x = ((leftHip.x + rightHip.x)/2) + xOffsetPosition; 
+      //hipMeanPosition.y = ((leftHip.y + rightHip.y)/2) + yOffsetPosition + (leftAnkle.y + rightAnkle.y)/2 ; //HACK: Model ankle score low so behaving finicky
+      hipMeanPosition.y = ((leftHip.y + rightHip.y)/2) + yOffsetPosition ; //STATIC VALUE: 420 HACK: Model ankle score low so behaving finicky.
+                /* END COMMIT */
+      
+      // hipMeanPosition.x = (leftAnkle.x + rightAnkle.x)/2;
+      // hipMeanPosition.y = (leftAnkle.y + rightAnkle.y)/2;
+  
+      // kneeMeanPosition.x = (leftKnee.x + rightKnee.x)/2;
+      // kneeMeanPosition.y = (leftKnee.y + rightKnee.y)/2 + yOffsetPosition; // STATIC VALUE: 240
+      const cooridnates = getWorldCoords(MeanPosition.x, MeanPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
+      multiplyingFactorY = (cooridnates.y + 6) * multiplyingFactorTemporary;
+      const temp = multiplyingFactorY * cooridnates.y; 
+      pivot.position.set(cooridnates.x *(multiplyingFactor), cooridnates.y, 1);
 
-    //MeanPosition.y = (referencedBodyPartsVector.y/MeanPosition.y)*MeanPosition.y;
-    // eyesPosition.x = (leftEye.x + rightEye.x) / 2;
-    // eyesPosition.y = ((leftEye.y + rightEye.y) / 2) + yOffset;
-              /*ACTUAL POSITION COMMIT */
-    hipMeanPosition.x = ((leftHip.x + rightHip.x)/2) + xOffsetPosition; 
-    //hipMeanPosition.y = ((leftHip.y + rightHip.y)/2) + yOffsetPosition + (leftAnkle.y + rightAnkle.y)/2 ; //HACK: Model ankle score low so behaving finicky
-    hipMeanPosition.y = ((leftHip.y + rightHip.y)/2) + yOffsetPosition ; //STATIC VALUE: 420 HACK: Model ankle score low so behaving finicky.
-              /* END COMMIT */
-    
-    // hipMeanPosition.x = (leftAnkle.x + rightAnkle.x)/2;
-    // hipMeanPosition.y = (leftAnkle.y + rightAnkle.y)/2;
+    } else {
+      nose.x = nose.x + xOffsetPositionMask;
+      nose.y = nose.y + yOffsetPositionMask;
+      const cooridnates = getWorldCoords(nose.x, nose.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
+      pivot.position.set(cooridnates.x *(multiplyingFactor), cooridnates.y, 1);
 
-    // kneeMeanPosition.x = (leftKnee.x + rightKnee.x)/2;
-    // kneeMeanPosition.y = (leftKnee.y + rightKnee.y)/2 + yOffsetPosition; // STATIC VALUE: 240
-    const cooridnates = getWorldCoords(MeanPosition.x, MeanPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
-    multiplyingFactorY = (cooridnates.y + 6) * multiplyingFactorTemporary;
-    const temp = multiplyingFactorY * cooridnates.y; 
-    pivot.position.set(cooridnates.x *(multiplyingFactor), cooridnates.y - temp, 1);
-    pivot.position.set(-1,-1,-6);
+    }
+
+    //pivot.position.set(-1,-1,-6);
     
     const { yaw, pitch, roll } = getFacePose(poses[0])
     let normalizedYaw = (yaw - 90) * (Math.PI / 180);
@@ -204,11 +216,11 @@ async function animate() {
       UIElement.innerHTML += "";
     }
     // UIElement.innerHTML = `<h1 style="color:white">multiplier: ${multiplyingFactor}</h1>`
-    // //UIElement.innerHTML += `rightWristScore: ${rightWrist.score}`;
+    // //UIElement.innerHTML += `rightWristSxe: ${rightWrist.score}`;
     // UIElement.innerHTML += `<h1 style="color:white">multiplier Y: ${multiplyingFactorY}</h1>`;
     // UIElement.innerHTML += `<h1 style="color:white">multiplier Temporary Y: ${multiplyingFactorTemporary }</h1>`;
-      UIElement.innerHTML += `<h1 style="color:white">Hips Mean Position X: ${differenceHipsPosition.x }</h1>`;
-      UIElement.innerHTML += `<h1 style="color:white">Hips Mean Position Y: ${differenceHipsPosition.y }</h1>`;
+      UIElement.innerHTML += `<h1 style="color:white">Hips Difference X: ${differenceHipsPosition.x }</h1>`;
+      UIElement.innerHTML += `<h1 style="color:white">Hips Difference Y: ${differenceHipsPosition.y }</h1>`;
      mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
@@ -294,19 +306,23 @@ window.addEventListener('keydown', (e) => {
       case "ArrowUp": {
         yOffsetPosition +=10;
         //pivot.position.y += 0.1;
+        yOffsetPositionMask +=10;
         break;
       }
       case "ArrowDown": {
         yOffsetPosition -=10;
+        yOffsetPositionMask -=10;
         //pivot.position.y -= 1;
         break;
       }
       case "ArrowRight": {
         xOffsetPosition += 10;
+        xOffsetPositionMask +=10;
         break;
       }
       case "ArrowLeft": {
         xOffsetPosition -=10;
+        xOffsetPositionMask -=10;
         break;
       }
     }
@@ -337,12 +353,12 @@ window.addEventListener('keydown', (e) => {
   }
 
   else if (e.key == "c") {
-    // console.log("XOffset: ",xOffsetPosition);
-    // console.log("YOffset: ",yOffsetPosition);
-    // console.log("Scale: ",pivot.scale);
-    // console.log("Mean Position", MeanPosition);
-    // console.log(pivot.position);
-    // console.log(multiplyingFactorY);
+    console.log("XOffset: ",xOffsetPositionMask);
+    console.log("YOffset: ",yOffsetPositionMask);
+    console.log("Scale: ",pivot.scale);
+    console.log("Mean Position", MeanPosition);
+    console.log("Pivot Position:", pivot.position);
+    console.log(multiplyingFactorY);
 
   }
   else if (e.key == "z") {
@@ -367,13 +383,18 @@ async function app() {
   [camera, detector, model] = await Promise.all([
     Camera.setupCamera(STATE.camera),
     createDetector(),
-    loadModel(MODELS.JODY)
+    loadModel(selectedModel)
   ]);
 
   [mesh, pivot] = setUpModel(model);
 
   //pivot.scale.set(4,4,4);
-  pivot.scale.set(18,4,4); // FOR MIRROR SCALING
+  if (selectedModel == MODELS.MASK) {
+    pivot.scale.set(1.36,1.36,1)
+  } 
+  else {
+    pivot.scale.set(18,4,4); // FOR MIRROR SCALING
+  }
   scene.add(pivot);
 
   threeDCam = setUpTHREEDCamera(camera.video.videoWidth, camera.video.videoHeight);
