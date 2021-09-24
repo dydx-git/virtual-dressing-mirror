@@ -70,6 +70,9 @@ let multiplyingFactor = 5.5; // HACK: At distance of 83 inches
 let multiplyingFactorY = 1;
 let multiplyingFactorTemporary = 0.1;
 let lips;
+let leftShoulderAngleGlobal;
+let leftShoulderAngleHTML;
+let multiplierFunctionShoulders = 1;
 // Testing variables 
 let rightAnkle, leftAnkle; // Position: 28, 27
 let rightKnee, leftKnee; // Position: 26, 25
@@ -80,7 +83,7 @@ let yOffsetPositionMask = -190; //At 9ft
 //let referencedBodyPartsVector;
 //
 let eyesPosition = new Vector3();
-let selectedModel = MODELS.MASK;
+let selectedModel = MODELS.JODY;
 async function renderResult(poses) {
   if (camera.video.readyState < 2) {
     await new Promise((resolve) => {
@@ -219,8 +222,9 @@ async function animate() {
     // //UIElement.innerHTML += `rightWristSxe: ${rightWrist.score}`;
     // UIElement.innerHTML += `<h1 style="color:white">multiplier Y: ${multiplyingFactorY}</h1>`;
     // UIElement.innerHTML += `<h1 style="color:white">multiplier Temporary Y: ${multiplyingFactorTemporary }</h1>`;
-      UIElement.innerHTML += `<h1 style="color:white">Hips Difference X: ${differenceHipsPosition.x }</h1>`;
-      UIElement.innerHTML += `<h1 style="color:white">Hips Difference Y: ${differenceHipsPosition.y }</h1>`;
+    //  UIElement.innerHTML += `<h1 style="color:white">Hips Difference X: ${differenceHipsPosition.x }</h1>`;
+    //  UIElement.innerHTML += `<h1 style="color:white">Hips Difference Y: ${differenceHipsPosition.y }</h1>`;
+      UIElement.innerHTML += `<h1 style="color:white">Angle: ${leftShoulderAngleHTML}</h1>`;
      mesh.traverse(function (child) {
       if (child.isBone) {
         let angle;
@@ -229,13 +233,15 @@ async function animate() {
           case "mixamorigLeftShoulder":
             angle = -getAngle(rightElbow, rightShoulder, 0, 0, -1);
             leftShoulderAngle = angle;
-            child.rotation.y = angle;
+            leftShoulderAngleHTML = angle;
+            child.rotation.y = angle * multiplierFunctionShoulders ;
             // UIElement.innerHTML += `left shoulder adjusment: ${shoulderAdjustment}`;
             break;
           case "mixamorigLeftForeArm":
             angle = getAngle(rightElbow, rightWrist, 0, 0, -1);
             angle = angle - Math.PI;
-            child.rotation.x = angle + leftShoulderAngle;
+            leftShoulderAngleGlobal = (angle+leftShoulderAngle) ;
+            child.rotation.x = leftShoulderAngleGlobal * multiplierFunctionShoulders;
           //   // UIElement.innerHTML += `forearm angle: <b>${angle}</b><br>`;
           //   // UIElement.innerHTML += `forearm angle after adj: <b>${angle - leftShoulderAngle}</b>`;
 
@@ -359,6 +365,7 @@ window.addEventListener('keydown', (e) => {
     console.log("Mean Position", MeanPosition);
     console.log("Pivot Position:", pivot.position);
     console.log(multiplyingFactorY);
+    console.log("Left Shoulder Angle: ", leftShoulderAngleGlobal)
 
   }
   else if (e.key == "z") {
@@ -370,6 +377,9 @@ window.addEventListener('keydown', (e) => {
   else if (e.key == "t") {
     //multiplyingFactorY -=0.1;
     multiplyingFactorTemporary -=0.01;
+  }
+  else if (e.key == "s") {
+    multiplierFunctionShoulders +=0.1;
   }
 });
 
