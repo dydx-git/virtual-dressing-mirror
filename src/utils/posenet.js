@@ -1,4 +1,4 @@
-import '@mediapipe/pose';
+import * as mpPose from '@mediapipe/pose';
 import * as posedetection from '@tensorflow-models/pose-detection';
 
 export function getPart(partname, pose) {
@@ -11,6 +11,6 @@ export async function createDetector() {
 	return posedetection.createDetector("BlazePose", {
 	  runtime: "mediapipe",
 	  modelType: "full",
-	  solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.3.1621277220'
+	  solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/pose@${mpPose.VERSION}`
 	});
   }
