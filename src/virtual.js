@@ -87,34 +87,34 @@ async function handTrackApp() {
 
 async function handTrackAnimate() {
   const poses = await detector.estimatePoses(
-      camera.video, {
-      maxPoses: 1,
-      flipHorizontal: false
+    camera.video, {
+    maxPoses: 1,
+    flipHorizontal: false
   });
   if (poses.length > 0) {
-      const rightWrist = getPart("right_wrist", poses[0])[0];
-      if (rightWrist.score > 0.8) {
-          rightHandCoords.push(rightWrist.x);
+    const rightWrist = getPart("right_wrist", poses[0])[0];
+    if (rightWrist.score > 0.8) {
+      rightHandCoords.push(rightWrist.x);
+    }
+    loader.style.display = "none";
+    hadnWave.style.display = "flex";
+    if (Date.now() - startedTime > 1000) {
+      if (rightHandCoords.length > 10) {
+        console.log(getDirection(rightHandCoords));
+        if (getDirection(rightHandCoords) == "right") {
+          document.getElementById('handLeft').click();
+        }
+        else if (getDirection(rightHandCoords) == "left") {
+          document.getElementById('handRight').click();
+        }
       }
-      loader.style.display = "none";
-      hadnWave.style.display = "flex";
-      if (Date.now() - startedTime > 1000) {
-          if (rightHandCoords.length > 10) {
-              console.log(getDirection(rightHandCoords));
-              if (getDirection(rightHandCoords) == "right") {
-                  document.getElementById('handLeft').click();
-              } 
-              else if (getDirection(rightHandCoords) == "left") {
-                  document.getElementById('handRight').click();
-              }
-          }
-          rightHandCoords = [];
-          startedTime = Date.now();
-      }
-  }  
+      rightHandCoords = [];
+      startedTime = Date.now();
+    }
+  }
 
   requestAnimationFrame(handTrackAnimate);
-  
+
 }
 
 async function animate() {
@@ -221,7 +221,7 @@ async function animate() {
     if (rightWrist.score > 0.8) {
       rightHandCoords.push(rightWrist.x);
     }
-    
+
     if (Date.now() - startedTime > 1000) {
       if (rightHandCoords.length > 10) {
         console.log(getDirection(rightHandCoords));
@@ -243,44 +243,35 @@ async function animate() {
 
 async function app(modelConfig) {
   scene = getTHREEbasics();
-  
+
   addKeybinding(scaleX, scaleY, offsetX, offsetY, multiplyingFactor);
-  
+
   let model;
-  
-  if (modelType === UNRIGGED_MODELS) {
-    if (modelConfig.isEnhanced) {
-      if (modelConfig.importFunction === "loadEnchancedMask") {
-        [camera, detector, scene] = await Promise.all([
-          Camera.setupCamera(STATE.camera),
-          createDetector(),
-          scene = await loadEnchancedMask(modelConfig.path, scene)
-        ]);
-      } else if (modelConfig.importFunction === "loadEnchancedHat") {
-        [camera, detector, scene] = await Promise.all([
-          Camera.setupCamera(STATE.camera),
-          createDetector(),
-          scene = await loadEnchancedHat(modelConfig.path, camera.video, scene)
-        ]);
-      }
-      scene.traverse(function (child) {
-        if (child.isMesh) {
-          model = child;
-          scene.remove(model);
-        }
-        if (child.type === "Object3D") {
-          mesh = child;
-          pivot = child;
-        }
-      });
-    }
-    else {
-      [camera, detector, model] = await Promise.all([
+
+  if (modelType === UNRIGGED_MODELS && modelConfig.isEnhanced) {
+    if (modelConfig.importFunction === "loadEnchancedMask") {
+      [camera, detector, scene] = await Promise.all([
         Camera.setupCamera(STATE.camera),
         createDetector(),
-        loadModel(modelConfig.path)
+        loadEnchancedMask(modelConfig.path, scene)
+      ]);
+    } else if (modelConfig.importFunction === "loadEnchancedHat") {
+      [camera, detector, scene] = await Promise.all([
+        Camera.setupCamera(STATE.camera),
+        createDetector(),
+        loadEnchancedHat(modelConfig.path, camera.video, scene)
       ]);
     }
+    scene.traverse(function (child) {
+      if (child.isMesh) {
+        model = child;
+        scene.remove(model);
+      }
+      if (child.type === "Object3D") {
+        mesh = child;
+        pivot = child;
+      }
+    });
   } else {
     [camera, detector, model] = await Promise.all([
       Camera.setupCamera(STATE.camera),
@@ -288,12 +279,11 @@ async function app(modelConfig) {
       loadModel(modelConfig.path)
     ]);
   }
-  
-  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
 
-  if (!mesh && !pivot) {
-    [mesh, pivot] = setUpModel(model);
-  }
+
+  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
+  [mesh, pivot] = setUpModel(model);
+
   // #region Model Configuration
   [offsetX, offsetY] = [modelConfig.offsets.x, modelConfig.offsets.y];
   [scaleX, scaleY, scaleZ] = [modelConfig.scale.x, modelConfig.scale.y, modelConfig.scale.z]
@@ -305,8 +295,6 @@ async function app(modelConfig) {
   threeDCam = setUpTHREEDCamera(camera.video.videoWidth, camera.video.videoHeight);
   scene.add(threeDCam);
 
-  addKeybinding(scaleX, scaleY, offsetX, offsetY, multiplyingFactor);
-  
   animate();
 };
 
