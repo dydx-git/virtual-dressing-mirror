@@ -32,6 +32,18 @@ async function app () {
         createDetector(),
     ])
     repeatAnimate();
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    image_data_url = canvas.toDataURL('image/jpeg');
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:3000",
+        data: { url: image_data_url},
+        datatyoe: 'json'
+      }).done(function( res ) {
+        //console.log(res.json());
+        console.log("Worked?");
+        $("#mask-detection").show();
+      });
     
 }
 

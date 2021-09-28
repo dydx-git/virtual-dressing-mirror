@@ -202,3 +202,11 @@ opacity: .5;
     right: 40px;
     animation: fadeIn 0.5s;
 }
+#mask-detection {
+    /* display: none; */
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    animation: fadeIn 0.5s;
+}
+
