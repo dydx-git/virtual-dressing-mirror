@@ -163,4 +163,12 @@ opacity: .5;
     }
   }
 
+/*--------------------- Canvas Work for Hand track-------------------- */
+.canvas-wrapper {
+    z-index: -10;
+    position: absolute;
+    opacity: 0.1;
+    left: -50px;
+}
+
 /*# sourceMappingURL=/dasboard.dc7889f7.css.map */

@@ -1,7 +1,19 @@
-let coronaData = fetch("https://corona.lmao.ninja/v2/countries/Pakistan?yesterday&strict&query")
+import { Camera } from './utils/camera';
+import { STATE } from "./utils/params";
+import {getPart, createDetector} from "./utils/posenet";
+import {getDirection } from "./utils/transform";
+
 let totalConfirmed = document.querySelector('.total-confirmed')
 let totalRecovered = document.querySelector('.total-recovered')
 let totalDeaths = document.querySelector('.total-deaths')
+const loader = document.querySelector('.spinner-loader');
+const hadnWave = document.querySelector('.handwave-loader');
+let notificationData;
+let camera,detector;
+let poses;
+let rightHandCoords = [];
+let startedTime = Date.now();
+let coronaData = fetch("https://corona.lmao.ninja/v2/countries/Pakistan?yesterday&strict&query")
 coronaData.then(response => response.json())
 .then(res => {
     console.log(res.cases)
@@ -11,14 +23,68 @@ coronaData.then(response => response.json())
     covidGraph(res);
 })
 
-// Chart.defaults.global.defaultFontFamily = 
+
+// console.log(Initializer.camera);
+
+// async function app () {
+//     [camera, detector] = await Promise.all([
+//         Camera.setupCamera(STATE.camera),
+//         createDetector(),
+//     ])
+//     repeatAnimate();
+    
+// }
+
+
+// async function repeatAnimate() {
+//     poses = await detector.estimatePoses(
+//         camera.video, {
+//         maxPoses: 1,
+//         flipHorizontal: false
+//     });
+//     if (poses.length > 0) {
+//         const rightWrist = getPart("right_wrist", poses[0])[0];
+//         if (rightWrist.score > 0.8) {
+//             rightHandCoords.push(rightWrist.x);
+//         }
+//         loader.style.display = "none";
+//         hadnWave.style.display = "flex";
+//         if (Date.now() - startedTime > 1000) {
+//             if (rightHandCoords.length > 10) {
+//                 console.log(getDirection(rightHandCoords));
+//                 if (getDirection(rightHandCoords) == "right") {
+//                     document.getElementById('handLeft').click();
+//                 } else if (getDirection(rightHandCoords) == "left") {
+//                     document.getElementById('handRight').click();
+//                 }
+//             }
+//             rightHandCoords = [];
+//             startedTime = Date.now();
+//         }
+//     }  
+
+//     requestAnimationFrame(repeatAnimate);
+    
+// }
+
+
+// function spinner() {
+//     loader.style.display = "flex";
+//     app();
+
+// }
+
+
+// spinner();
+
+
 
 function covidGraph(results) {
     const labels = [
         'Confirmed',
         'Recovered',
         'Deaths'
-      ];
+    ];
     const data = {
         labels: labels,
         datasets: [{
@@ -52,7 +118,7 @@ function covidGraph(results) {
                         },
                         color: '#FEF7DC'
                     },
-
+                    
                     ticks: {
                         font: {
                             size: 30,
@@ -69,7 +135,7 @@ function covidGraph(results) {
                         },
                         color: '#FEF7DC'
                     },
-
+                    
                     ticks: {
                         font: {
                             size: 30,
@@ -92,6 +158,7 @@ function covidGraph(results) {
     var myChart = new Chart(
         document.getElementById('covidChart'),
         config
-      );
-}
-
+        );
+    }
+    
+    

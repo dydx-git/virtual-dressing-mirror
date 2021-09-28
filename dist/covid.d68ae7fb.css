@@ -177,5 +177,14 @@ opacity: .5;
     }
 }
 
+/*--------------------- Canvas Work for Hand track-------------------- */
+.canvas-wrapper {
+    z-index: -10;
+    position: absolute;
+    opacity: 0.1;
+    left: -50px;
+    bottom: 0px;
+}
+
 
 /*# sourceMappingURL=/covid.d68ae7fb.css.map */

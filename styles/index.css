@@ -127,3 +127,6 @@ video {
     opacity: 0;
 }
 
+.wannaHideIt {
+    display: none;
+}

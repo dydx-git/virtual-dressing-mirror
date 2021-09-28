@@ -30,13 +30,27 @@
             </div>
         </div>
         <div id="goingLeft" class="button-container button-demo">
-            <a href="/dashboard.html"><span></span></a>
+            <a id="handLeft" href="/dashboard.html"><span></span></a>
         </div>
         <div id="goingRight" class="button-container-right button-demo">
-            <a href="/virtual.html"><span></span></a>
+            <a id="handRight" href="/virtual.html"><span></span></a>
         </div>
         
+        <!-- <div class="canvas-wrapper">
+            <canvas id="output" width="1080" height="1920"></canvas>
+            <div class="video-container">
+              <video id="video"></video>
+            </div>
+            <div id="webglContainer"></div>
+        </div> -->
+
         <div class="canvas-container"><canvas id="covidChart"></canvas></div>
+        <div class="spinner-loader">
+            <img src="/src/spinner-white.gif" alt="spinner" width="100" height="100">
+        </div>
+        <div class="handwave-loader">
+            <img src="/src/handwave.gif" alt="handwave" width="100" height="100">
+        </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"></script>
     <script src="/src/covid.js"></script>

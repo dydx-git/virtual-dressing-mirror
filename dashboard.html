@@ -30,13 +30,28 @@
         </div>
     </div>
     <div id="goingLeft" class="button-container button-demo">
-        <a href="/covid.html"><span></span></a>
+        <a id="handLeft" href="/covid.html"><span></span></a>
     </div>
     
     <div class="notification-container fade">
         <ul class="notification-list "></ul>
     </div>
-    <script src="https://unpkg.com/swup@latest/dist/swup.min.js"></script> 
+
+    <!-- <div class="canvas-wrapper">
+        <canvas id="output" width="300" height="300"></canvas>
+        <div class="video-container">
+          <video id="video"></video>
+        </div>
+        <div id="webglContainer"></div>
+    </div> -->
+
+    <div class="spinner-loader">
+        <img src="/src/spinner-white.gif" alt="spinner" width="100" height="100">
+    </div>
+    <div class="handwave-loader">
+        <img src="/src/handwave.gif" alt="handwave" width="100" height="100">
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>

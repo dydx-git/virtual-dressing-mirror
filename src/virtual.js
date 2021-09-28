@@ -47,6 +47,9 @@ let rightHandCoords = [];
 let startedTime = Date.now();
 let multiplyingFactor = 1;
 let offsetX, offsetY, scaleX, scaleY, scaleZ;
+let isAR = false;
+const loader = document.querySelector('.spinner-loader');
+const hadnWave = document.querySelector('.handwave-loader');
 // #endregion
 
 async function renderResult(poses) {
@@ -67,12 +70,67 @@ async function renderResult(poses) {
   }
 }
 
+handTrackApp();
+
+async function handTrackApp() {
+  loader.style.display = "flex";
+  if (isAR == false) {
+    [camera, detector] = await Promise.all([
+      Camera.setupCamera(STATE.camera),
+      createDetector()
+    ]);
+    handTrackAnimate();
+  }
+
+}
+
+async function handTrackAnimate() {
+  const poses = await detector.estimatePoses(
+      camera.video, {
+      maxPoses: 1,
+      flipHorizontal: false
+  });
+  if (poses.length > 0) {
+      const rightWrist = getPart("right_wrist", poses[0])[0];
+      if (rightWrist.score > 0.8) {
+          rightHandCoords.push(rightWrist.x);
+      }
+      loader.style.display = "none";
+      hadnWave.style.display = "flex";
+      if (Date.now() - startedTime > 1000) {
+          if (rightHandCoords.length > 10) {
+              console.log(getDirection(rightHandCoords));
+              if (getDirection(rightHandCoords) == "right") {
+                  document.getElementById('handLeft').click();
+              } 
+              // else if (getDirection(rightHandCoords) == "left") {
+              //     document.getElementById('handRight').click();
+              // }
+          }
+          rightHandCoords = [];
+          startedTime = Date.now();
+      }
+  }  
+
+  requestAnimationFrame(handTrackAnimate);
+  
+}
+
 async function animate() {
+  // if (isAR == false) {
+  //   [camera, detector] = await Promise.all([
+  //     Camera.setupCamera(STATE.camera),
+  //     createDetector()
+  //   ]);
+
+  // }
+  console.log('this is workingggg');
   const poses = await detector.estimatePoses(
     camera.video, {
     maxPoses: STATE.modelConfig.maxPoses,
     flipHorizontal: false
   });
+  // console.log(STATE.modelConfig);
 
   await renderResult(poses);
 
@@ -170,9 +228,13 @@ async function animate() {
     if (rightWrist.score > 0.8) {
       rightHandCoords.push(rightWrist.x);
     }
+    
     if (Date.now() - startedTime > 1000) {
       if (rightHandCoords.length > 10) {
-        //console.log(getDirection(rightHandCoords));
+        console.log(getDirection(rightHandCoords));
+        if (getDirection(rightHandCoords) == "right") {
+          document.getElementById('handLeft').click();
+        }
       }
       rightHandCoords = [];
       startedTime = Date.now();
@@ -240,5 +302,6 @@ document.getElementById('model-select').addEventListener('change', function () {
     modelType = RIGGED_MODELS;
   }
   selectedModel = this.value;
+  isAR = true;
   app(modelType[selectedModel]);
 });

@@ -127,6 +127,9 @@ video {
     opacity: 0;
 }
 
+.wannaHideIt {
+    display: none;
+}
 
 
 /*# sourceMappingURL=/styles.6145e9cd.css.map */
