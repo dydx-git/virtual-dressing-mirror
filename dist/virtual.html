@@ -13,10 +13,10 @@ limitations under the License.
 <html>
 
 <head>
+  <link rel="stylesheet" href="./styles.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0, user-scalable=no">
-  <style>
-    body {
+  <style>body {
       margin: 0;
       background-color: black;
     }
@@ -84,74 +84,69 @@ limitations under the License.
       opacity: 1;
     }
 
-  .toggle-switch {
-  position: relative;
-  width: 200px;
-  margin: 10px 50vh;
-}
+    .button-container {
+    position: absolute;
+    bottom: 50%;
+    left: 50px;
+    }
 
-label {
-  position: absolute;
-  width: 100%;
-  height: 100px;
-  background-color: var(--dark);
-  border-radius: 50px;
-  cursor: pointer;
-}
+    .demo a {
+    position: absolute;
+    bottom: 20px;
+    z-index: 2;
+    display: inline-block;
+    transform: translate(0, -50%);
+    color: #fff;
+    letter-spacing: .1em;
+    text-decoration: none;
+    transition: opacity .3s;
+    }
 
-input {
-  position: absolute;
-  display: none;
-}
+    .demo a:hover {
+    opacity: .5;
+    }
 
-.slider {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50px;
-  transition: 0.3s;
-}
+    #goingLeft a {
+        padding-top: 50px;
+    }
 
-input:checked ~ .slider {
-  background-color: var(--light);
-}
+    #goingLeft a span {
+    position: absolute;
+    /* top: 0; */
+    width: 35px;
+    height: 35px;
+    margin-left: -12px;
+    border-left: 3px solid #ededed;
+    border-top: 3px solid #ededed;
+    transform: rotate(-45deg);
+    animation: buttonAnimation 2s infinite;
+    box-sizing: border-box;
+    }
 
-.slider::before {
-  content: "";
-  position: absolute;
-  top: 13px;
-  left: 16px;
-  width: 75px;
-  height: 75px;
-  border-radius: 50%;
-  box-shadow: inset 28px -4px 0px 0px var(--light);
-  background-color: var(--dark);
-  transition: 0.3s;
-}
+    @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+    }
 
-input:checked ~ .slider::before {
-  transform: translateX(95px);
-  background-color: var(--dark);
-  box-shadow: none;
-}
-:root {
-  --light: #d8dbe0;
-  --dark: #28292c;
-  --link: rgb(27, 129, 112);
-  --link-hover: rgb(24, 94, 82);
-} 
-  </style>
+    @keyframes buttonAnimation {
+    0% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+    20% {
+      transform: rotate(-45deg) translate(-10px, -10px);
+    }
+    40% {
+      transform: rotate(-45deg) translate(0, 0);
+    }
+    }</style>
 </head>
 
 <body>
-  <div id="stats" >  
-    <div class="toggle-switch">
-      <label>
-        <input type = 'checkbox' id = "bttn">
-        <span class = 'slider'></span>
-      </label>
-    </div>
-  </div>
+  <div id="stats"></div>
   <div id="valueLogger"></div>
   <div id="main">
     <div class="container">
@@ -163,13 +158,23 @@ input:checked ~ .slider::before {
         <div id="webglContainer"></div>
       </div>
     </div>
-    
-    <select id="model-select">
+    <div id="goingLeft" class="button-container button-demo">
+      <a href="/covid.html"><span></span></a>
+    </div>
+    <!-- <select id="model-select">
       <option value="nothing">Please select one</option>
-    </select>
+    </select> -->
+    <div class="content">
+      <div class="image"><input type="radio" name="image" /></div>
+      <div class="image"><input type="radio" name="image" /></div>
+      <div class="image"><input type="radio" name="image" /></div>
+      <div class="image"><input type="radio" name="image" /></div>
+      <div class="image"><input type="radio" name="image" /></div>
+      <div class="image"><input type="radio" name="image" /></div>
+    </div>
 
   </div>
 </body>
-<script src="src/index.js"></script>
+<script src="/virtual.125f844b.js"></script>
 
 </html>

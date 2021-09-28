@@ -15,8 +15,6 @@ const {
   setUpModel,
   loadModel,
   setUpTHREEDCamera,
-  loadEnchancedHat,
-  loadEnchancedMask,
   getFacePose,
   getAngle,
   getWorldCoords,
@@ -24,34 +22,12 @@ const {
   addKeybinding
 } = getImports();
 
-//#region  Static Variables
-let mirrorAttributes = false;
-
-//#endregion
 
 // #region FPS Counter
 const stats = new Stats();
 stats.domElement.style.position = "absolute";
 stats.domElement.style.bottom = "0px";
 document.body.appendChild(stats.domElement);
-// #endregion
-
-// #region Toggle Mirror Attributes
-document.getElementById("bttn").addEventListener("click", onClickMirrorAttributesSwitch);
-
-function onClickMirrorAttributesSwitch() {
-  // White toggle -> true
-  const isChecked = document.getElementById("bttn").checked;
-  if (isChecked) {
-    mirrorAttributes = true;
-    //alert("Input is checked!");
-  } else {
-    mirrorAttributes = false;
-  }
-  console.log(mirrorAttributes);
-}
-
-
 // #endregion
 
 // #region Renderer Setup
@@ -211,58 +187,22 @@ async function animate() {
 };
 
 async function app(modelConfig) {
+  camera = await Camera.setupCamera(STATE.camera);
   scene = getTHREEbasics();
-  
-  addKeybinding(scaleX, scaleY, offsetX, offsetY, multiplyingFactor);
-  
-  let model;
-  
-  if (modelType === UNRIGGED_MODELS) {
-    if (modelConfig.isEnhanced) {
-      if (modelConfig.importFunction === "loadEnchancedMask") {
-        [camera, detector, scene] = await Promise.all([
-          Camera.setupCamera(STATE.camera),
-          createDetector(),
-          scene = await loadEnchancedMask(modelConfig.path, scene)
-        ]);
-      } else if (modelConfig.importFunction === "loadEnchancedHat") {
-        [camera, detector, scene] = await Promise.all([
-          Camera.setupCamera(STATE.camera),
-          createDetector(),
-          scene = await loadEnchancedHat(modelConfig.path, camera.video, scene)
-        ]);
-      }
-      scene.traverse(function (child) {
-        if (child.isMesh) {
-          model = child;
-          scene.remove(model);
-        }
-        if (child.type === "Object3D") {
-          mesh = child;
-          pivot = child;
-        }
-      });
-    }
-    else {
-      [camera, detector, model] = await Promise.all([
-        Camera.setupCamera(STATE.camera),
-        createDetector(),
-        loadModel(modelConfig.path)
-      ]);
-    }
-  } else {
-    [camera, detector, model] = await Promise.all([
-      Camera.setupCamera(STATE.camera),
-      createDetector(),
-      loadModel(modelConfig.path)
-    ]);
-  }
-  
   renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
 
-  if (!mesh && !pivot) {
-    [mesh, pivot] = setUpModel(model);
-  }
+  addKeybinding(scaleX, scaleY, offsetX, offsetY, multiplyingFactor);
+
+  let model;
+
+  [camera, detector, model] = await Promise.all([
+    Camera.setupCamera(STATE.camera),
+    createDetector(),
+    loadModel(modelConfig.path)
+  ]);
+
+  [mesh, pivot] = setUpModel(model);
+
   // #region Model Configuration
   [offsetX, offsetY] = [modelConfig.offsets.x, modelConfig.offsets.y];
   [scaleX, scaleY, scaleZ] = [modelConfig.scale.x, modelConfig.scale.y, modelConfig.scale.z]
@@ -274,27 +214,36 @@ async function app(modelConfig) {
   threeDCam = setUpTHREEDCamera(camera.video.videoWidth, camera.video.videoHeight);
   scene.add(threeDCam);
 
-  addKeybinding(scaleX, scaleY, offsetX, offsetY, multiplyingFactor);
-  
   animate();
 };
 
 let listOfModels = document.getElementById('model-select');
 for (const model in RIGGED_MODELS) {
   let optionTag = document.createElement('OPTION');
-  optionTag.setAttribute('value', `${model}`)
+  optionTag.setAttribute('value',`${model}`)
   optionTag.innerHTML = `${RIGGED_MODELS[model].desp}`;
   listOfModels.appendChild(optionTag)
 
 }
 for (const model in UNRIGGED_MODELS) {
   let optionTag = document.createElement('OPTION');
-  optionTag.setAttribute('value', `${model}`)
+  optionTag.setAttribute('value',`${model}`)
   optionTag.innerHTML = `${UNRIGGED_MODELS[model].desp}`;
   listOfModels.appendChild(optionTag)
-
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+  var div = document.createElement('div');  
+  div.id = 'container';
+  for (const model in listOfModels) {
+    div.innerHTML = <input type="radio" name="image" />;
+    div.className = 'image';
+  }
+  console.log(div);
+  document.body.appendChild(div);
+}, false);
+
+ 
 document.getElementById('model-select').addEventListener('change', function () {
   if (UNRIGGED_MODELS[this.value] != undefined) {
     modelType = UNRIGGED_MODELS;

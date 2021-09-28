@@ -1,0 +1,67 @@
+.content {
+  position: absolute;
+  right: 0px;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: flex-end; */
+  margin: 0 auto;
+  width: 120px;
+  height: 900px;
+  align-items: flex-end;
+  }
+  
+  .content .image {
+    background-color: #ccc;
+    cursor: pointer;
+    display: block;
+    height: 190px;
+    float: left;
+    margin: 10%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+  
+  .content .image::after {
+    -webkit-transform: translate(0, 100%);
+    -moz-transform: translate(0, 100%);
+    transform: translate(0, 100%);
+    
+    -webkit-transition:all .25s cubic-bezier(.25,.46,.45,.94);
+    -moz-transition:all .25s cubic-bezier(.25,.46,.45,.94);
+    transition:all .25s cubic-bezier(.25,.46,.45,.94);
+  
+    background: #27A55D url('https://png.icons8.com/material/50/ffffff/checkmark.png') no-repeat center center;
+    background-size: 18px 18px;
+    bottom: 0;
+    content: '';
+    display: block;
+    height: 30px;
+    left: 0;
+    opacity: 0.5;
+    position: absolute;
+    margin: 0 auto;
+    right: 0;
+    width: 100%;
+  }
+  
+  .content .image:hover::after {
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  
+  .content .image.active::after {
+    -webkit-transform: translate(0, -15px);
+    -moz-transform: translate(0, -15px);
+    transform: translate(0, -15px);
+    
+    border-radius: 100px;
+    height: 48px;
+    opacity: 1;
+    width: 48px;
+  }
+  
+  .content .image input { display: none }
+  
