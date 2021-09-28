@@ -87,34 +87,21 @@ body {
   opacity: .5;
   }
 
-  #goingLeft, #goingRight a {
-    padding-top: 50px;
-}
+  #goingLeft a {
+      padding-top: 50px;
+  }
 
-#goingLeft a span {
-    position: absolute;
-    /* top: 0; */
-    width: 35px;
-    height: 35px;
-    margin-left: -12px;
-    border-left: 3px solid #ededed;
-    border-top: 3px solid #ededed;
-    transform: rotate(-45deg);
-    animation: buttonAnimation 2s infinite;
-    box-sizing: border-box;
-}
-#goingRight a span {
-    position: absolute;
-    /* top: 0; */
-    width: 35px;
-    height: 35px;
-    margin-left: -12px;
-    border-right: 3px solid #ededed;
-    border-bottom: 3px solid #ededed;
-    transform: rotate(-45deg);
-    animation: buttonAnimationRight 2s infinite;
-    box-sizing: border-box;
-}
+  #goingLeft a span {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  margin-left: -12px;
+  border-left: 3px solid #ededed;
+  border-top: 3px solid #ededed;
+  transform: rotate(-45deg);
+  animation: buttonAnimation 2s infinite;
+  box-sizing: border-box;
+  }
 
   @keyframes fadeIn {
   0% {
@@ -153,3 +140,5 @@ body {
   right: 40px;
   animation: fadeIn 0.5s;
 }
+
+/*# sourceMappingURL=/virtual.1b9574d8.css.map */

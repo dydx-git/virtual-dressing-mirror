@@ -95,9 +95,9 @@ export function getDirection(coords) {
     const denominator = (coords.length * squared_index) - summed_index ** 2;
     if (denominator == 0) return 0;
     const direction = numerator / denominator;
-    if (direction > 4) {
+    if (direction > 5) {
         return "left";
-    } else if (direction < -4) {
+    } else if (direction < -5) {
         return "right";
     }
     return direction;

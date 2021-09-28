@@ -4,7 +4,7 @@ import { Camera } from './camera';
 import { STATE } from "./params";
 import { RIGGED_MODELS, UNRIGGED_MODELS } from "./models";
 import { getPart, createDetector } from "./posenet";
-import { getTHREEbasics, setUpModel, loadModel, setUpTHREEDCamera } from "./three";
+import { getTHREEbasics, setUpModel, loadModel, setUpTHREEDCamera, loadEnchancedHat, loadEnchancedMask } from "./three";
 import { getFacePose, getAngle, getWorldCoords, getDirection } from "./transform";
 import { addKeybinding } from "./keyboard";
 
@@ -22,6 +22,8 @@ export function getImports() {
 		setUpModel,
 		loadModel,
 		setUpTHREEDCamera,
+		loadEnchancedHat, 
+		loadEnchancedMask,
 		getFacePose,
 		getAngle,
 		getWorldCoords,

@@ -26,56 +26,56 @@ coronaData.then(response => response.json())
 
 // console.log(Initializer.camera);
 
-// async function app () {
-//     [camera, detector] = await Promise.all([
-//         Camera.setupCamera(STATE.camera),
-//         createDetector(),
-//     ])
-//     repeatAnimate();
+async function app () {
+    [camera, detector] = await Promise.all([
+        Camera.setupCamera(STATE.camera),
+        createDetector(),
+    ])
+    repeatAnimate();
     
-// }
+}
 
 
-// async function repeatAnimate() {
-//     poses = await detector.estimatePoses(
-//         camera.video, {
-//         maxPoses: 1,
-//         flipHorizontal: false
-//     });
-//     if (poses.length > 0) {
-//         const rightWrist = getPart("right_wrist", poses[0])[0];
-//         if (rightWrist.score > 0.8) {
-//             rightHandCoords.push(rightWrist.x);
-//         }
-//         loader.style.display = "none";
-//         hadnWave.style.display = "flex";
-//         if (Date.now() - startedTime > 1000) {
-//             if (rightHandCoords.length > 10) {
-//                 console.log(getDirection(rightHandCoords));
-//                 if (getDirection(rightHandCoords) == "right") {
-//                     document.getElementById('handLeft').click();
-//                 } else if (getDirection(rightHandCoords) == "left") {
-//                     document.getElementById('handRight').click();
-//                 }
-//             }
-//             rightHandCoords = [];
-//             startedTime = Date.now();
-//         }
-//     }  
+async function repeatAnimate() {
+    poses = await detector.estimatePoses(
+        camera.video, {
+        maxPoses: 1,
+        flipHorizontal: false
+    });
+    if (poses.length > 0) {
+        const rightWrist = getPart("right_wrist", poses[0])[0];
+        if (rightWrist.score > 0.8) {
+            rightHandCoords.push(rightWrist.x);
+        }
+        loader.style.display = "none";
+        hadnWave.style.display = "flex";
+        if (Date.now() - startedTime > 1000) {
+            if (rightHandCoords.length > 10) {
+                console.log(getDirection(rightHandCoords));
+                if (getDirection(rightHandCoords) == "right") {
+                    document.getElementById('handLeft').click();
+                } else if (getDirection(rightHandCoords) == "left") {
+                    document.getElementById('handRight').click();
+                }
+            }
+            rightHandCoords = [];
+            startedTime = Date.now();
+        }
+    }  
 
-//     requestAnimationFrame(repeatAnimate);
+    requestAnimationFrame(repeatAnimate);
     
-// }
+}
 
 
-// function spinner() {
-//     loader.style.display = "flex";
-//     app();
+function spinner() {
+    loader.style.display = "flex";
+    app();
 
-// }
+}
 
 
-// spinner();
+spinner();
 
 
 

@@ -74,7 +74,10 @@ li.show {
 
 .top-container {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+}
+.bottom-container {
+    max-width: 500px;
 }
 
 /* ---------------------SWITCHING BUTTON--------------------- */
