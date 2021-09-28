@@ -15,7 +15,6 @@ body {
   }
 
   select {
-    display: none;
     /* Reset */
     -webkit-appearance: none;
     -moz-appearance: none;
