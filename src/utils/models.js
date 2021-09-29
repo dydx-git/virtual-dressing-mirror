@@ -1,16 +1,16 @@
 export const RIGGED_MODELS = {
-  ANDROM: { path: "Androm/Androm.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 3.3, y: 3.3, z: 1 }, desp: "Red Female Dress" },
-  COSTUME: { path: "alien/alienSuit.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Alien Suit" },
-  DOUG: { path: "Doug/Doug.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Police Officer" },
-  ELLY: { path: "Elly/Elly.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Casual Female Outfit" },
-  JASPER: { path: "Jasper/Jasper.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Casual Male Outfit" },
-  JODY: { path: "Jody/Jody.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Female Tracksuit" },
-  KATE: { path: "Kate/Kate.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Female Black Shirt" },
-  LOUISE: { path: "Louise/Louise.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Formal Suit" },
-  MICKEY: { path: "mickey.fbx", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 0.1, y: 0.1, z: 0.1 }, desp: "Orange Mickey" },
-  MEGAN: { path: "Megan/Megan.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Female White Shirt" },
-  REMY: { path: "Remy/Remy.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 1.2, y: 1.2, z: 1 }, desp: "Male Beige Dressing" },
-  ROTH: { path: "Roth/Roth.gltf", positionKeyPoint: ["left_hip", "right_hip"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Chef Uniform" },
+  ANDROM: { path: "Androm/Androm.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 3.3, y: 3.3, z: 1 }, desp: "Red Female Dress" },
+  COSTUME: { path: "alien/alienSuit.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Alien Suit" },
+  DOUG: { path: "Doug/Doug.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Police Officer" },
+  ELLY: { path: "Elly/Elly.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Casual Female Outfit" },
+  JASPER: { path: "Jasper/Jasper.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Casual Male Outfit" },
+  JODY: { path: "Jody/Jody.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Female Tracksuit" },
+  KATE: { path: "Kate/Kate.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Female Black Shirt" },
+  LOUISE: { path: "Louise/Louise.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Formal Suit" },
+  MICKEY: { path: "mickey.fbx", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 0.1, y: 0.1, z: 0.1 }, desp: "Orange Mickey" },
+  MEGAN: { path: "Megan/Megan.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Female White Shirt" },
+  REMY: { path: "Remy/Remy.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 1.2, y: 1.2, z: 1 }, desp: "Male Beige Dressing" },
+  ROTH: { path: "Roth/Roth.gltf", positionKeyPoint: ["left_hip", "right_hip","left_shoulder","right_shoulder"], offsets: { x: 0, y: 0 }, scale: { x: 4.2, y: 4.2, z: 1 }, desp: "Chef Uniform" },
 };
 
 export const UNRIGGED_MODELS = {

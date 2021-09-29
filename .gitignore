@@ -3,5 +3,9 @@ node_modules
 dist/*.js
 dist/*.map
 commit_history.txt
+<<<<<<< HEAD
 dist/assets
 .vscode
+=======
+dist/assets
+>>>>>>> mirror_scaling

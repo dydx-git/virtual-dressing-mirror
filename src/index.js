@@ -1,4 +1,5 @@
 import { Vector3 } from "three";
+import { Vector2 } from "three/build/three.module";
 import {
   getImports
 } from "./utils/imports";
@@ -25,7 +26,20 @@ const {
 } = getImports();
 
 //#region  Static Variables
-let mirrorAttributes = false;
+let mirrorAttributes = true;
+let yOffsetPosition = 0
+let xOffsetPosition = 0
+let printResult = new Vector3();
+let HIPS_OFFSET_CONSTANT_MIRROR
+
+let MULTIPLYING_FACTOR_MIRROR_X = 5.5; // HACK: At distance of 83 inches
+let X_OFFSET_POSITION_MIRROR_RIGGED = 20;
+let Y_OFFSET_POSITION_MIRROR_RIGGED = 330;
+
+let X_OFFSET_POSITION_MIRROR_UNRIGGED = 30;
+let Y_OFFSET_POSITION_MIRROR_UNRIGGED = -190;
+let MULTIPLYING_FACTOR_SHOULDER_MOVEMENT = 1.5;
+
 
 //#endregion
 
@@ -91,6 +105,21 @@ async function renderResult(poses) {
   }
 }
 
+// const referencedBodyParts = () => {
+//   leftShoulder = getPart("left_shoulder", poses[0])[0]; // at pos: 2
+//   rightShoulder = getPart("right_shoulder", poses[0])[0]; // at pos: 6
+
+//   leftHip = getPart("left_hip", poses[0])[0];
+//   rightHip = getPart("right_hip", poses[0])[0];
+
+//   const MeanPositionVector = new Vector3();
+
+//   MeanPositionVector.x = ((((leftShoulder.x + leftHip.x)/2) + ((rightShoulder.x+rightHip.x)/2))/2) + xOffsetPosition;
+//   MeanPositionVector.y = ((((leftShoulder.y + leftHip.y)/2) + ((rightShoulder.y+rightHip.y)/2))/2) + yOffsetPosition;
+
+//   return MeanPositionVector;
+// }
+
 async function animate() {
   const poses = await detector.estimatePoses(
     camera.video, {
@@ -103,27 +132,49 @@ async function animate() {
   if (poses.length > 0) {
     // #region Model Position
     const concernedKeypoints = modelType[selectedModel].positionKeyPoint;
+    console.log(modelType);
     const keyPointPosition = new Vector3();
     let confidenceScoreOfKeyPoints = 0;
-    if (concernedKeypoints.length === 2) {
-      const leftKeyPoint = getPart(concernedKeypoints[0], poses[0])[0];
-      const rightKeyPoint = getPart(concernedKeypoints[1], poses[0])[0];
-      keyPointPosition.x = ((leftKeyPoint.x + rightKeyPoint.x) / 2);
-      keyPointPosition.y = ((leftKeyPoint.y + rightKeyPoint.y) / 2);
+      if (concernedKeypoints.length === 4) {
+        const leftKeyPoint1 = getPart(concernedKeypoints[0], poses[0])[0];
+        const rightKeyPoint1 = getPart(concernedKeypoints[1], poses[0])[0];
+        const leftKeyPoint2 = getPart(concernedKeypoints[2], poses[0])[0];
+        const rightKeyPoint2 = getPart(concernedKeypoints[3], poses[0])[0];
 
-      confidenceScoreOfKeyPoints = ((leftKeyPoint.score + rightKeyPoint.score) / 2);
-
-    } else if (concernedKeypoints.length === 1) {
-      const keyPoint = getPart(concernedKeypoints[0], poses[0])[0];
-      keyPointPosition.x = keyPoint.x;
-      keyPointPosition.y = keyPoint.y;
-
-      confidenceScoreOfKeyPoints = keyPoint.score;
-    }
+        if (mirrorAttributes) {
+          keyPointPosition.x = ((((leftKeyPoint2.x + leftKeyPoint1.x)/2) + ((rightKeyPoint2.x+rightKeyPoint1.x)/2))/2) + X_OFFSET_POSITION_MIRROR_RIGGED;
+          keyPointPosition.y = ((((leftKeyPoint2.y + leftKeyPoint1.y)/2) + ((rightKeyPoint2.y+rightKeyPoint1.y)/2))/2) + Y_OFFSET_POSITION_MIRROR_RIGGED;
+        } else {
+          keyPointPosition.x = ((((leftKeyPoint2.x + leftKeyPoint1.x)/2) + ((rightKeyPoint2.x+rightKeyPoint1.x)/2))/2);
+          keyPointPosition.y = ((((leftKeyPoint2.y + leftKeyPoint1.y)/2) + ((rightKeyPoint2.y+rightKeyPoint1.y)/2))/2);
+        }
+  
+        confidenceScoreOfKeyPoints = ((leftKeyPoint1.score + rightKeyPoint1.score + leftKeyPoint2.score + rightKeyPoint2.score) / 4);
+  
+      } else if (concernedKeypoints.length === 2) {
+        const leftKeyPoint = getPart(concernedKeypoints[0], poses[0])[0];
+        const rightKeyPoint = getPart(concernedKeypoints[1], poses[0])[0];
+        if (mirrorAttributes) { // MIGHT HAVE TO SEE THIS 
+          keyPointPosition.x = ((leftKeyPoint.x + rightKeyPoint.x) / 2) + X_OFFSET_POSITION_MIRROR_UNRIGGED;
+          keyPointPosition.y = ((leftKeyPoint.y + rightKeyPoint.y) / 2) + Y_OFFSET_POSITION_MIRROR_UNRIGGED;
+        } else {          
+          keyPointPosition.x = ((leftKeyPoint.x + rightKeyPoint.x) / 2);
+          keyPointPosition.y = ((leftKeyPoint.y + rightKeyPoint.y) / 2);
+        }
+  
+        confidenceScoreOfKeyPoints = (leftKeyPoint.score + rightKeyPoint.score)/2;
+      }
+  
 
     const threeDPosition = getWorldCoords(keyPointPosition.x, keyPointPosition.y, camera.video.videoHeight, camera.video.videoWidth, threeDCam);
+    //printResult = threeDPosition;
     if (confidenceScoreOfKeyPoints > 0.5) {
-      pivot.position.set(threeDPosition.x, threeDPosition.y, 1);
+      //pivot.position.set(1+xOffsetPosition,1+yOffsetPosition,1);
+      if (mirrorAttributes) {
+        pivot.position.set(threeDPosition.x * MULTIPLYING_FACTOR_MIRROR_X, threeDPosition.y, 1);
+      } else {
+        pivot.position.set(threeDPosition.x , threeDPosition.y, 1);
+      }
     } else {
       pivot.position.set(1, 1, -6);
     }
@@ -151,12 +202,20 @@ async function animate() {
             case "mixamorigLeftShoulder": {
               const angle = -getAngle(rightElbow, rightShoulder, 0, 0, -1);
               leftShoulderAngle = angle;
-              child.rotation.y = angle;
+              if(mirrorAttributes) {
+                child.rotation.y = angle * MULTIPLYING_FACTOR_SHOULDER_MOVEMENT;
+              } else {
+                child.rotation.y = angle;
+              }
               break;
             }
             case "mixamorigLeftForeArm": {
               const angle = getAngle(rightElbow, rightWrist, 0, 0, -1) - Math.PI;
-              child.rotation.x = angle + leftShoulderAngle;
+              if (mirrorAttributes) {
+                child.rotation.x = (angle + leftShoulderAngle) * MULTIPLYING_FACTOR_SHOULDER_MOVEMENT;
+              } else {
+                child.rotation.x = angle + leftShoulderAngle;
+              }
               break;
             }
             case "mixamorigRightShoulder": {
@@ -213,8 +272,8 @@ async function animate() {
 async function app(modelConfig) {
   scene = getTHREEbasics();
   
-  addKeybinding(scaleX, scaleY, offsetX, offsetY, multiplyingFactor);
-  
+  //addKeybinding(scaleX, scaleY, offsetX, offsetY, multiplyingFactor);
+  // -- NOT WORKING
   let model;
   
   if (modelType === UNRIGGED_MODELS) {
@@ -257,8 +316,11 @@ async function app(modelConfig) {
       loadModel(modelConfig.path)
     ]);
   }
-  
-  renderer.setSize(camera.video.videoWidth, camera.video.videoHeight);
+  if (mirrorAttributes) {
+    renderer.setSize(window.innerWidth,window.innerHeight);
+  } else {
+    renderer.setSize(camera.width,window.innerHeight);
+  }
 
   if (!mesh && !pivot) {
     [mesh, pivot] = setUpModel(model);
@@ -266,7 +328,15 @@ async function app(modelConfig) {
   // #region Model Configuration
   [offsetX, offsetY] = [modelConfig.offsets.x, modelConfig.offsets.y];
   [scaleX, scaleY, scaleZ] = [modelConfig.scale.x, modelConfig.scale.y, modelConfig.scale.z]
-  pivot.scale.set(scaleX, scaleY, scaleZ);
+  if (mirrorAttributes && modelType[selectedModel].positionKeyPoint.length == 4) {
+    pivot.scale.set(18, 4, 4);
+  }
+  else if (mirrorAttributes && modelType[selectedModel].positionKeyPoint.length == 2) {
+    pivot.scale.set(1.36,1.36,1)
+  }
+  else {
+    pivot.scale.set(scaleX, scaleY, scaleZ);
+  }
   // #endregion
 
   scene.add(pivot);
@@ -274,7 +344,7 @@ async function app(modelConfig) {
   threeDCam = setUpTHREEDCamera(camera.video.videoWidth, camera.video.videoHeight);
   scene.add(threeDCam);
 
-  addKeybinding(scaleX, scaleY, offsetX, offsetY, multiplyingFactor);
+  //addKeybinding(scaleX, scaleY, offsetX, offsetY, multiplyingFactor);
   
   animate();
 };
@@ -292,7 +362,6 @@ for (const model in UNRIGGED_MODELS) {
   optionTag.setAttribute('value', `${model}`)
   optionTag.innerHTML = `${UNRIGGED_MODELS[model].desp}`;
   listOfModels.appendChild(optionTag)
-
 }
 
 document.getElementById('model-select').addEventListener('change', function () {
@@ -303,4 +372,39 @@ document.getElementById('model-select').addEventListener('change', function () {
   }
   selectedModel = this.value;
   app(modelType[selectedModel]);
+});
+
+window.addEventListener('keydown', (e) => {
+  if (e.ctrlKey) {
+    switch (e.key) {
+      case "ArrowUp": {
+        yOffsetPosition +=1;
+        //pivot.position.y += 0.1;
+        //yOffsetPositionMask +=10;
+        break;
+      }
+      case "ArrowDown": {
+        yOffsetPosition -=1;
+        //yOffsetPositionMask -=10;
+        //pivot.position.y -= 1;
+        break;
+      }
+      case "ArrowRight": {
+        xOffsetPosition += 1;
+        //xOffsetPositionMask +=10;
+        break;
+      }
+      case "ArrowLeft": {
+        xOffsetPosition -=1;
+        //xOffsetPositionMask -=10;
+        break;
+      }
+    }
+  }
+
+  else if (e.key == "m") {
+    console.log("m pressed");
+    console.log('printResult:', printResult)
+    //document.getElementsByClassName ("toggle-switch").style.display = "none";  //hide
+  }
 });
